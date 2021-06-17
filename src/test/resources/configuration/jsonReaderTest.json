@@ -1,0 +1,14 @@
+{
+  "id": "1",
+  "name": "Alice",
+  "age": "20",
+  "courses": [
+    "Engineering",
+    "Finance",
+    "Chemistry"
+  ],
+   "objects": {
+     "nested": [1, 2, 3],
+     "also-nested": [4, 5, 6]
+   }
+}
