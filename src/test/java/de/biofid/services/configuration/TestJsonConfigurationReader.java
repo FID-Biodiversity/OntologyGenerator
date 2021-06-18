@@ -1,24 +1,27 @@
 package de.biofid.services.configuration;
 
+import de.biofid.services.configuration.reader.JsonConfigurationReader;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestJsonConfigurationReader {
 
     static final String JSON_CONFIG_FILE_PATH_STRING = "src/test/resources/configuration/jsonReaderTest.json";
-    ArrayList<String> expectedCourses = new ArrayList<>();
-    ArrayList<Integer> expectedNumbers = new ArrayList<>();
+    static final ArrayList<String> expectedCourses = new ArrayList<>();
+    static final ArrayList<Integer> expectedNumbers = new ArrayList<>();
 
     @Test
+    @DisplayName("Reads a JSON configuration file correctly.")
     public void testReadingJsonFile() throws FileNotFoundException {
+        setup();
         JsonConfigurationReader jsonConfigurationReader = new JsonConfigurationReader();
-        JSONObject jsonObject = jsonConfigurationReader.readConfigurationFile(JSON_CONFIG_FILE_PATH_STRING);
+        JSONObject jsonObject = jsonConfigurationReader.readConfigurationDataFrom(JSON_CONFIG_FILE_PATH_STRING);
 
         assertEquals(1, jsonObject.getInt("id"));
         assertEquals("Alice", jsonObject.getString("name"));
@@ -26,8 +29,10 @@ public class TestJsonConfigurationReader {
         assertEquals(expectedNumbers, jsonObject.getJSONObject("objects").getJSONArray("nested").toList());
     }
 
-    @Before
     public void setup() {
+        expectedCourses.clear();
+        expectedNumbers.clear();
+
         expectedCourses.add("Engineering");
         expectedCourses.add("Finance");
         expectedCourses.add("Chemistry");

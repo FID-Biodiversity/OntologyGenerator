@@ -1,5 +1,6 @@
-package de.biofid.services.configuration;
+package de.biofid.services.configuration.reader;
 
+import de.biofid.services.configuration.reader.ConfigurationReader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -10,7 +11,7 @@ import java.io.InputStream;
 public class JsonConfigurationReader extends ConfigurationReader {
 
     @Override
-    public JSONObject readConfigurationFile(String filePath) throws FileNotFoundException {
+    public JSONObject readConfigurationDataFrom(String filePath) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(filePath);
         JSONTokener jsonTokener = new JSONTokener(inputStream);
         return new JSONObject(jsonTokener);

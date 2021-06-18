@@ -1,0 +1,18 @@
+{
+  "ontologies": [
+    {
+      "Occurrences": {
+        "serializer": "FileSerializer",
+        "outputPath": "/foo/bar/occurrences-ontology.owl",
+        "outputFormat": "owl",
+        "services": [
+          {
+            "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
+            "dataGeneratorClass": "GbifOccurencesService",
+            "dataProcessorClass":  "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
+          }
+        ]
+      }
+    }
+  ]
+}

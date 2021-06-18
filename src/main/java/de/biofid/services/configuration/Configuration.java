@@ -1,5 +1,8 @@
 package de.biofid.services.configuration;
 
+import de.biofid.services.configuration.reader.ConfigurationReader;
+import de.biofid.services.configuration.reader.JsonConfigurationReader;
+import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,15 +13,28 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 public class Configuration {
+
+    public static final String BIOFID_SERIALIZER_PACKAGE_STRING = "de.biofid.services.serializer";
+
+    // Configuration keys should all be lower case
+    public final static String KEY_ONTOLOGY_LISTS = "ontologies";
+    public final static String KEY_DATA_SERVICE_CONFIGURATIONS = "services";
+    public final static String KEY_SERIALIZER = "serializer";
+
+    // Ontology Configuration
+    public final static String KEY_DATA_SOURCE_CLASS_NAME = "dataSourceClass";
+    public final static String KEY_DATA_GENERATOR_CLASS_NAME = "dataGeneratorClass";
+    public final static String KEY_DATA_PROCESSOR_CLASS_NAME = "dataProcessorClass";
 
     protected static final Logger logger = LogManager.getLogger();
 
     private final ConfigurationReader reader;
-    private JSONObject configuration;
+    private JSONObject configuration ;
 
-    Configuration(ConfigurationReader configurationReader) {
+    public Configuration(ConfigurationReader configurationReader) {
         if (configurationReader == null) {
             throw new NullPointerException("The given configurationReader is null!");
         }
@@ -31,10 +47,29 @@ public class Configuration {
         String absoluteFilePath = stringPathToAbsolutePathString(filePath);
 
         try {
-            configuration = reader.readConfigurationFile(filePath);
+            configuration = reader.readConfigurationDataFrom(filePath);
         } catch (FileNotFoundException e) {
             logger.warn("The configuration file " + absoluteFilePath + " does not exist!");
         }
+    }
+
+//    public Iterator<OntologyConfiguration> iterateOntologyConfigurations() {
+//
+//    }
+
+    public JSONObject getConfigurationForOntologyName(String ontologyName) throws KeyException {
+        JSONArray ontologyConfigurations = configuration.getJSONArray(Configuration.KEY_ONTOLOGY_LISTS);
+        for (Object configObject : ontologyConfigurations) {
+            JSONObject configuration = (JSONObject) configObject;
+            for (Iterator<String> it = configuration.keys(); it.hasNext(); ) {
+                String name = it.next();
+                if (name.equals(ontologyName)) {
+                    return configuration.getJSONObject(name);
+                }
+            }
+        }
+
+        throw new KeyException("The given ontology Name \"" + ontologyName + "\" is not given in the configuration!");
     }
 
     public JSONArray getJsonArray(String key) throws ValueException {
@@ -53,6 +88,10 @@ public class Configuration {
             logger.warn(message);
             throw new ValueException(message);
         }
+    }
+
+    public JSONObject toJSONObject() {
+        return this.configuration;
     }
 
     private String stringPathToAbsolutePathString(String pathString) {
