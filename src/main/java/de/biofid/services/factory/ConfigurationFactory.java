@@ -11,35 +11,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurationFactory {
-    public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration) throws KeyException, ValueException {
-        String serializerClassName = getClassStringFromConfiguration(Configuration.KEY_SERIALIZER, configuration.toJSONObject(), ontologyName);
+    public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
+            throws KeyException, ValueException {
+        String serializerClassName = getClassStringFromConfiguration(Configuration.KEY_SERIALIZER,
+                configuration.toJSONObject(), ontologyName);
 
         Serializer serializer = (Serializer) ClassLoader.createInstanceOfClassFromName(serializerClassName);
 
-        return new OntologyConfiguration();
-        //return new OntologyConfiguration(ontologyName, serializer, );
+        List<DataServiceConfiguration> dataServiceConfigurations =
+                createDataServiceConfigurationsForOntologyName(ontologyName, configuration);
+
+        return new OntologyConfiguration(ontologyName, serializer, dataServiceConfigurations);
     }
 
-    public static List<DataServiceConfiguration> createDataServiceConfigurationForOntologyName(String ontologyName,
-                                                                                               Configuration configuration) throws ValueException, KeyException {
+    public static List<DataServiceConfiguration> createDataServiceConfigurationsForOntologyName(
+            String ontologyName, Configuration configuration) throws KeyException {
         JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
         JSONArray dataServiceConfigurationsAsJson = ontologyConfiguration.getJSONArray(Configuration.KEY_DATA_SERVICE_CONFIGURATIONS);
 
         List<DataServiceConfiguration> dataServiceConfigurations = new ArrayList<>(dataServiceConfigurationsAsJson.length());
         for (Object dataServiceObject : dataServiceConfigurationsAsJson) {
             JSONObject dataServiceConfiguration = (JSONObject) dataServiceObject;
-            dataServiceConfigurations.add(createDataServiceConfigurationFromJSONObject(dataServiceConfiguration));
+            dataServiceConfigurations.add(createDataServiceConfigurationObjectFromJSONObject(dataServiceConfiguration));
         }
 
         return dataServiceConfigurations;
     }
 
-    public static DataServiceConfiguration createDataServiceConfigurationFromJSONObject(JSONObject dataServiceConfiguration) {
+    public static DataServiceConfiguration createDataServiceConfigurationObjectFromJSONObject(JSONObject dataServiceConfiguration) {
         String dataSourceClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_SOURCE_CLASS_NAME);
         String dataGeneratorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME);
         String dataProcessorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME);

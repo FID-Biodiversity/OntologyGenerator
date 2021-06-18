@@ -1,7 +1,6 @@
 package de.biofid.services.configuration;
 
 import de.biofid.services.configuration.reader.ConfigurationReader;
-import de.biofid.services.configuration.reader.JsonConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
 import org.apache.logging.log4j.LogManager;
@@ -53,13 +52,10 @@ public class Configuration {
         }
     }
 
-//    public Iterator<OntologyConfiguration> iterateOntologyConfigurations() {
-//
-//    }
+    // TODO: Iterate OntologyConfiguration
 
     public JSONObject getConfigurationForOntologyName(String ontologyName) throws KeyException {
-        JSONArray ontologyConfigurations = configuration.getJSONArray(Configuration.KEY_ONTOLOGY_LISTS);
-        for (Object configObject : ontologyConfigurations) {
+        for (Object configObject : getOntologyDataInConfiguration()) {
             JSONObject configuration = (JSONObject) configObject;
             for (Iterator<String> it = configuration.keys(); it.hasNext(); ) {
                 String name = it.next();
@@ -92,6 +88,10 @@ public class Configuration {
 
     public JSONObject toJSONObject() {
         return this.configuration;
+    }
+
+    private JSONArray getOntologyDataInConfiguration() {
+        return configuration.getJSONArray(Configuration.KEY_ONTOLOGY_LISTS);
     }
 
     private String stringPathToAbsolutePathString(String pathString) {

@@ -5,7 +5,7 @@ import de.biofid.services.configuration.reader.JsonConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
 import de.biofid.services.factory.ConfigurationFactory;
-import org.json.JSONArray;
+import de.biofid.services.serialization.FileSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,16 +19,26 @@ public class TestConfigurationFactory {
     public void testCreateDataServiceConfiguration() throws ValueException, KeyException {
         Configuration configuration = setupConfiguration();
 
-        JSONArray services = configuration.getJsonArray("ontologies")
-                .getJSONObject(0)
-                .getJSONObject("Occurrences")
-                .getJSONArray("services");
-        assertTrue(services.length() > 0);
-
         List<DataServiceConfiguration> dataServiceConfigurations =
-                ConfigurationFactory.createDataServiceConfigurationForOntologyName("Occurrences", configuration);
+                ConfigurationFactory.createDataServiceConfigurationsForOntologyName("Occurrences", configuration);
 
         assertEquals(1, dataServiceConfigurations.size());
+    }
+
+    @Test
+    public void testCreateOntologyConfiguration() throws ValueException, KeyException {
+        Configuration configuration = setupConfiguration();
+
+        OntologyConfiguration ontologyConfiguration = ConfigurationFactory.createOntologyConfiguration("Occurrences", configuration);
+
+        assertEquals("Occurrences", ontologyConfiguration.ontologyName);
+        assertTrue(ontologyConfiguration.serializer instanceof FileSerializer);
+        assertEquals(1, ontologyConfiguration.dataServiceConfigurations.size());
+
+        DataServiceConfiguration dataServiceConfiguration = ontologyConfiguration.dataServiceConfigurations.get(0);
+        assertEquals("de.biofid.services.crawler.gbif.GbifIdDataSource", dataServiceConfiguration.dataSourceClassString);
+        assertEquals("de.biofid.services.crawler.gbif.GbifOccurencesGenerator", dataServiceConfiguration.dataGeneratorClassString);
+        assertEquals("de.biofid.services.crawler.gbif.GbifOccurencesProcessor", dataServiceConfiguration.dataProcessorClassString);
     }
 
     private Configuration setupConfiguration() {
