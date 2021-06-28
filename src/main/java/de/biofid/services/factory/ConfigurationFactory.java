@@ -55,8 +55,6 @@ public class ConfigurationFactory {
 
         if (serializerClass.equals("")) {
             throw new KeyException("The configuration of the ontology \"" + ontologyName +"\" is missing a \"serializer\" keyword!");
-        } else if (!serializerClass.startsWith("de.") && !serializerClass.contains(".")) {
-            serializerClass = addBiofidNamespaceToClassName(serializerClass);
         }
 
         return serializerClass;
@@ -68,9 +66,5 @@ public class ConfigurationFactory {
         } catch (JSONException e) {
             return defaultReturnValue;
         }
-    }
-
-    private static String addBiofidNamespaceToClassName(String className) {
-        return Configuration.BIOFID_SERIALIZER_PACKAGE_STRING + "." + className;
     }
 }
