@@ -13,10 +13,10 @@ public class TestGbifSystematicsDataProcessor {
     @Test
     public void testMapDataToTriple() throws FileNotFoundException {
         JSONObject apiResponseData = JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifSpeciesApiResponse.json");
-        //DataProcessor gbifSpeciesProcessor = new GbifSystematicsDataProcessor();
-
-        //List<Triple> triples = gbifSpeciesProcessor.mapDataToTriple(apiResponseData, null);
-
-
+//        DataProcessor gbifSpeciesProcessor = new GbifSystematicsDataProcessor();
+//
+//        List<Triple> triples = gbifSpeciesProcessor.mapDataToTriple(apiResponseData, null);
+//
+//
     }
 }
