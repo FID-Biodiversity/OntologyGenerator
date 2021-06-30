@@ -1,5 +1,6 @@
 package de.biofid.services.data;
 
+import de.biofid.services.ontologies.Ontology;
 import org.json.JSONObject;
 
 import java.util.NoSuchElementException;
@@ -12,7 +13,8 @@ import java.util.NoSuchElementException;
  * The setParameters(JsonObject) method will receive the user configuration.
  */
 public interface DataGenerator {
-    abstract public Triple next() throws NoSuchElementException;
-    abstract public void setDataSource(DataSource dataSource);
-    abstract public void setParameters(JSONObject parameters);
+    Triple next() throws NoSuchElementException;
+    void setDataSource(DataSource dataSource);
+    void setParameters(JSONObject parameters);
+    default void setOntology(Ontology ontology) {};
 }

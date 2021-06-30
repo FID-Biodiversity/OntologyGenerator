@@ -9,11 +9,15 @@ import java.util.List;
 
 public class DummyDataSource implements DataSource {
 
+    public List<String> requestedStrings = new ArrayList<>();
+
     List<Object> data = new ArrayList<>();
     Iterator<Object> iterator = null;
 
     @Override
     public Object getDataForString(String string) throws IOException {
+        requestedStrings.add(string);
+
         if (iterator == null) {
             iterator = data.iterator();
         }

@@ -1,0 +1,113 @@
+package de.biofid.services.data.gbif;
+
+import de.biofid.services.data.Triple;
+import de.biofid.services.exceptions.NoGbifUriException;
+import de.biofid.services.ontologies.Ontology;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Calls data from the GBIF API URL {BASE_API}/species/{SPECIES_ID}/children .
+ */
+public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator {
+
+    private static final String CHILDREN_STRING = "children";
+    private static final String TAXON_ID_STRING = "taxonID";
+
+    private Iterator<Object> childTaxonData = Collections.emptyIterator();
+    private Ontology ontology;
+
+    @Override
+    public void setOntology(Ontology ontology) {
+        this.ontology = ontology;
+    }
+
+    @Override
+    public String createGbifApiUrlFromGbifId(String gbifId) {
+        return getGbifApiBaseUrl() + "/" + SPECIES_STRING + "/" + gbifId + "/" + CHILDREN_STRING;
+    }
+
+    @Override
+    protected List<String> getGbifIdsToProcess() {
+        Iterator<String> taxonUriIterator = ontology.iterateResourceUris();
+        List<String> taxonUrisToProcess = iteratorToList(taxonUriIterator);
+
+        return taxonUrisToProcess.stream()
+                .map(this::extractGbifIdFromUri)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    protected void updateIterators() {
+        logger.debug("Updating iterators!");
+
+        if (childTaxonData.hasNext()) {
+            updateIteratorsWithLocalDataset();
+        } else {
+            updateIteratorsByCallingNewData();
+        }
+    }
+
+    protected void updateIteratorsWithLocalDataset() {
+        JSONObject taxonData = (JSONObject) childTaxonData.next();
+        setCurrentProcessedGbifId(getGbifIdFromDataset(taxonData));
+
+        tripleIterator = super.convertGbifResponseToData(taxonData).iterator();
+    }
+
+    protected void updateIteratorsByCallingNewData() {
+        String gbifId = gbifIdIterator.next();
+        String gbifResponseString = callGbifForDataForId(gbifId);
+
+        Object firstDatasetInResponse = new JSONObject(gbifResponseString).getJSONArray(RESULTS_STRING).get(0);
+        setCurrentProcessedGbifId(getGbifIdFromDataset((JSONObject) firstDatasetInResponse));
+
+        tripleIterator = convertGbifResponseToData(gbifResponseString).iterator();
+    }
+
+    @Override
+    protected List<Triple> convertGbifResponseToData(JSONObject gbifResponseData) {
+        logger.debug("Converting GBIF Response to data!");
+
+        childTaxonData = gbifResponseData.getJSONArray(RESULTS_STRING).iterator();
+        JSONObject taxonChildData = (JSONObject) childTaxonData.next();
+
+        return super.convertGbifResponseToData(taxonChildData);
+    }
+
+    @Override
+    protected boolean areAllExpectedParametersSet() {
+        return ontology != null;
+    }
+
+    protected String getGbifIdFromDataset(JSONObject taxonData) {
+        try {
+            return GbifUriFactory.extractGbifIdFromUri(taxonData.getString(TAXON_ID_STRING));
+        } catch (NoGbifUriException ex) {
+            logger.error("The given dataset does not contain an proper GBIF ID!\nDataset: " + taxonData);
+            return null;
+        }
+    }
+
+    private List<String> iteratorToList(Iterator<String> iterator) {
+        List<String> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+        return list;
+    }
+
+    private String extractGbifIdFromUri(String uri) {
+        try {
+            return GbifUriFactory.extractGbifIdFromUri(uri);
+        } catch (NoGbifUriException ex) {
+            logger.error("An error occurred while extracting the GBIF ID from " + uri +" . Returning null!");
+            return null;
+        }
+    }
+}

@@ -12,7 +12,7 @@ import java.util.List;
 public class TestGbifSystematicsDataProcessor {
     @Test
     public void testMapDataToTriple() throws FileNotFoundException {
-        JSONObject apiResponseData = JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifSpeciesApiResponse.json");
+        JSONObject apiResponseData = JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifPasserDomesticusApiResponse.json");
 //        DataProcessor gbifSpeciesProcessor = new GbifSystematicsDataProcessor();
 //
 //        List<Triple> triples = gbifSpeciesProcessor.mapDataToTriple(apiResponseData, null);

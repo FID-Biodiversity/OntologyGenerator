@@ -26,7 +26,7 @@ public class TestJsonHttpApi {
 
     @BeforeAll
     static void setup() throws IOException {
-        Path testFilePath = Path.of("src/test/resources/data/gbif/gbifSpeciesApiResponse.json");
+        Path testFilePath = Path.of("src/test/resources/data/gbif/gbifPasserDomesticusApiResponse.json");
         TestJsonHttpApi.httpResponse = Files.readString(testFilePath);
     }
 

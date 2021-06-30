@@ -6,10 +6,9 @@ import de.biofid.services.serialization.Serializer;
 import java.util.Iterator;
 
 public interface Ontology {
-    abstract public Iterator<Triple> iterateTriples();
-    abstract Iterator<String> iterateResourceUris();
-    abstract void addTriple(Triple triple);
-    abstract void removeTriple(Triple triple);
-    abstract void serialize(Serializer serializer);
-    //abstract void inference(Reasoner reasoner);
+    Iterator<Triple> iterateTriples();
+    Iterator<String> iterateResourceUris();
+    void addTriple(Triple triple);
+    void removeTriple(Triple triple);
+    void serialize(Serializer serializer);
 }
