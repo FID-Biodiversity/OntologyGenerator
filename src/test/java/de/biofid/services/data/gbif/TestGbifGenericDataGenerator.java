@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 import static de.biofid.services.data.DataCollections.isTripleInList;
@@ -40,10 +41,46 @@ public class TestGbifGenericDataGenerator {
         assertTrue(isTripleInList(new Triple("gbif:5678","gbif:genusKey", 2492321), result));
         assertTrue(isTripleInList(new Triple("gbif:5678", "gbif:species", "Passer domesticus"), result));
         assertTrue(isTripleInList(new Triple("gbif:5678","gbif:synonym", false), result));
+
+        assertEquals(2, dataSource.requestedStrings.size());
+        assertEquals("https://api.gbif.org/v1/species/1234?limit=20&offset=0", dataSource.requestedStrings.get(0));
+        assertEquals("https://api.gbif.org/v1/species/5678?limit=20&offset=0", dataSource.requestedStrings.get(1));
+    }
+
+    @Test
+    public void testPaging() throws FileNotFoundException {
+        DataGenerator generator = pagingSetup();
+
+        DataCollections.DataGeneratorToList(generator);
+
+        assertEquals(3, dataSource.requestedStrings.size());
+        assertEquals("https://api.gbif.org/v1/species/1234?limit=20&offset=0", dataSource.requestedStrings.get(0));
+        assertEquals("https://api.gbif.org/v1/species/1234?limit=20&offset=20", dataSource.requestedStrings.get(1));
+        assertEquals("https://api.gbif.org/v1/species/5678?limit=20&offset=0", dataSource.requestedStrings.get(2));
     }
 
     @BeforeEach
     public void setup() {
         dataSource = new DummyDataSource();
+    }
+
+    public DataGenerator pagingSetup() throws FileNotFoundException {
+        JSONObject pageableApiResponse =
+                JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifApiResponseWithPaging.json");
+        JSONObject quercusChildrenResponseData =
+                JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifQuercusChildrenApiResponse.json");
+        JSONObject fagusSylvaticaChildrenResponseData =
+                JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifFagusSylvaticaChildrenResponse.json");
+
+        dataSource.addData(pageableApiResponse.toString());
+        dataSource.addData(quercusChildrenResponseData.toString());
+        dataSource.addData(fagusSylvaticaChildrenResponseData.toString());
+
+        DataGenerator gbifGenericGenerator = new GbifGenericDataGenerator();
+        gbifGenericGenerator.setDataSource(dataSource);
+
+        gbifGenericGenerator.setParameters(new JSONObject("{\"ids\": [1234, 5678]}"));
+
+        return gbifGenericGenerator;
     }
 }

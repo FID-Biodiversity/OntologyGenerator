@@ -1,7 +1,6 @@
 package de.biofid.services.data.gbif;
 
 import de.biofid.services.data.Triple;
-import de.biofid.services.exceptions.NoGbifUriException;
 import de.biofid.services.ontologies.Ontology;
 import org.json.JSONObject;
 
@@ -21,6 +20,7 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
 
     private Iterator<Object> childTaxonData = Collections.emptyIterator();
     private Ontology ontology;
+    private String currentParentId;
 
     @Override
     public void setOntology(Ontology ontology) {
@@ -29,7 +29,7 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
 
     @Override
     public String createGbifApiUrlFromGbifId(String gbifId) {
-        return getGbifApiBaseUrl() + "/" + SPECIES_STRING + "/" + gbifId + "/" + CHILDREN_STRING;
+        return getGbifApiBaseUrl() + "/" + SPECIES_STRING + "/" + gbifId + "/" + CHILDREN_STRING + getRequestParametersAsString();
     }
 
     @Override
@@ -48,26 +48,25 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
 
         if (childTaxonData.hasNext()) {
             updateIteratorsWithLocalDataset();
+        } else if (isLastPage) {
+            getNextGbifIdToProcess();
+            currentParentId = getCurrentProcessedGbifId();
+            updateTripleIteratorWithNewData();
         } else {
-            updateIteratorsByCallingNewData();
+            updateTripleIteratorWithNewData();
         }
     }
 
     protected void updateIteratorsWithLocalDataset() {
         JSONObject taxonData = (JSONObject) childTaxonData.next();
         setCurrentProcessedGbifId(getGbifIdFromDataset(taxonData));
-
         tripleIterator = super.convertGbifResponseToData(taxonData).iterator();
     }
 
-    protected void updateIteratorsByCallingNewData() {
-        String gbifId = gbifIdIterator.next();
-        String gbifResponseString = callGbifForDataForId(gbifId);
-
-        Object firstDatasetInResponse = new JSONObject(gbifResponseString).getJSONArray(RESULTS_STRING).get(0);
-        setCurrentProcessedGbifId(getGbifIdFromDataset((JSONObject) firstDatasetInResponse));
-
-        tripleIterator = convertGbifResponseToData(gbifResponseString).iterator();
+    protected void updateTripleIteratorWithNewData() {
+        JSONObject nextPageData = getNextPageForDataset();
+        updateChildId(nextPageData);
+        tripleIterator = convertGbifResponseToData(nextPageData).iterator();
     }
 
     @Override
@@ -109,5 +108,15 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
             logger.error("An error occurred while extracting the GBIF ID from " + uri +" . Returning null!");
             return null;
         }
+    }
+
+    @Override
+    protected JSONObject callGbifForDataForCurrentGbifId() {
+        return callGbifForDataForId(currentParentId);
+    }
+
+    private void updateChildId(JSONObject data) {
+        Object firstDatasetInResponse = data.getJSONArray(RESULTS_STRING).get(0);
+        setCurrentProcessedGbifId(getGbifIdFromDataset((JSONObject) firstDatasetInResponse));
     }
 }

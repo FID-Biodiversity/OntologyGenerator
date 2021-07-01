@@ -1,7 +1,5 @@
 package de.biofid.services.data.gbif;
 
-import de.biofid.services.exceptions.NoGbifUriException;
-
 public class GbifUriFactory {
 
     public static final String GBIF_STRING = "gbif";

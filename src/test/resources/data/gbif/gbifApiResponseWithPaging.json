@@ -1,7 +1,7 @@
 {
   "offset": 0,
   "limit": 20,
-  "endOfRecords": true,
+  "endOfRecords": false,
   "results": [
     {
       "key": 4905659,

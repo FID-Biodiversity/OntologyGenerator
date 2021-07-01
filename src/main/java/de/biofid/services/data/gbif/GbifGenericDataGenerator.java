@@ -28,6 +28,10 @@ public class GbifGenericDataGenerator implements DataGenerator {
     protected static final String SPECIES_STRING = "species";
     protected static final String RESULTS_STRING = "results";
     protected static final String IS_LAST_PAGE_STRING = "endOfRecords";
+    protected static final String OFFSET_PARAMETER_STRING = "offset";
+    protected static final String LIMIT_PARAMETER_STRING = "limit";
+    protected static final int NUMBER_OF_DATASETS_PER_REQUEST = 20;
+    protected static final int OFFSET_DEFAULT = NUMBER_OF_DATASETS_PER_REQUEST * -1;
 
     private static final String GBIF_API_BASE_URL = "https://api.gbif.org/v1";
 
@@ -35,6 +39,8 @@ public class GbifGenericDataGenerator implements DataGenerator {
     protected JSONObject parameters = new JSONObject();
     protected Iterator<String> gbifIdIterator = null;
     protected Iterator<Triple> tripleIterator = null;
+    protected boolean isLastPage = true;
+    private int currentOffset = OFFSET_DEFAULT;
     private String currentProcessedTaxonId;
 
     /**
@@ -84,6 +90,7 @@ public class GbifGenericDataGenerator implements DataGenerator {
         try {
             triple = tripleIterator.next();
         } catch (NoSuchElementException ex) {
+
             updateIterators();
             triple = getNextTripleOrThrow();
         }
@@ -100,10 +107,34 @@ public class GbifGenericDataGenerator implements DataGenerator {
     }
 
     protected void updateIterators() {
+        if (isLastPage) {
+            getNextGbifIdToProcess();
+        }
+        JSONObject newData = getNextPageForDataset();
+
+        tripleIterator = convertGbifResponseToData(newData).iterator();
+    }
+
+    protected void getNextGbifIdToProcess() {
         String gbifId = gbifIdIterator.next();
         setCurrentProcessedGbifId(gbifId);
-        String gbifResponseString = callGbifForDataForCurrentGbifId();
-        tripleIterator = convertGbifResponseToData(gbifResponseString).iterator();
+        resetMetadata();
+    }
+
+    protected JSONObject getNextPageForDataset() {
+        JSONObject gbifResponseData = callGbifForDataForCurrentGbifId();
+        updateMetadata(gbifResponseData);
+
+        return gbifResponseData;
+    }
+
+    protected void resetMetadata() {
+        updateMetadata(new JSONObject());
+    }
+
+    protected void updateMetadata(JSONObject data) {
+        isLastPage = isLastDataPage(data);
+        currentOffset = getOffsetFromDataset(data) + NUMBER_OF_DATASETS_PER_REQUEST;
     }
 
     protected List<String> getGbifIdsToProcess() {
@@ -113,34 +144,28 @@ public class GbifGenericDataGenerator implements DataGenerator {
                 .collect(Collectors.toList());
     }
 
-    protected String callGbifForDataForCurrentGbifId() {
+    protected JSONObject callGbifForDataForCurrentGbifId() {
         return callGbifForDataForId(getCurrentProcessedGbifId());
     }
 
-    protected String callGbifForDataForId(String gbifId) {
+    protected JSONObject callGbifForDataForId(String gbifId) {
         try {
             logger.debug("Processing GBIF ID \"" + gbifId + "\" ...");
             String gbifUrl = createGbifApiUrlFromGbifId(gbifId);
             String gbifResponse = (String) dataSource.getDataForString(gbifUrl);
             logger.debug("Received GBIF response!");
-            return gbifResponse;
+            return new JSONObject(gbifResponse);
         } catch (IOException ex) {
-            return "{}";
+            return new JSONObject();
         }
     }
 
-    protected List<Triple> convertGbifResponseToData(String gbifResponse) {
-        logger.debug("Convert response to data object!");
+    protected boolean isLastDataPage(JSONObject data) {
+        return !data.has(IS_LAST_PAGE_STRING) || data.getBoolean(IS_LAST_PAGE_STRING);
+    }
 
-        List<Triple> gbifData = Collections.emptyList();
-        try {
-            JSONObject jsonResponse = new JSONObject(gbifResponse);
-            gbifData = convertGbifResponseToData(jsonResponse);
-        } catch (JSONException ex) {
-            logger.warn("The GBIF response is not a JSON object! Response was: " + gbifResponse);
-        }
-
-        return gbifData;
+    protected int getOffsetFromDataset(JSONObject data) {
+        return data.has(OFFSET_PARAMETER_STRING) ? data.getInt(OFFSET_PARAMETER_STRING) : OFFSET_DEFAULT;
     }
 
     protected List<Triple> convertGbifResponseToData(JSONObject gbifResponseData) {
@@ -152,7 +177,12 @@ public class GbifGenericDataGenerator implements DataGenerator {
     }
 
     protected String createGbifApiUrlFromGbifId(String gbifId) {
-        return getGbifApiBaseUrl() + "/species/" + gbifId;
+        return getGbifApiBaseUrl() + "/species/" + gbifId + getRequestParametersAsString();
+    }
+
+    protected String getRequestParametersAsString() {
+        return "?" + LIMIT_PARAMETER_STRING + "=" + NUMBER_OF_DATASETS_PER_REQUEST +
+                "&" + OFFSET_PARAMETER_STRING + "=" + currentOffset;
     }
 
     protected Triple createTriple(String subject, String predicate, Object object) {
