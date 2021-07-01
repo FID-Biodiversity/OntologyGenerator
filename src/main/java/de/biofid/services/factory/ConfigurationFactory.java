@@ -47,7 +47,14 @@ public class ConfigurationFactory {
         String dataGeneratorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME);
         String dataProcessorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME);
 
-        return new DataServiceConfiguration(dataSourceClassName, dataGeneratorClassName, dataProcessorClassName);
+        JSONObject dataServiceParameters;
+        if (dataServiceConfiguration.has(Configuration.KEY_DATA_SERVICE_PARAMETERS)) {
+             dataServiceParameters = dataServiceConfiguration.getJSONObject(Configuration.KEY_DATA_SERVICE_PARAMETERS);
+        } else {
+            dataServiceParameters = new JSONObject();
+        }
+
+        return new DataServiceConfiguration(dataSourceClassName, dataGeneratorClassName, dataProcessorClassName, dataServiceParameters);
     }
 
     private static String getClassStringFromConfiguration(String key, JSONObject configuration, String ontologyName) throws KeyException {

@@ -1,6 +1,8 @@
-package de.biofid.services.data.gbif;
+package de.biofid.services.data.gbif.generators;
 
 import de.biofid.services.data.Triple;
+import de.biofid.services.data.gbif.GbifUriFactory;
+import de.biofid.services.data.gbif.NoGbifUriException;
 import de.biofid.services.ontologies.Ontology;
 import org.json.JSONObject;
 

@@ -4,13 +4,13 @@ import de.biofid.services.data.DataCollections;
 import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.JsonDataReader;
 import de.biofid.services.data.Triple;
+import de.biofid.services.data.gbif.generators.GbifGenericDataGenerator;
 import de.biofid.services.dummy.DummyDataSource;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 
 import static de.biofid.services.data.DataCollections.isTripleInList;

@@ -1,5 +1,7 @@
 package de.biofid.services.configuration;
 
+import org.json.JSONObject;
+
 public class DataServiceConfiguration {
     public String dataGeneratorClassString;
     public String dataProcessorClassString;
@@ -7,7 +9,7 @@ public class DataServiceConfiguration {
 
     public DataServiceConfiguration() {}
 
-    public DataServiceConfiguration(String dataSourceClassString, String dataGeneratorClassString, String dataProcessorClassString) {
+    public DataServiceConfiguration(String dataSourceClassString, String dataGeneratorClassString, String dataProcessorClassString, JSONObject parameters) {
         this.dataGeneratorClassString = dataGeneratorClassString;
         this.dataProcessorClassString = dataProcessorClassString;
         this.dataSourceClassString = dataSourceClassString;

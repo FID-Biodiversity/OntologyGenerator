@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestConfigurationFactory {
     @Test
-    public void testCreateDataServiceConfiguration() throws ValueException, KeyException {
+    public void testCreateDataServiceConfiguration() throws KeyException {
         Configuration configuration = setupConfiguration();
 
         List<DataServiceConfiguration> dataServiceConfigurations =

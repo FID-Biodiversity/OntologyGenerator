@@ -27,6 +27,7 @@ public class Configuration {
     public final static String KEY_DATA_SOURCE_CLASS_NAME = "dataSourceClass";
     public final static String KEY_DATA_GENERATOR_CLASS_NAME = "dataGeneratorClass";
     public final static String KEY_DATA_PROCESSOR_CLASS_NAME = "dataProcessorClass";
+    public final static String KEY_DATA_SERVICE_PARAMETERS = "parameters";
 
     protected static final Logger logger = LogManager.getLogger();
 

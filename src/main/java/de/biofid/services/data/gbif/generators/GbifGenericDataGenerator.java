@@ -1,4 +1,4 @@
-package de.biofid.services.data.gbif;
+package de.biofid.services.data.gbif.generators;
 
 import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.DataSource;
