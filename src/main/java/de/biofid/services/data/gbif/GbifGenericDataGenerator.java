@@ -6,11 +6,13 @@ import de.biofid.services.data.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -37,11 +39,15 @@ public class GbifGenericDataGenerator implements DataGenerator {
 
     protected DataSource dataSource;
     protected JSONObject parameters = new JSONObject();
-    protected Iterator<String> gbifIdIterator = null;
+
     protected Iterator<Triple> tripleIterator = null;
+    protected List<String> gbifIds = Collections.emptyList();
     protected boolean isLastPage = true;
-    private int currentOffset = OFFSET_DEFAULT;
+    protected Iterator<String> gbifIdIterator = null;
+    protected int currentOffset = OFFSET_DEFAULT;
+
     private String currentProcessedTaxonId;
+    private boolean isSetup = false;
 
     /**
      * Iterates the data of the DataSource.
@@ -54,8 +60,9 @@ public class GbifGenericDataGenerator implements DataGenerator {
             throw new NoSuchElementException();
         }
 
-        if (gbifIdIterator == null) {
+        if (!isSetup) {
             setup();
+            isSetup = true;
         }
 
         return getNextTripleOrThrow();
@@ -76,7 +83,8 @@ public class GbifGenericDataGenerator implements DataGenerator {
     }
 
     protected void setup() {
-        gbifIdIterator = getGbifIdsToProcess().iterator();
+        gbifIds = getGbifIdsToProcess();
+        gbifIdIterator = gbifIds.iterator();
         updateIterators();
     }
 
@@ -115,17 +123,19 @@ public class GbifGenericDataGenerator implements DataGenerator {
         tripleIterator = convertGbifResponseToData(newData).iterator();
     }
 
-    protected void getNextGbifIdToProcess() {
-        String gbifId = gbifIdIterator.next();
-        setCurrentProcessedGbifId(gbifId);
-        resetMetadata();
-    }
-
     protected JSONObject getNextPageForDataset() {
         JSONObject gbifResponseData = callGbifForDataForCurrentGbifId();
         updateMetadata(gbifResponseData);
 
         return gbifResponseData;
+    }
+
+    protected String getNextGbifIdToProcess() {
+        String gbifId = gbifIdIterator.next();
+        setCurrentProcessedGbifId(gbifId);
+        resetMetadata();
+
+        return gbifId;
     }
 
     protected void resetMetadata() {

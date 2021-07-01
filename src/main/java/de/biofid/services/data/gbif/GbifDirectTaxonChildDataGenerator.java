@@ -47,8 +47,11 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
         logger.debug("Updating iterators!");
 
         if (childTaxonData.hasNext()) {
+            logger.debug("Updating from local data!");
             updateIteratorsWithLocalDataset();
         } else if (isLastPage) {
+            logger.debug("Is last page in dataset!");
+            logger.debug("Moving to next GBIF Parent ID!");
             getNextGbifIdToProcess();
             currentParentId = getCurrentProcessedGbifId();
             updateTripleIteratorWithNewData();
@@ -65,7 +68,9 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
 
     protected void updateTripleIteratorWithNewData() {
         JSONObject nextPageData = getNextPageForDataset();
-        updateChildId(nextPageData);
+        updateCurrentChildId(nextPageData);
+
+        logger.debug("Updating Triple Iterator");
         tripleIterator = convertGbifResponseToData(nextPageData).iterator();
     }
 
@@ -115,7 +120,7 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
         return callGbifForDataForId(currentParentId);
     }
 
-    private void updateChildId(JSONObject data) {
+    protected void updateCurrentChildId(JSONObject data) {
         Object firstDatasetInResponse = data.getJSONArray(RESULTS_STRING).get(0);
         setCurrentProcessedGbifId(getGbifIdFromDataset((JSONObject) firstDatasetInResponse));
     }
