@@ -5,7 +5,7 @@ import de.biofid.services.data.Triple;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static de.biofid.services.data.TripleAssertions.assertTripleHas;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPredicateMappingDataProcessor {
@@ -19,8 +19,21 @@ public class TestPredicateMappingDataProcessor {
         boolean keepTriple = processor.postProcessTriple(tripleToModify);
 
         assertTrue(keepTriple);
-        assertEquals("gbif:12345", tripleToModify.subject);
-        assertEquals("http://rs.tdwg.org/dwc/terms/kingdom", tripleToModify.predicate);
-        assertEquals("56789", tripleToModify.object);
+        assertTripleHas(tripleToModify, "gbif:12345", "http://rs.tdwg.org/dwc/terms/kingdom", "56789");
     }
+
+    @Test
+    public void testAddingAdditionalConfigurationData() {
+        DataProcessor processor = new PredicateMappingDataProcessor();
+        JSONObject configuration = new JSONObject();
+        configuration.put("gbif:kingdom", "http://rs.tdwg.org/dwc/terms/kingdom");
+        processor.setConfiguration(configuration);
+
+        Triple tripleToModify = new Triple("gbif:12345", "gbif:kingdom", "56789");
+        boolean keepTriple = processor.postProcessTriple(tripleToModify);
+
+        assertTrue(keepTriple);
+        assertTripleHas(tripleToModify, "gbif:12345", "http://rs.tdwg.org/dwc/terms/kingdom", "56789");
+    }
+
 }

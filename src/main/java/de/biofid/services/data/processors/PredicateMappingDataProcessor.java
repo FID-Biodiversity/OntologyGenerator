@@ -16,7 +16,7 @@ public class PredicateMappingDataProcessor implements DataProcessor {
     private static final String KEY_MAPPING_CONFIGURATION_FILE = "configurationFile";
     private static final String KEY_MAPPING = "mapping";
 
-    private JSONObject configuration;
+    private JSONObject configuration = new JSONObject();
 
     @Override
     public boolean postProcessTriple(Triple triple) {
@@ -32,8 +32,12 @@ public class PredicateMappingDataProcessor implements DataProcessor {
 
     @Override
     public void setConfiguration(JSONObject configuration) {
-        this.configuration = configuration;
-        readMappingConfigurationFile();
+        if (configuration.has(KEY_MAPPING_CONFIGURATION_FILE)) {
+            this.configuration = configuration;
+            readMappingConfigurationFile();
+        } else {
+            this.configuration.put(KEY_MAPPING, configuration);
+        }
     }
 
     private void readMappingConfigurationFile() {

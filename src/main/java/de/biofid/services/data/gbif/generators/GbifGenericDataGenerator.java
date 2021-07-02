@@ -27,6 +27,7 @@ public class GbifGenericDataGenerator implements DataGenerator {
     public static final String GBIF_KEY_NAMESPACE = "gbif";
 
     protected static final Logger logger = LogManager.getLogger();
+
     protected static final String SPECIES_STRING = "species";
     protected static final String RESULTS_STRING = "results";
     protected static final String IS_LAST_PAGE_STRING = "endOfRecords";
