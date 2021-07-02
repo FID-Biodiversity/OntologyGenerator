@@ -1,9 +1,12 @@
 package de.biofid.services.data;
 
-import de.biofid.services.ontologies.Ontology;
-
-import java.util.List;
+import org.json.JSONObject;
 
 public interface DataProcessor {
-    abstract public List<Triple> mapDataToTriple(Object data, Ontology ontology);
+    /**
+     * This method allows a further processing of a Triple object.
+     * When the method returns false, the Triple is removed from any further processing.
+     */
+    boolean postProcessTriple(Triple triple);
+    void setConfiguration(JSONObject configuration);
 }
