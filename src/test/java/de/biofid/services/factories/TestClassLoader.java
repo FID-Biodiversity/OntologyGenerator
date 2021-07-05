@@ -1,7 +1,8 @@
-package de.biofid.services.configuration;
+package de.biofid.services.factories;
 
 import de.biofid.services.dummy.DummyClass;
 import de.biofid.services.exceptions.ValueException;
+import de.biofid.services.factories.ClassLoader;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

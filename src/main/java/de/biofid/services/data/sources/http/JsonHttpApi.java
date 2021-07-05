@@ -1,6 +1,5 @@
 package de.biofid.services.data.sources.http;
 
-import de.biofid.services.data.sources.http.Http;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 

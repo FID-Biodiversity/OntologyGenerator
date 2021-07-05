@@ -46,7 +46,7 @@ class TestDataService {
 
         JSONObject processorConfiguration = new JSONObject();
         processorConfiguration.put("gbif:kingdom", "http://rs.tdwg.org/dwc/terms/kingdom");
-        dataProcessor.setConfiguration(processorConfiguration);
+        dataProcessor.setParameters(processorConfiguration);
     }
 
     private void addDataFromJsonFileToDataSource(String filePath) throws FileNotFoundException {

@@ -1,6 +1,5 @@
 package de.biofid.services.data;
 
-import org.apache.jena.atlas.lib.Trie;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

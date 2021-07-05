@@ -4,7 +4,7 @@ import de.biofid.services.configuration.reader.ConfigurationReader;
 import de.biofid.services.configuration.reader.JsonConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
-import de.biofid.services.factory.ConfigurationFactory;
+import de.biofid.services.factories.ConfigurationFactory;
 import de.biofid.services.serialization.FileSerializer;
 import org.junit.jupiter.api.Test;
 

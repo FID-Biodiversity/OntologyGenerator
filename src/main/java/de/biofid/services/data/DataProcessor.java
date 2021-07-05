@@ -8,5 +8,5 @@ public interface DataProcessor {
      * When the method returns false, the Triple is removed from any further processing.
      */
     boolean postProcessTriple(Triple triple);
-    void setConfiguration(JSONObject configuration);
+    void setParameters(JSONObject parameters);
 }

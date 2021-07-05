@@ -1,6 +1,5 @@
-package de.biofid.services.factory;
+package de.biofid.services.factories;
 
-import de.biofid.services.configuration.ClassLoader;
 import de.biofid.services.configuration.Configuration;
 import de.biofid.services.configuration.DataServiceConfiguration;
 import de.biofid.services.configuration.OntologyConfiguration;

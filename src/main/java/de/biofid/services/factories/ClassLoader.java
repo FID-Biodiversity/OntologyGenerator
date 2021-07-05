@@ -1,4 +1,4 @@
-package de.biofid.services.configuration;
+package de.biofid.services.factories;
 
 import de.biofid.services.exceptions.ValueException;
 import org.apache.logging.log4j.LogManager;

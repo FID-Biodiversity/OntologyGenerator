@@ -1,5 +1,7 @@
 package de.biofid.services.data;
 
+import de.biofid.services.exceptions.ValueException;
+
 import java.io.IOException;
 
 public interface DataSource {

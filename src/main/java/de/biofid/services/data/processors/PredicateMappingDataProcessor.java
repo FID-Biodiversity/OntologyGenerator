@@ -31,7 +31,7 @@ public class PredicateMappingDataProcessor implements DataProcessor {
     }
 
     @Override
-    public void setConfiguration(JSONObject configuration) {
+    public void setParameters(JSONObject configuration) {
         if (configuration.has(KEY_MAPPING_CONFIGURATION_FILE)) {
             this.configuration = configuration;
             readMappingConfigurationFile();

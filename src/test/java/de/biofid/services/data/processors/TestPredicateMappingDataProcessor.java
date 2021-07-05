@@ -13,7 +13,7 @@ public class TestPredicateMappingDataProcessor {
     public void testPostProcessing() {
         DataProcessor processor = new PredicateMappingDataProcessor();
         JSONObject configuration = new JSONObject("{\"configurationFile\": \"src/test/resources/data/processors/genericTermMappingTestConfiguration.json\"}");
-        processor.setConfiguration(configuration);
+        processor.setParameters(configuration);
 
         Triple tripleToModify = new Triple("gbif:12345", "gbif:kingdom", "56789");
         boolean keepTriple = processor.postProcessTriple(tripleToModify);
@@ -27,7 +27,7 @@ public class TestPredicateMappingDataProcessor {
         DataProcessor processor = new PredicateMappingDataProcessor();
         JSONObject configuration = new JSONObject();
         configuration.put("gbif:kingdom", "http://rs.tdwg.org/dwc/terms/kingdom");
-        processor.setConfiguration(configuration);
+        processor.setParameters(configuration);
 
         Triple tripleToModify = new Triple("gbif:12345", "gbif:kingdom", "56789");
         boolean keepTriple = processor.postProcessTriple(tripleToModify);
