@@ -1,10 +1,11 @@
 package de.biofid.services.ontologies;
 
+import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.DataService;
 import de.biofid.services.data.JsonDataReader;
 import de.biofid.services.data.Triple;
+import de.biofid.services.data.gbif.generators.GbifGenericDataGenerator;
 import de.biofid.services.data.processors.EmptyDataProcessor;
-import de.biofid.services.dummy.DummyDataGenerator;
 import de.biofid.services.dummy.DummyDataSource;
 import de.biofid.services.dummy.DummyOntology;
 import de.biofid.services.dummy.DummySerializer;
@@ -35,6 +36,15 @@ public class TestOntologyGenerator {
         assertEquals("[biofid:12345 rdfs:label Bird, biofid:56789 rdfs:label Plant]", serializedString);
     }
 
+    @Test
+    public void testGenerate() {
+        generator.generate();
+        generator.serialize();
+
+        String serializedString = serializer.getSerializedString();
+        assertTrue(serializedString.contains("gbif:1234 gbif:sourceTaxonKey 172761619"));
+    }
+
     @BeforeEach
     public void setup() throws FileNotFoundException {
         String ontologyName = "TestOntology";
@@ -49,12 +59,14 @@ public class TestOntologyGenerator {
     }
 
     private List<DataService> createDataServices() throws FileNotFoundException {
-        DummyDataSource source = new DummyDataSource();
-
         JSONObject apiResponse = JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifPasserDomesticusApiResponse.json");
+        DummyDataSource source = new DummyDataSource();
         source.addData(apiResponse.toString());
 
-        DataService dummyService = new DataService(source, new DummyDataGenerator(), new EmptyDataProcessor());
+        DataGenerator dataGenerator = new GbifGenericDataGenerator();
+        dataGenerator.setParameters(new JSONObject("{\"ids\": [1234]}"));
+
+        DataService dummyService = new DataService(source, dataGenerator, new EmptyDataProcessor());
 
         List<DataService> dataServices = new ArrayList<>();
         dataServices.add(dummyService);

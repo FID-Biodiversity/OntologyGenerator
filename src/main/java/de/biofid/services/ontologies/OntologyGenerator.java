@@ -8,10 +8,10 @@ import java.util.List;
 
 public class OntologyGenerator {
 
-    private String ontologyName;
-    private OntologyConnector ontologyConnector;
-    private List<DataService> dataServices;
-    private Serializer serializer;
+    private final String ontologyName;
+    private final OntologyConnector ontologyConnector;
+    private final List<DataService> dataServices;
+    private final Serializer serializer;
 
     public OntologyGenerator(String ontologyName, OntologyConnector ontologyConnector, List<DataService> dataServices,
                              Serializer serializer) {
@@ -19,6 +19,10 @@ public class OntologyGenerator {
         this.ontologyConnector = ontologyConnector;
         this.dataServices = dataServices;
         this.serializer = serializer;
+    }
+
+    public String getOntologyName() {
+        return ontologyName;
     }
 
     public void addTriples(List<Triple> triples) {
@@ -33,5 +37,12 @@ public class OntologyGenerator {
 
     public void serialize() {
         ontologyConnector.serializeOntology(serializer);
+    }
+
+    public void generate() {
+        for (DataService service : dataServices) {
+            List<Triple> triples = service.getTriples();
+            addTriples(triples);
+        }
     }
 }

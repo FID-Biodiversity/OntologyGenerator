@@ -7,14 +7,13 @@ import de.biofid.services.serialization.Serializer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DummyOntology implements Ontology {
 
     Iterator<String> resourceUriIterator;
-    Set<Triple> triples = new HashSet<>();
+    List<Triple> triples = new ArrayList<>();
 
     @Override
     public Iterator<Triple> iterateTriples() {
@@ -33,7 +32,9 @@ public class DummyOntology implements Ontology {
 
     @Override
     public void removeTriple(Triple triple) {
-        triples.remove(triple);
+        triples = triples.stream()
+                .filter(tripleInList -> tripleInList.equals(triple))
+                .collect(Collectors.toList());
     }
 
     @Override
