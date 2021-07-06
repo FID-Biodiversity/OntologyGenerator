@@ -52,7 +52,7 @@ public class DataService {
         return triple;
     }
 
-    private void setup() {
+    protected void setup() {
         dataGenerator.setDataSource(dataSource);
     }
 }

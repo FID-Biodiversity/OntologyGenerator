@@ -11,4 +11,9 @@ public class Triple {
         this.predicate = predicate;
         this.object = object;
     }
+
+    @Override
+    public String toString() {
+        return subject + " " + predicate + " " + object;
+    }
 }
