@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <title>BIOfid_Ontology_Harvester</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      
+        <script type="text/x-mathjax-config;executed=true">
+          MathJax.Hub.Config({"extensions":["tex2jax.js"],"jax":["input/TeX","output/HTML-CSS"],"messageStyle":"none","tex2jax":{"processEnvironments":false,"processEscapes":true,"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"TeX":{"extensions":["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]},"HTML-CSS":{"availableFonts":["TeX"],"imageFont":null},"root":"file:///home/apachzelt/.atom/packages/markdown-preview-enhanced/node_modules/@shd101wyy/mume/dependencies/mathjax"});
+        </script>
+        <script type="text/javascript" async="" src="class-diagramm-Dateien/MathJax.js" charset="UTF-8"></script>
+        
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    <style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style></head>
+    <body for="html-export"><div id="MathJax_Message" style="display: none;"></div>
+      <div class="mume markdown-preview  ">
+      <p><!--?xml version="1.0" encoding="UTF-8" standalone="no"?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" contentscripttype="application/ecmascript" contentstyletype="text/css" height="1260px" preserveAspectRatio="none" style="width:2750px;height:1260px;" version="1.1" viewBox="0 0 2750 1260" width="2750px" zoomAndPan="magnify"><defs><filter height="300%" id="fsgbrygbx6avg" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"></feGaussianBlur><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"></feColorMatrix><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"></feOffset><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"></feBlend></filter></defs><g><!--MD5=[52290f98438d7423c7ea7825dc97ebac]
+class BIOfidOntologyGenerator--><rect codeline="3" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="73.6094" id="BIOfidOntologyGenerator" style="stroke:#A80036;stroke-width:1.5;" width="186" x="1710.5" y="7"></rect><ellipse cx="1725.5" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1728.4688,28.6406 Q1727.8906,28.9375 1727.25,29.0781 Q1726.6094,29.2344 1725.9063,29.2344 Q1723.4063,29.2344 1722.0781,27.5938 Q1720.7656,25.9375 1720.7656,22.8125 Q1720.7656,19.6875 1722.0781,18.0313 Q1723.4063,16.375 1725.9063,16.375 Q1726.6094,16.375 1727.25,16.5313 Q1727.9063,16.6875 1728.4688,16.9844 L1728.4688,19.7031 Q1727.8438,19.125 1727.25,18.8594 Q1726.6563,18.5781 1726.0313,18.5781 Q1724.6875,18.5781 1724,19.6563 Q1723.3125,20.7188 1723.3125,22.8125 Q1723.3125,24.9063 1724,25.9844 Q1724.6875,27.0469 1726.0313,27.0469 Q1726.6563,27.0469 1727.25,26.7813 Q1727.8438,26.5 1728.4688,25.9219 L1728.4688,28.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="154" x="1739.5" y="27.1543">BIOfidOntologyGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1711.5" x2="1895.5" y1="39" y2="39"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1718.5" y="47"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="144" x="1730.5" y="53.2104">Configurator configurator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1711.5" x2="1895.5" y1="59.8047" y2="59.8047"></line><ellipse cx="1721.5" cy="70.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="54" x="1730.5" y="74.0151">void run()</text><!--MD5=[fd398a8eb78b104886ed2daefd061d4c]
+class Harvester--><rect codeline="8" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="99.2188" id="Harvester" style="stroke:#A80036;stroke-width:1.5;" width="408" x="1056.5" y="147.5"></rect><ellipse cx="1225.75" cy="163.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1228.7188,169.1406 Q1228.1406,169.4375 1227.5,169.5781 Q1226.8594,169.7344 1226.1563,169.7344 Q1223.6563,169.7344 1222.3281,168.0938 Q1221.0156,166.4375 1221.0156,163.3125 Q1221.0156,160.1875 1222.3281,158.5313 Q1223.6563,156.875 1226.1563,156.875 Q1226.8594,156.875 1227.5,157.0313 Q1228.1563,157.1875 1228.7188,157.4844 L1228.7188,160.2031 Q1228.0938,159.625 1227.5,159.3594 Q1226.9063,159.0781 1226.2813,159.0781 Q1224.9375,159.0781 1224.25,160.1563 Q1223.5625,161.2188 1223.5625,163.3125 Q1223.5625,165.4063 1224.25,166.4844 Q1224.9375,167.5469 1226.2813,167.5469 Q1226.9063,167.5469 1227.5,167.2813 Q1228.0938,167 1228.7188,166.4219 L1228.7188,169.1406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="61" x="1246.25" y="167.6543">Harvester</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1057.5" x2="1463.5" y1="179.5" y2="179.5"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1057.5" x2="1463.5" y1="187.5" y2="187.5"></line><ellipse cx="1067.5" cy="198.5" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="299" x="1076.5" y="201.7104">void processOntology(OntologyGenerator generator)</text><ellipse cx="1067.5" cy="211.3047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="304" x="1076.5" y="214.5151">void generateOntology(OntologyGenerator generator)</text><ellipse cx="1067.5" cy="224.1094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="300" x="1076.5" y="227.3198">void serializeOntology(OntologyGenerator generator)</text><ellipse cx="1067.5" cy="236.9141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="382" x="1076.5" y="240.1245">void addLastHarvestDateToOntology(OntologyGenerator generator)</text><!--MD5=[5daa644343afe4eb42647b6366ea4ca8]
+class ServiceFactory--><rect codeline="15" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="112.0234" id="ServiceFactory" style="stroke:#A80036;stroke-width:1.5;" width="607" x="1500" y="141"></rect><ellipse cx="1753.75" cy="157" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1756.7188,162.6406 Q1756.1406,162.9375 1755.5,163.0781 Q1754.8594,163.2344 1754.1563,163.2344 Q1751.6563,163.2344 1750.3281,161.5938 Q1749.0156,159.9375 1749.0156,156.8125 Q1749.0156,153.6875 1750.3281,152.0313 Q1751.6563,150.375 1754.1563,150.375 Q1754.8594,150.375 1755.5,150.5313 Q1756.1563,150.6875 1756.7188,150.9844 L1756.7188,153.7031 Q1756.0938,153.125 1755.5,152.8594 Q1754.9063,152.5781 1754.2813,152.5781 Q1752.9375,152.5781 1752.25,153.6563 Q1751.5625,154.7188 1751.5625,156.8125 Q1751.5625,158.9063 1752.25,159.9844 Q1752.9375,161.0469 1754.2813,161.0469 Q1754.9063,161.0469 1755.5,160.7813 Q1756.0938,160.5 1756.7188,159.9219 L1756.7188,162.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="91" x="1774.25" y="161.1543">ServiceFactory</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1501" x2="2106" y1="173" y2="173"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1501" x2="2106" y1="181" y2="181"></line><ellipse cx="1511" cy="192" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="468" x="1520" y="195.2104">OntologyGenerator createOntologyGenerator(OntologyConfiguration configuration)</text><ellipse cx="1511" cy="204.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="406" x="1520" y="208.0151">DataService createDataService(DataServiceConfiguration configuration)</text><ellipse cx="1511" cy="217.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="402" x="1520" y="220.8198">DataSource createDataSource(DataServiceConfiguration configuration)</text><ellipse cx="1511" cy="230.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="581" x="1520" y="233.6245">DataGenerator createDataGenerator(DataServiceConfiguration configuration, DataSource dataSource)</text><ellipse cx="1511" cy="243.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="438" x="1520" y="246.4292">DataProcessor createDataProcessor(DataServiceConfiguration configuration)</text><!--MD5=[b44caec65c823502925735edd7f43d6b]
+class DataService--><rect codeline="23" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="99.2188" id="DataService" style="stroke:#A80036;stroke-width:1.5;" width="197" x="1162" y="549"></rect><ellipse cx="1218.75" cy="565" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1221.7188,570.6406 Q1221.1406,570.9375 1220.5,571.0781 Q1219.8594,571.2344 1219.1563,571.2344 Q1216.6563,571.2344 1215.3281,569.5938 Q1214.0156,567.9375 1214.0156,564.8125 Q1214.0156,561.6875 1215.3281,560.0313 Q1216.6563,558.375 1219.1563,558.375 Q1219.8594,558.375 1220.5,558.5313 Q1221.1563,558.6875 1221.7188,558.9844 L1221.7188,561.7031 Q1221.0938,561.125 1220.5,560.8594 Q1219.9063,560.5781 1219.2813,560.5781 Q1217.9375,560.5781 1217.25,561.6563 Q1216.5625,562.7188 1216.5625,564.8125 Q1216.5625,566.9063 1217.25,567.9844 Q1217.9375,569.0469 1219.2813,569.0469 Q1219.9063,569.0469 1220.5,568.7813 Q1221.0938,568.5 1221.7188,567.9219 L1221.7188,570.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="75" x="1239.25" y="569.1543">DataService</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1163" x2="1358" y1="581" y2="581"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1170" y="589"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="171" x="1182" y="595.2104">DataGenerator dataGenerator</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1170" y="601.8047"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="146" x="1182" y="608.0151">DataProcessor processor</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1170" y="614.6094"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="102" x="1182" y="620.8198">Ontology ontology</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1163" x2="1358" y1="627.4141" y2="627.4141"></line><ellipse cx="1173" cy="638.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="149" x="1182" y="641.6245">Iterable&lt;Triple&gt; getData()</text><!--MD5=[3d53207825000ccbff290331ccefca55]
+class DataGenerator--><rect codeline="30" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="86.4141" id="DataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="274" x="1566.5" y="893"></rect><ellipse cx="1652.25" cy="909" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1648.1719,904.7656 L1648.1719,902.6094 L1655.5625,902.6094 L1655.5625,904.7656 L1653.0938,904.7656 L1653.0938,912.8438 L1655.5625,912.8438 L1655.5625,915 L1648.1719,915 L1648.1719,912.8438 L1650.6406,912.8438 L1650.6406,904.7656 L1648.1719,904.7656 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="94" x="1672.75" y="913.1543">DataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1567.5" x2="1839.5" y1="925" y2="925"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1567.5" x2="1839.5" y1="933" y2="933"></line><ellipse cx="1577.5" cy="944" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="68" x="1586.5" y="947.2104">Triple next()</text><ellipse cx="1577.5" cy="956.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="228" x="1586.5" y="960.0151">void setDataSource(DataSource source)</text><ellipse cx="1577.5" cy="969.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="248" x="1586.5" y="972.8198">default void setOntology(Ontology ontology)</text><!--MD5=[34b9b350cf4b46ee571396a4d0e8cbb1]
+class DataProcessor--><rect codeline="36" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="60.8047" id="DataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="244" x="828.5" y="905.5"></rect><ellipse cx="901.25" cy="921.5" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M897.1719,917.2656 L897.1719,915.1094 L904.5625,915.1094 L904.5625,917.2656 L902.0938,917.2656 L902.0938,925.3438 L904.5625,925.3438 L904.5625,927.5 L897.1719,927.5 L897.1719,925.3438 L899.6406,925.3438 L899.6406,917.2656 L897.1719,917.2656 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="90" x="921.75" y="925.6543">DataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="829.5" x2="1071.5" y1="937.5" y2="937.5"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="829.5" x2="1071.5" y1="945.5" y2="945.5"></line><ellipse cx="839.5" cy="956.5" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="218" x="848.5" y="959.7104">List&lt;Triple&gt; postProcess(Triple triple)</text><!--MD5=[81c1678f3b146417d42d9549aee5a5c0]
+class DataSource--><rect codeline="40" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="73.6094" id="DataSource" style="stroke:#A80036;stroke-width:1.5;" width="255" x="2420" y="1039"></rect><ellipse cx="2506.25" cy="1055" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2502.1719,1050.7656 L2502.1719,1048.6094 L2509.5625,1048.6094 L2509.5625,1050.7656 L2507.0938,1050.7656 L2507.0938,1058.8438 L2509.5625,1058.8438 L2509.5625,1061 L2502.1719,1061 L2502.1719,1058.8438 L2504.6406,1058.8438 L2504.6406,1050.7656 L2502.1719,1050.7656 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="74" x="2526.75" y="1059.1543">DataSource</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2421" x2="2674" y1="1071" y2="1071"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="2421" x2="2674" y1="1079" y2="1079"></line><ellipse cx="2431" cy="1090" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="157" x="2440" y="1093.2104">Object getTypeofElements()</text><ellipse cx="2431" cy="1102.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="229" x="2440" y="1106.0151">Object callDataForString(String dataCall)</text><!--MD5=[b55f272373c4360c08e891acb73e59bc]
+class DataServiceConfiguration--><rect codeline="46" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="86.4141" id="DataServiceConfiguration" style="stroke:#A80036;stroke-width:1.5;" width="191" x="2344" y="358"></rect><ellipse cx="2359" cy="374" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2361.9688,379.6406 Q2361.3906,379.9375 2360.75,380.0781 Q2360.1094,380.2344 2359.4063,380.2344 Q2356.9063,380.2344 2355.5781,378.5938 Q2354.2656,376.9375 2354.2656,373.8125 Q2354.2656,370.6875 2355.5781,369.0313 Q2356.9063,367.375 2359.4063,367.375 Q2360.1094,367.375 2360.75,367.5313 Q2361.4063,367.6875 2361.9688,367.9844 L2361.9688,370.7031 Q2361.3438,370.125 2360.75,369.8594 Q2360.1563,369.5781 2359.5313,369.5781 Q2358.1875,369.5781 2357.5,370.6563 Q2356.8125,371.7188 2356.8125,373.8125 Q2356.8125,375.9063 2357.5,376.9844 Q2358.1875,378.0469 2359.5313,378.0469 Q2360.1563,378.0469 2360.75,377.7813 Q2361.3438,377.5 2361.9688,376.9219 L2361.9688,379.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="159" x="2373" y="378.1543">DataServiceConfiguration</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2345" x2="2534" y1="390" y2="390"></line><ellipse cx="2355" cy="401" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="2364" y="404.2104">String dataGeneratorClass</text><ellipse cx="2355" cy="413.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="2364" y="417.0151">String dataProcessorClass</text><ellipse cx="2355" cy="426.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="136" x="2364" y="429.8198">String DataSourceClass</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2345" x2="2534" y1="436.4141" y2="436.4141"></line><!--MD5=[59787d993ff88a9bbccd41d379120b6d]
+class OntologyGenerator--><rect codeline="52" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="176.0469" id="OntologyGenerator" style="stroke:#A80036;stroke-width:1.5;" width="254" x="1133.5" y="313"></rect><ellipse cx="1196.75" cy="329" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1199.7188,334.6406 Q1199.1406,334.9375 1198.5,335.0781 Q1197.8594,335.2344 1197.1563,335.2344 Q1194.6563,335.2344 1193.3281,333.5938 Q1192.0156,331.9375 1192.0156,328.8125 Q1192.0156,325.6875 1193.3281,324.0313 Q1194.6563,322.375 1197.1563,322.375 Q1197.8594,322.375 1198.5,322.5313 Q1199.1563,322.6875 1199.7188,322.9844 L1199.7188,325.7031 Q1199.0938,325.125 1198.5,324.8594 Q1197.9063,324.5781 1197.2813,324.5781 Q1195.9375,324.5781 1195.25,325.6563 Q1194.5625,326.7188 1194.5625,328.8125 Q1194.5625,330.9063 1195.25,331.9844 Q1195.9375,333.0469 1197.2813,333.0469 Q1197.9063,333.0469 1198.5,332.7813 Q1199.0938,332.5 1199.7188,331.9219 L1199.7188,334.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="119" x="1217.25" y="333.1543">OntologyGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1134.5" x2="1386.5" y1="345" y2="345"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1141.5" y="353"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="119" x="1153.5" y="359.2104">String ontologyName</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1141.5" y="365.8047"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="184" x="1153.5" y="372.0151">List&lt;DataService&gt; dataServices</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1141.5" y="378.6094"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="218" x="1153.5" y="384.8198">OntologyConnector ontologyConnector</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1141.5" y="391.4141"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="109" x="1153.5" y="397.6245">Serializer serializer</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1134.5" x2="1386.5" y1="404.2188" y2="404.2188"></line><ellipse cx="1144.5" cy="415.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="86" x="1153.5" y="418.4292">void generate()</text><ellipse cx="1144.5" cy="428.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="1153.5" y="431.2339">void serialize()</text><ellipse cx="1144.5" cy="440.8281" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="147" x="1153.5" y="444.0386">String getOntologyName()</text><ellipse cx="1144.5" cy="453.6328" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="228" x="1153.5" y="456.8433">void addTriples(Iterable&lt;Triple&gt; triples)</text><ellipse cx="1144.5" cy="466.4375" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="1153.5" y="469.6479">void addTriple(Triple triple)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1141.5" y="476.2422"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="147" x="1153.5" y="482.4526">void iterateDataServices()</text><!--MD5=[fe578ab576ee31f2203f9b1f10f99473]
+class OntologyConfiguration--><rect codeline="65" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="86.4141" id="OntologyConfiguration" style="stroke:#A80036;stroke-width:1.5;" width="362" x="1946.5" y="358"></rect><ellipse cx="2053.75" cy="374" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2056.7188,379.6406 Q2056.1406,379.9375 2055.5,380.0781 Q2054.8594,380.2344 2054.1563,380.2344 Q2051.6563,380.2344 2050.3281,378.5938 Q2049.0156,376.9375 2049.0156,373.8125 Q2049.0156,370.6875 2050.3281,369.0313 Q2051.6563,367.375 2054.1563,367.375 Q2054.8594,367.375 2055.5,367.5313 Q2056.1563,367.6875 2056.7188,367.9844 L2056.7188,370.7031 Q2056.0938,370.125 2055.5,369.8594 Q2054.9063,369.5781 2054.2813,369.5781 Q2052.9375,369.5781 2052.25,370.6563 Q2051.5625,371.7188 2051.5625,373.8125 Q2051.5625,375.9063 2052.25,376.9844 Q2052.9375,378.0469 2054.2813,378.0469 Q2054.9063,378.0469 2055.5,377.7813 Q2056.0938,377.5 2056.7188,376.9219 L2056.7188,379.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="139" x="2074.25" y="378.1543">OntologyConfiguration</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1947.5" x2="2307.5" y1="390" y2="390"></line><ellipse cx="1957.5" cy="401" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="119" x="1966.5" y="404.2104">String ontologyName</text><ellipse cx="1957.5" cy="413.8047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="109" x="1966.5" y="417.0151">Serializer serializer</text><ellipse cx="1957.5" cy="426.6094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="336" x="1966.5" y="429.8198">List&lt;DataServiceConfiguration&gt; dataServiceConfigurations</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1947.5" x2="2307.5" y1="436.4141" y2="436.4141"></line><!--MD5=[f477dc2fb9a32485cc77efd0e7d2b321]
+class OntologyConnector--><rect codeline="71" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="99.2188" id="OntologyConnector" style="stroke:#A80036;stroke-width:1.5;" width="267" x="593" y="549"></rect><ellipse cx="662.25" cy="565" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M665.2188,570.6406 Q664.6406,570.9375 664,571.0781 Q663.3594,571.2344 662.6563,571.2344 Q660.1563,571.2344 658.8281,569.5938 Q657.5156,567.9375 657.5156,564.8125 Q657.5156,561.6875 658.8281,560.0313 Q660.1563,558.375 662.6563,558.375 Q663.3594,558.375 664,558.5313 Q664.6563,558.6875 665.2188,558.9844 L665.2188,561.7031 Q664.5938,561.125 664,560.8594 Q663.4063,560.5781 662.7813,560.5781 Q661.4375,560.5781 660.75,561.6563 Q660.0625,562.7188 660.0625,564.8125 Q660.0625,566.9063 660.75,567.9844 Q661.4375,569.0469 662.7813,569.0469 Q663.4063,569.0469 664,568.7813 Q664.5938,568.5 665.2188,567.9219 L665.2188,570.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="120" x="682.75" y="569.1543">OntologyConnector</text><line style="stroke:#A80036;stroke-width:1.5;" x1="594" x2="859" y1="581" y2="581"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="601" y="589"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="102" x="613" y="595.2104">Ontology ontology</text><line style="stroke:#A80036;stroke-width:1.5;" x1="594" x2="859" y1="601.8047" y2="601.8047"></line><ellipse cx="604" cy="612.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="217" x="613" y="616.0151">void addTripleToOntology(Triple triple)</text><ellipse cx="604" cy="625.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="241" x="613" y="628.8198">void serializeOntology(Serializer serializer)</text><ellipse cx="604" cy="638.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="130" x="613" y="641.6245">Ontology getOntology()</text><!--MD5=[5dfd8d6a6d713da886d1ef2bfe78f203]
+class Ontology--><rect codeline="78" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="124.8281" id="Ontology" style="stroke:#A80036;stroke-width:1.5;" width="245" x="297" y="708"></rect><ellipse cx="387.75" cy="724" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M383.6719,719.7656 L383.6719,717.6094 L391.0625,717.6094 L391.0625,719.7656 L388.5938,719.7656 L388.5938,727.8438 L391.0625,727.8438 L391.0625,730 L383.6719,730 L383.6719,727.8438 L386.1406,727.8438 L386.1406,719.7656 L383.6719,719.7656 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="55" x="408.25" y="728.1543">Ontology</text><line style="stroke:#A80036;stroke-width:1.5;" x1="298" x2="541" y1="740" y2="740"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="298" x2="541" y1="748" y2="748"></line><ellipse cx="308" cy="759" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="180" x="317" y="762.2104">Iterator&lt;Triple&gt; iterateTriples()</text><ellipse cx="308" cy="771.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="219" x="317" y="775.0151">Iterator&lt;String&gt; iterateResourceUris()</text><ellipse cx="308" cy="784.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="317" y="787.8198">void addTriple(Triple triple)</text><ellipse cx="308" cy="797.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="175" x="317" y="800.6245">void removeTriple(Triple triple)</text><ellipse cx="308" cy="810.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="191" x="317" y="813.4292">void serialize(Serializer serializer)</text><ellipse cx="308" cy="823.0234" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="198" x="317" y="826.2339">void inference(Reasoner reasoner)</text><!--MD5=[eeeafa8a5fb54be515eb4694ab8a2667]
+class JenaOntology--><rect codeline="87" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="86.4141" id="JenaOntology" style="stroke:#A80036;stroke-width:1.5;" width="318" x="228.5" y="893"></rect><ellipse cx="342.25" cy="909" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M345.2188,914.6406 Q344.6406,914.9375 344,915.0781 Q343.3594,915.2344 342.6563,915.2344 Q340.1563,915.2344 338.8281,913.5938 Q337.5156,911.9375 337.5156,908.8125 Q337.5156,905.6875 338.8281,904.0313 Q340.1563,902.375 342.6563,902.375 Q343.3594,902.375 344,902.5313 Q344.6563,902.6875 345.2188,902.9844 L345.2188,905.7031 Q344.5938,905.125 344,904.8594 Q343.4063,904.5781 342.7813,904.5781 Q341.4375,904.5781 340.75,905.6563 Q340.0625,906.7188 340.0625,908.8125 Q340.0625,910.9063 340.75,911.9844 Q341.4375,913.0469 342.7813,913.0469 Q343.4063,913.0469 344,912.7813 Q344.5938,912.5 345.2188,911.9219 L345.2188,914.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="82" x="362.75" y="913.1543">JenaOntology</text><line style="stroke:#A80036;stroke-width:1.5;" x1="229.5" x2="545.5" y1="925" y2="925"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="236.5" y="933"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="92" x="248.5" y="939.2104">OntModel model</text><line style="stroke:#A80036;stroke-width:1.5;" x1="229.5" x2="545.5" y1="945.8047" y2="945.8047"></line><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="236.5" y="953.8047"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="292" x="248.5" y="960.0151">Statement createStatementFromTriple(Triple triple)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="236.5" y="966.6094"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="283" x="248.5" y="972.8198">void addStatementToModel(Statement statement)</text><!--MD5=[83cb7b9a61729069b453c40304caf896]
+class Triple--><rect codeline="93" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="86.4141" id="Triple" style="stroke:#A80036;stroke-width:1.5;" width="119" x="1060" y="727.5"></rect><ellipse cx="1098.85" cy="743.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1101.8188,749.1406 Q1101.2406,749.4375 1100.6,749.5781 Q1099.9594,749.7344 1099.2563,749.7344 Q1096.7563,749.7344 1095.4281,748.0938 Q1094.1156,746.4375 1094.1156,743.3125 Q1094.1156,740.1875 1095.4281,738.5313 Q1096.7563,736.875 1099.2563,736.875 Q1099.9594,736.875 1100.6,737.0313 Q1101.2563,737.1875 1101.8188,737.4844 L1101.8188,740.2031 Q1101.1938,739.625 1100.6,739.3594 Q1100.0063,739.0781 1099.3813,739.0781 Q1098.0375,739.0781 1097.35,740.1563 Q1096.6625,741.2188 1096.6625,743.3125 Q1096.6625,745.4063 1097.35,746.4844 Q1098.0375,747.5469 1099.3813,747.5469 Q1100.0063,747.5469 1100.6,747.2813 Q1101.1938,747 1101.8188,746.4219 L1101.8188,749.1406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="34" x="1118.15" y="747.6543">Triple</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1061" x2="1178" y1="759.5" y2="759.5"></line><ellipse cx="1071" cy="770.5" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="81" x="1080" y="773.7104">Object subject</text><ellipse cx="1071" cy="783.3047" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="93" x="1080" y="786.5151">Object predicate</text><ellipse cx="1071" cy="796.1094" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="1080" y="799.3198">Object object</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1061" x2="1178" y1="805.9141" y2="805.9141"></line><!--MD5=[8fb2198dc390c4eafe4a3760c0457e6d]
+class Configurator--><rect codeline="99" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="112.0234" id="Configurator" style="stroke:#A80036;stroke-width:1.5;" width="594" x="2142.5" y="141"></rect><ellipse cx="2396.25" cy="157" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2399.2188,162.6406 Q2398.6406,162.9375 2398,163.0781 Q2397.3594,163.2344 2396.6563,163.2344 Q2394.1563,163.2344 2392.8281,161.5938 Q2391.5156,159.9375 2391.5156,156.8125 Q2391.5156,153.6875 2392.8281,152.0313 Q2394.1563,150.375 2396.6563,150.375 Q2397.3594,150.375 2398,150.5313 Q2398.6563,150.6875 2399.2188,150.9844 L2399.2188,153.7031 Q2398.5938,153.125 2398,152.8594 Q2397.4063,152.5781 2396.7813,152.5781 Q2395.4375,152.5781 2394.75,153.6563 Q2394.0625,154.7188 2394.0625,156.8125 Q2394.0625,158.9063 2394.75,159.9844 Q2395.4375,161.0469 2396.7813,161.0469 Q2397.4063,161.0469 2398,160.7813 Q2398.5938,160.5 2399.2188,159.9219 L2399.2188,162.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78" x="2416.75" y="161.1543">Configurator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2143.5" x2="2735.5" y1="173" y2="173"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="2150.5" y="181"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="197" x="2162.5" y="187.2104">Map&lt;String, Object&gt; configuration</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2143.5" x2="2735.5" y1="193.8047" y2="193.8047"></line><ellipse cx="2153.5" cy="204.8047" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="206" x="2162.5" y="208.0151">Map&lt;String, Object&gt; get(String key)</text><ellipse cx="2153.5" cy="217.6094" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="139" x="2162.5" y="220.8198">void load(String filePath)</text><ellipse cx="2153.5" cy="230.4141" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="361" x="2162.5" y="233.6245">Iterator&lt;OntolgoyConfiguration&gt; iterateOntoloyConfigurations()</text><ellipse cx="2153.5" cy="243.2188" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="568" x="2162.5" y="246.4292">List&lt;DataServiceConfiguration&gt; createDataServiceConfigurationsForOntology(String ontologyName)</text><!--MD5=[0e2e915064bf2e2ee735763ff21e6466]
+class Serializer--><rect codeline="107" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="60.8047" id="Serializer" style="stroke:#A80036;stroke-width:1.5;" width="179" x="603" y="740"></rect><ellipse cx="659.75" cy="756" fill="#A9DCDF" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M659.8594,751.3438 L658.7031,756.4219 L661.0313,756.4219 L659.8594,751.3438 Z M658.375,749.1094 L661.3594,749.1094 L664.7188,761.5 L662.2656,761.5 L661.5,758.4375 L658.2188,758.4375 L657.4688,761.5 L655.0313,761.5 L658.375,749.1094 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="680.25" y="760.1543">Serializer</text><line style="stroke:#A80036;stroke-width:1.5;" x1="604" x2="781" y1="772" y2="772"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="604" x2="781" y1="780" y2="780"></line><ellipse cx="614" cy="791" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153" x="623" y="794.2104">void serialize(Stream data)</text><!--MD5=[683f3398a9cf9eee4325d16f79c7c87c]
+class FileSerializer--><rect codeline="111" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="73.6094" id="FileSerializer" style="stroke:#A80036;stroke-width:1.5;" width="212" x="581.5" y="899"></rect><ellipse cx="644.75" cy="915" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M647.7188,920.6406 Q647.1406,920.9375 646.5,921.0781 Q645.8594,921.2344 645.1563,921.2344 Q642.6563,921.2344 641.3281,919.5938 Q640.0156,917.9375 640.0156,914.8125 Q640.0156,911.6875 641.3281,910.0313 Q642.6563,908.375 645.1563,908.375 Q645.8594,908.375 646.5,908.5313 Q647.1563,908.6875 647.7188,908.9844 L647.7188,911.7031 Q647.0938,911.125 646.5,910.8594 Q645.9063,910.5781 645.2813,910.5781 Q643.9375,910.5781 643.25,911.6563 Q642.5625,912.7188 642.5625,914.8125 Q642.5625,916.9063 643.25,917.9844 Q643.9375,919.0469 645.2813,919.0469 Q645.9063,919.0469 646.5,918.7813 Q647.0938,918.5 647.7188,917.9219 L647.7188,920.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="77" x="665.25" y="919.1543">FileSerializer</text><line style="stroke:#A80036;stroke-width:1.5;" x1="582.5" x2="792.5" y1="931" y2="931"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="589.5" y="939"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="90" x="601.5" y="945.2104">Path outputPath</text><line style="stroke:#A80036;stroke-width:1.5;" x1="582.5" x2="792.5" y1="951.8047" y2="951.8047"></line><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="589.5" y="959.8047"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="186" x="601.5" y="966.0151">void serializeToFile(Stream data)</text><!--MD5=[21c060284ce6dd919486f5f9b50e30e7]
+class FileDataSource--><rect codeline="116" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="73.6094" id="FileDataSource" style="stroke:#A80036;stroke-width:1.5;" width="217" x="2258" y="1173"></rect><ellipse cx="2314.75" cy="1189" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2317.7188,1194.6406 Q2317.1406,1194.9375 2316.5,1195.0781 Q2315.8594,1195.2344 2315.1563,1195.2344 Q2312.6563,1195.2344 2311.3281,1193.5938 Q2310.0156,1191.9375 2310.0156,1188.8125 Q2310.0156,1185.6875 2311.3281,1184.0313 Q2312.6563,1182.375 2315.1563,1182.375 Q2315.8594,1182.375 2316.5,1182.5313 Q2317.1563,1182.6875 2317.7188,1182.9844 L2317.7188,1185.7031 Q2317.0938,1185.125 2316.5,1184.8594 Q2315.9063,1184.5781 2315.2813,1184.5781 Q2313.9375,1184.5781 2313.25,1185.6563 Q2312.5625,1186.7188 2312.5625,1188.8125 Q2312.5625,1190.9063 2313.25,1191.9844 Q2313.9375,1193.0469 2315.2813,1193.0469 Q2315.9063,1193.0469 2316.5,1192.7813 Q2317.0938,1192.5 2317.7188,1191.9219 L2317.7188,1194.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="95" x="2335.25" y="1193.1543">FileDataSource</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2259" x2="2474" y1="1205" y2="1205"></line><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="2266" y="1213"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="2278" y="1219.2104">Path inputPath</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2259" x2="2474" y1="1225.8047" y2="1225.8047"></line><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="2266" y="1233.8047"></rect><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="191" x="2278" y="1240.0151">InputStream deserializeFromFile()</text><!--MD5=[457fc77c29ded6f1a92def7082a6026e]
+class BIOfidUriGenerator--><rect codeline="121" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="BIOfidUriGenerator" style="stroke:#A80036;stroke-width:1.5;" width="148" x="1931.5" y="20"></rect><ellipse cx="1946.5" cy="36" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1949.4688,41.6406 Q1948.8906,41.9375 1948.25,42.0781 Q1947.6094,42.2344 1946.9063,42.2344 Q1944.4063,42.2344 1943.0781,40.5938 Q1941.7656,38.9375 1941.7656,35.8125 Q1941.7656,32.6875 1943.0781,31.0313 Q1944.4063,29.375 1946.9063,29.375 Q1947.6094,29.375 1948.25,29.5313 Q1948.9063,29.6875 1949.4688,29.9844 L1949.4688,32.7031 Q1948.8438,32.125 1948.25,31.8594 Q1947.6563,31.5781 1947.0313,31.5781 Q1945.6875,31.5781 1945,32.6563 Q1944.3125,33.7188 1944.3125,35.8125 Q1944.3125,37.9063 1945,38.9844 Q1945.6875,40.0469 1947.0313,40.0469 Q1947.6563,40.0469 1948.25,39.7813 Q1948.8438,39.5 1949.4688,38.9219 L1949.4688,41.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="116" x="1960.5" y="40.1543">BIOfidUriGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1932.5" x2="2078.5" y1="52" y2="52"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1932.5" x2="2078.5" y1="60" y2="60"></line><!--MD5=[e909ebc0e6cba60105c7e673f7e4b657]
+class Http--><rect codeline="123" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="73.6094" id="Http" style="stroke:#A80036;stroke-width:1.5;" width="197" x="2115" y="7"></rect><ellipse cx="2195.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2198.7188,28.6406 Q2198.1406,28.9375 2197.5,29.0781 Q2196.8594,29.2344 2196.1563,29.2344 Q2193.6563,29.2344 2192.3281,27.5938 Q2191.0156,25.9375 2191.0156,22.8125 Q2191.0156,19.6875 2192.3281,18.0313 Q2193.6563,16.375 2196.1563,16.375 Q2196.8594,16.375 2197.5,16.5313 Q2198.1563,16.6875 2198.7188,16.9844 L2198.7188,19.7031 Q2198.0938,19.125 2197.5,18.8594 Q2196.9063,18.5781 2196.2813,18.5781 Q2194.9375,18.5781 2194.25,19.6563 Q2193.5625,20.7188 2193.5625,22.8125 Q2193.5625,24.9063 2194.25,25.9844 Q2194.9375,27.0469 2196.2813,27.0469 Q2196.9063,27.0469 2197.5,26.7813 Q2198.0938,26.5 2198.7188,25.9219 L2198.7188,28.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="27" x="2216.25" y="27.1543">Http</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2116" x2="2311" y1="39" y2="39"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="2116" x2="2311" y1="47" y2="47"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="185" x="2121" y="61.2104">JsonObject callJsonApi(String url)</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="182" x="2121" y="74.0151">JsonObject callXmlApi(String uri)</text><!--MD5=[08367035456cb42465bb9c39276d9d66]
+class EolOccurenceDataGenerator--><rect codeline="128" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="EolOccurenceDataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="212" x="1957.5" y="1052"></rect><ellipse cx="1972.5" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1975.4688,1073.6406 Q1974.8906,1073.9375 1974.25,1074.0781 Q1973.6094,1074.2344 1972.9063,1074.2344 Q1970.4063,1074.2344 1969.0781,1072.5938 Q1967.7656,1070.9375 1967.7656,1067.8125 Q1967.7656,1064.6875 1969.0781,1063.0313 Q1970.4063,1061.375 1972.9063,1061.375 Q1973.6094,1061.375 1974.25,1061.5313 Q1974.9063,1061.6875 1975.4688,1061.9844 L1975.4688,1064.7031 Q1974.8438,1064.125 1974.25,1063.8594 Q1973.6563,1063.5781 1973.0313,1063.5781 Q1971.6875,1063.5781 1971,1064.6563 Q1970.3125,1065.7188 1970.3125,1067.8125 Q1970.3125,1069.9063 1971,1070.9844 Q1971.6875,1072.0469 1973.0313,1072.0469 Q1973.6563,1072.0469 1974.25,1071.7813 Q1974.8438,1071.5 1975.4688,1070.9219 L1975.4688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="180" x="1986.5" y="1072.1543">EolOccurenceDataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1958.5" x2="2168.5" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1958.5" x2="2168.5" y1="1092" y2="1092"></line><!--MD5=[53b27b31b6f25cac0d4fc1b4b024665e]
+class EolOccurenceDataProcessor--><rect codeline="129" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="EolOccurenceDataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="211" x="960" y="1052"></rect><ellipse cx="975" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M977.9688,1073.6406 Q977.3906,1073.9375 976.75,1074.0781 Q976.1094,1074.2344 975.4063,1074.2344 Q972.9063,1074.2344 971.5781,1072.5938 Q970.2656,1070.9375 970.2656,1067.8125 Q970.2656,1064.6875 971.5781,1063.0313 Q972.9063,1061.375 975.4063,1061.375 Q976.1094,1061.375 976.75,1061.5313 Q977.4063,1061.6875 977.9688,1061.9844 L977.9688,1064.7031 Q977.3438,1064.125 976.75,1063.8594 Q976.1563,1063.5781 975.5313,1063.5781 Q974.1875,1063.5781 973.5,1064.6563 Q972.8125,1065.7188 972.8125,1067.8125 Q972.8125,1069.9063 973.5,1070.9844 Q974.1875,1072.0469 975.5313,1072.0469 Q976.1563,1072.0469 976.75,1071.7813 Q977.3438,1071.5 977.9688,1070.9219 L977.9688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="179" x="989" y="1072.1543">EolOccurenceDataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="961" x2="1170" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="961" x2="1170" y1="1092" y2="1092"></line><!--MD5=[dd6c63944090a3d43487f92a2fc21670]
+class EolTraitsDataGenerator--><rect codeline="131" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="EolTraitsDataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="180" x="2204.5" y="1052"></rect><ellipse cx="2219.5" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2222.4688,1073.6406 Q2221.8906,1073.9375 2221.25,1074.0781 Q2220.6094,1074.2344 2219.9063,1074.2344 Q2217.4063,1074.2344 2216.0781,1072.5938 Q2214.7656,1070.9375 2214.7656,1067.8125 Q2214.7656,1064.6875 2216.0781,1063.0313 Q2217.4063,1061.375 2219.9063,1061.375 Q2220.6094,1061.375 2221.25,1061.5313 Q2221.9063,1061.6875 2222.4688,1061.9844 L2222.4688,1064.7031 Q2221.8438,1064.125 2221.25,1063.8594 Q2220.6563,1063.5781 2220.0313,1063.5781 Q2218.6875,1063.5781 2218,1064.6563 Q2217.3125,1065.7188 2217.3125,1067.8125 Q2217.3125,1069.9063 2218,1070.9844 Q2218.6875,1072.0469 2220.0313,1072.0469 Q2220.6563,1072.0469 2221.25,1071.7813 Q2221.8438,1071.5 2222.4688,1070.9219 L2222.4688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="148" x="2233.5" y="1072.1543">EolTraitsDataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2205.5" x2="2383.5" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="2205.5" x2="2383.5" y1="1092" y2="1092"></line><!--MD5=[78d13b3af0b704ca4f340b2e71b27304]
+class EolTraitsDataProcessor--><rect codeline="132" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="EolTraitsDataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="179" x="7" y="1052"></rect><ellipse cx="22" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M24.9688,1073.6406 Q24.3906,1073.9375 23.75,1074.0781 Q23.1094,1074.2344 22.4063,1074.2344 Q19.9063,1074.2344 18.5781,1072.5938 Q17.2656,1070.9375 17.2656,1067.8125 Q17.2656,1064.6875 18.5781,1063.0313 Q19.9063,1061.375 22.4063,1061.375 Q23.1094,1061.375 23.75,1061.5313 Q24.4063,1061.6875 24.9688,1061.9844 L24.9688,1064.7031 Q24.3438,1064.125 23.75,1063.8594 Q23.1563,1063.5781 22.5313,1063.5781 Q21.1875,1063.5781 20.5,1064.6563 Q19.8125,1065.7188 19.8125,1067.8125 Q19.8125,1069.9063 20.5,1070.9844 Q21.1875,1072.0469 22.5313,1072.0469 Q23.1563,1072.0469 23.75,1071.7813 Q24.3438,1071.5 24.9688,1070.9219 L24.9688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="147" x="36" y="1072.1543">EolTraitsDataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="185" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="185" y1="1092" y2="1092"></line><!--MD5=[37344f8bdd2fb3b42aa927e79f8dc239]
+class GbifSystematicsDataGenerator--><rect codeline="134" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="GbifSystematicsDataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="225" x="1206" y="1052"></rect><ellipse cx="1221" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1223.9688,1073.6406 Q1223.3906,1073.9375 1222.75,1074.0781 Q1222.1094,1074.2344 1221.4063,1074.2344 Q1218.9063,1074.2344 1217.5781,1072.5938 Q1216.2656,1070.9375 1216.2656,1067.8125 Q1216.2656,1064.6875 1217.5781,1063.0313 Q1218.9063,1061.375 1221.4063,1061.375 Q1222.1094,1061.375 1222.75,1061.5313 Q1223.4063,1061.6875 1223.9688,1061.9844 L1223.9688,1064.7031 Q1223.3438,1064.125 1222.75,1063.8594 Q1222.1563,1063.5781 1221.5313,1063.5781 Q1220.1875,1063.5781 1219.5,1064.6563 Q1218.8125,1065.7188 1218.8125,1067.8125 Q1218.8125,1069.9063 1219.5,1070.9844 Q1220.1875,1072.0469 1221.5313,1072.0469 Q1222.1563,1072.0469 1222.75,1071.7813 Q1223.3438,1071.5 1223.9688,1070.9219 L1223.9688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="193" x="1235" y="1072.1543">GbifSystematicsDataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1207" x2="1430" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1207" x2="1430" y1="1092" y2="1092"></line><!--MD5=[44649dccd76bfc0d3cd885bac5c39138]
+class GbifSystematicsDataProcessor--><rect codeline="135" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="GbifSystematicsDataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="224" x="221.5" y="1052"></rect><ellipse cx="236.5" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M239.4688,1073.6406 Q238.8906,1073.9375 238.25,1074.0781 Q237.6094,1074.2344 236.9063,1074.2344 Q234.4063,1074.2344 233.0781,1072.5938 Q231.7656,1070.9375 231.7656,1067.8125 Q231.7656,1064.6875 233.0781,1063.0313 Q234.4063,1061.375 236.9063,1061.375 Q237.6094,1061.375 238.25,1061.5313 Q238.9063,1061.6875 239.4688,1061.9844 L239.4688,1064.7031 Q238.8438,1064.125 238.25,1063.8594 Q237.6563,1063.5781 237.0313,1063.5781 Q235.6875,1063.5781 235,1064.6563 Q234.3125,1065.7188 234.3125,1067.8125 Q234.3125,1069.9063 235,1070.9844 Q235.6875,1072.0469 237.0313,1072.0469 Q237.6563,1072.0469 238.25,1071.7813 Q238.8438,1071.5 239.4688,1070.9219 L239.4688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="192" x="250.5" y="1072.1543">GbifSystematicsDataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="222.5" x2="444.5" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="222.5" x2="444.5" y1="1092" y2="1092"></line><!--MD5=[7a226e328b5e3f7089eb5c2eecb079cf]
+class WikidataSameAsDataGenerator--><rect codeline="137" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="WikidataSameAsDataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="229" x="1466" y="1052"></rect><ellipse cx="1481" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1483.9688,1073.6406 Q1483.3906,1073.9375 1482.75,1074.0781 Q1482.1094,1074.2344 1481.4063,1074.2344 Q1478.9063,1074.2344 1477.5781,1072.5938 Q1476.2656,1070.9375 1476.2656,1067.8125 Q1476.2656,1064.6875 1477.5781,1063.0313 Q1478.9063,1061.375 1481.4063,1061.375 Q1482.1094,1061.375 1482.75,1061.5313 Q1483.4063,1061.6875 1483.9688,1061.9844 L1483.9688,1064.7031 Q1483.3438,1064.125 1482.75,1063.8594 Q1482.1563,1063.5781 1481.5313,1063.5781 Q1480.1875,1063.5781 1479.5,1064.6563 Q1478.8125,1065.7188 1478.8125,1067.8125 Q1478.8125,1069.9063 1479.5,1070.9844 Q1480.1875,1072.0469 1481.5313,1072.0469 Q1482.1563,1072.0469 1482.75,1071.7813 Q1483.3438,1071.5 1483.9688,1070.9219 L1483.9688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="197" x="1495" y="1072.1543">WikidataSameAsDataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1467" x2="1694" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1467" x2="1694" y1="1092" y2="1092"></line><!--MD5=[2a33af9027c3888103d10b1cec115309]
+class WikidataSameAsDataProcessor--><rect codeline="138" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="WikidataSameAsDataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="228" x="480.5" y="1052"></rect><ellipse cx="495.5" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M498.4688,1073.6406 Q497.8906,1073.9375 497.25,1074.0781 Q496.6094,1074.2344 495.9063,1074.2344 Q493.4063,1074.2344 492.0781,1072.5938 Q490.7656,1070.9375 490.7656,1067.8125 Q490.7656,1064.6875 492.0781,1063.0313 Q493.4063,1061.375 495.9063,1061.375 Q496.6094,1061.375 497.25,1061.5313 Q497.9063,1061.6875 498.4688,1061.9844 L498.4688,1064.7031 Q497.8438,1064.125 497.25,1063.8594 Q496.6563,1063.5781 496.0313,1063.5781 Q494.6875,1063.5781 494,1064.6563 Q493.3125,1065.7188 493.3125,1067.8125 Q493.3125,1069.9063 494,1070.9844 Q494.6875,1072.0469 496.0313,1072.0469 Q496.6563,1072.0469 497.25,1071.7813 Q497.8438,1071.5 498.4688,1070.9219 L498.4688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="196" x="509.5" y="1072.1543">WikidataSameAsDataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="481.5" x2="707.5" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="481.5" x2="707.5" y1="1092" y2="1092"></line><!--MD5=[70a63651316349ce72e766b91314ac7b]
+class FileReaderDataGenerator--><rect codeline="140" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="FileReaderDataGenerator" style="stroke:#A80036;stroke-width:1.5;" width="192" x="1730.5" y="1052"></rect><ellipse cx="1745.5" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M1748.4688,1073.6406 Q1747.8906,1073.9375 1747.25,1074.0781 Q1746.6094,1074.2344 1745.9063,1074.2344 Q1743.4063,1074.2344 1742.0781,1072.5938 Q1740.7656,1070.9375 1740.7656,1067.8125 Q1740.7656,1064.6875 1742.0781,1063.0313 Q1743.4063,1061.375 1745.9063,1061.375 Q1746.6094,1061.375 1747.25,1061.5313 Q1747.9063,1061.6875 1748.4688,1061.9844 L1748.4688,1064.7031 Q1747.8438,1064.125 1747.25,1063.8594 Q1746.6563,1063.5781 1746.0313,1063.5781 Q1744.6875,1063.5781 1744,1064.6563 Q1743.3125,1065.7188 1743.3125,1067.8125 Q1743.3125,1069.9063 1744,1070.9844 Q1744.6875,1072.0469 1746.0313,1072.0469 Q1746.6563,1072.0469 1747.25,1071.7813 Q1747.8438,1071.5 1748.4688,1070.9219 L1748.4688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="160" x="1759.5" y="1072.1543">FileReaderDataGenerator</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1731.5" x2="1921.5" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="1731.5" x2="1921.5" y1="1092" y2="1092"></line><!--MD5=[8404836e10212cf41be3de400829a31c]
+class GeoYagoDataProcessor--><rect codeline="141" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="GeoYagoDataProcessor" style="stroke:#A80036;stroke-width:1.5;" width="181" x="744" y="1052"></rect><ellipse cx="759" cy="1068" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M761.9688,1073.6406 Q761.3906,1073.9375 760.75,1074.0781 Q760.1094,1074.2344 759.4063,1074.2344 Q756.9063,1074.2344 755.5781,1072.5938 Q754.2656,1070.9375 754.2656,1067.8125 Q754.2656,1064.6875 755.5781,1063.0313 Q756.9063,1061.375 759.4063,1061.375 Q760.1094,1061.375 760.75,1061.5313 Q761.4063,1061.6875 761.9688,1061.9844 L761.9688,1064.7031 Q761.3438,1064.125 760.75,1063.8594 Q760.1563,1063.5781 759.5313,1063.5781 Q758.1875,1063.5781 757.5,1064.6563 Q756.8125,1065.7188 756.8125,1067.8125 Q756.8125,1069.9063 757.5,1070.9844 Q758.1875,1072.0469 759.5313,1072.0469 Q760.1563,1072.0469 760.75,1071.7813 Q761.3438,1071.5 761.9688,1070.9219 L761.9688,1073.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="149" x="773" y="1072.1543">GeoYagoDataProcessor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="745" x2="924" y1="1084" y2="1084"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="745" x2="924" y1="1092" y2="1092"></line><!--MD5=[8e15309d82c2d6e415ebafff352414db]
+class GbifApi--><rect codeline="143" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="GbifApi" style="stroke:#A80036;stroke-width:1.5;" width="75" x="2510" y="1186"></rect><ellipse cx="2525" cy="1202" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2527.9688,1207.6406 Q2527.3906,1207.9375 2526.75,1208.0781 Q2526.1094,1208.2344 2525.4063,1208.2344 Q2522.9063,1208.2344 2521.5781,1206.5938 Q2520.2656,1204.9375 2520.2656,1201.8125 Q2520.2656,1198.6875 2521.5781,1197.0313 Q2522.9063,1195.375 2525.4063,1195.375 Q2526.1094,1195.375 2526.75,1195.5313 Q2527.4063,1195.6875 2527.9688,1195.9844 L2527.9688,1198.7031 Q2527.3438,1198.125 2526.75,1197.8594 Q2526.1563,1197.5781 2525.5313,1197.5781 Q2524.1875,1197.5781 2523.5,1198.6563 Q2522.8125,1199.7188 2522.8125,1201.8125 Q2522.8125,1203.9063 2523.5,1204.9844 Q2524.1875,1206.0469 2525.5313,1206.0469 Q2526.1563,1206.0469 2526.75,1205.7813 Q2527.3438,1205.5 2527.9688,1204.9219 L2527.9688,1207.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="43" x="2539" y="1206.1543">GbifApi</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2511" x2="2584" y1="1218" y2="1218"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="2511" x2="2584" y1="1226" y2="1226"></line><!--MD5=[93899c262a135dc9099f42f989fb553f]
+class EolApi--><rect codeline="144" fill="#FEFECE" filter="url(#fsgbrygbx6avg)" height="48" id="EolApi" style="stroke:#A80036;stroke-width:1.5;" width="70" x="2620.5" y="1186"></rect><ellipse cx="2635.5" cy="1202" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"></ellipse><path d="M2638.4688,1207.6406 Q2637.8906,1207.9375 2637.25,1208.0781 Q2636.6094,1208.2344 2635.9063,1208.2344 Q2633.4063,1208.2344 2632.0781,1206.5938 Q2630.7656,1204.9375 2630.7656,1201.8125 Q2630.7656,1198.6875 2632.0781,1197.0313 Q2633.4063,1195.375 2635.9063,1195.375 Q2636.6094,1195.375 2637.25,1195.5313 Q2637.9063,1195.6875 2638.4688,1195.9844 L2638.4688,1198.7031 Q2637.8438,1198.125 2637.25,1197.8594 Q2636.6563,1197.5781 2636.0313,1197.5781 Q2634.6875,1197.5781 2634,1198.6563 Q2633.3125,1199.7188 2633.3125,1201.8125 Q2633.3125,1203.9063 2634,1204.9844 Q2634.6875,1206.0469 2636.0313,1206.0469 Q2636.6563,1206.0469 2637.25,1205.7813 Q2637.8438,1205.5 2638.4688,1204.9219 L2638.4688,1207.6406 Z " fill="#000000"></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="38" x="2649.5" y="1206.1543">EolApi</text><line style="stroke:#A80036;stroke-width:1.5;" x1="2621.5" x2="2689.5" y1="1218" y2="1218"></line><line style="stroke:#A80036;stroke-width:1.5;" x1="2621.5" x2="2689.5" y1="1226" y2="1226"></line><!--MD5=[693863c9d6a3735454383deb9ccb7f0b]
+reverse link Ontology to JenaOntology--><path d="M419.5,853.07 C419.5,853.07 419.5,892.9 419.5,892.9 " fill="none" id="Ontology-backto-JenaOntology" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="412.5,853.07,419.5,833.07,426.5,853.07,412.5,853.07" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[a8c2872cb20ae61723a29dda667c3140]
+reverse link DataSource to FileDataSource--><path d="M2447.5,1133.33 C2447.5,1133.33 2447.5,1172.87 2447.5,1172.87 " fill="none" id="DataSource-backto-FileDataSource" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="2440.5,1133.33,2447.5,1113.33,2454.5,1133.33,2440.5,1133.33" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[0e3bdc7e535f6a4eb8165786923a70b1]
+reverse link DataGenerator to EolOccurenceDataGenerator--><path d="M1860.63,951 C1860.63,951 2063.5,951 2063.5,951 C2063.5,951 2063.5,1015.58 2063.5,1051.9 " fill="none" id="DataGenerator-backto-EolOccurenceDataGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1860.63,958,1840.63,951,1860.63,944,1860.63,958" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[292f092f3744d357ddf40d873b9f9cf3]
+reverse link DataProcessor to EolOccurenceDataProcessor--><path d="M1016.25,986.72 C1016.25,986.72 1016.25,1051.85 1016.25,1051.85 " fill="none" id="DataProcessor-backto-EolOccurenceDataProcessor" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1009.25,986.72,1016.25,966.72,1023.25,986.72,1009.25,986.72" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[514d84e7f6c2b9c4b4568e150c0b3ff5]
+reverse link DataGenerator to EolTraitsDataGenerator--><path d="M1860.55,922 C1860.55,922 2256.5,922 2256.5,922 C2256.5,922 2256.5,1008.62 2256.5,1051.94 " fill="none" id="DataGenerator-backto-EolTraitsDataGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1860.55,929,1840.55,922,1860.55,915,1860.55,929" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[1ebf2ea236b64dc3c2e7b679730b5d0f]
+reverse link DataProcessor to EolTraitsDataProcessor--><path d="M847.8,986.7 C847.8,986.7 847.8,994 847.8,994 C847.8,994 96.5,994 96.5,994 C96.5,994 96.5,1027.65 96.5,1051.84 " fill="none" id="DataProcessor-backto-EolTraitsDataProcessor" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="840.8,986.7,847.8,966.7,854.8,986.7,840.8,986.7" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[40aa3fa7716ef622191ed7c9569cfa29]
+reverse link DataGenerator to GbifSystematicsDataGenerator--><path d="M1546.28,952 C1546.28,952 1409.25,952 1409.25,952 C1409.25,952 1409.25,1015.71 1409.25,1051.8 " fill="none" id="DataGenerator-backto-GbifSystematicsDataGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1546.28,945,1566.28,952,1546.28,959,1546.28,945" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[65e31132ec771f790da953e0d5be7b0c]
+reverse link DataProcessor to GbifSystematicsDataProcessor--><path d="M867.1,986.54 C867.1,986.54 867.1,1009 867.1,1009 C867.1,1009 337,1009 337,1009 C337,1009 337,1032.62 337,1051.81 " fill="none" id="DataProcessor-backto-GbifSystematicsDataProcessor" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="860.1,986.54,867.1,966.54,874.1,986.54,860.1,986.54" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[06a25345665362a23b25bb1774d54edc]
+reverse link DataGenerator to WikidataSameAsDataGenerator--><path d="M1630.75,999.15 C1630.75,999.15 1630.75,1051.93 1630.75,1051.93 " fill="none" id="DataGenerator-backto-WikidataSameAsDataGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1623.75,999.15,1630.75,979.15,1637.75,999.15,1623.75,999.15" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[08ec774de77dfb5b44b12316daaeb58d]
+reverse link DataProcessor to WikidataSameAsDataProcessor--><path d="M886.4,986.78 C886.4,986.78 886.4,1024 886.4,1024 C886.4,1024 645,1024 645,1024 C645,1024 645,1038.25 645,1051.83 " fill="none" id="DataProcessor-backto-WikidataSameAsDataProcessor" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="879.4,986.78,886.4,966.78,893.4,986.78,879.4,986.78" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[ca09a63218104fbd86c5e9e0294c0783]
+reverse link DataGenerator to FileReaderDataGenerator--><path d="M1767.17,999.15 C1767.17,999.15 1767.17,1051.93 1767.17,1051.93 " fill="none" id="DataGenerator-backto-FileReaderDataGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="1760.17,999.15,1767.17,979.15,1774.17,999.15,1760.17,999.15" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[cd2d2f2e9ca40c2e573779854ec87846]
+reverse link DataProcessor to GeoYagoDataProcessor--><path d="M905.7,986.72 C905.7,986.72 905.7,1051.85 905.7,1051.85 " fill="none" id="DataProcessor-backto-GeoYagoDataProcessor" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="898.7,986.72,905.7,966.72,912.7,986.72,898.7,986.72" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[70fcdcabb0c0fd2964b42f9343ff6663]
+reverse link DataSource to GbifApi--><path d="M2547.5,1133.33 C2547.5,1133.33 2547.5,1185.95 2547.5,1185.95 " fill="none" id="DataSource-backto-GbifApi" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="2540.5,1133.33,2547.5,1113.33,2554.5,1133.33,2540.5,1133.33" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[fe8796dcf469e7d316a0dce30ddd8594]
+reverse link DataSource to EolApi--><path d="M2647.75,1133.33 C2647.75,1133.33 2647.75,1185.95 2647.75,1185.95 " fill="none" id="DataSource-backto-EolApi" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"></path><polygon fill="none" points="2640.75,1133.33,2647.75,1113.33,2654.75,1133.33,2640.75,1133.33" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[e25027d1ed8270a6378c4919d2949f3c]
+reverse link Serializer to FileSerializer--><path codeline="146" d="M692.5,821.24 C692.5,821.24 692.5,898.76 692.5,898.76 " fill="none" id="Serializer-backto-FileSerializer" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="none" points="685.5,821.24,692.5,801.24,699.5,821.24,685.5,821.24" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[5093cc6d4f807112e5ba821064e91ba3]
+link BIOfidOntologyGenerator to Configurator--><path codeline="148" d="M1896.59,75 C1987.1,75 2111,75 2111,75 C2111,75 2111,197 2111,197 C2111,197 2137.5,197 2137.5,197 " fill="none" id="BIOfidOntologyGenerator-to-Configurator" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="2142.5,197,2133.5,193,2137.5,197,2133.5,201,2142.5,197" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[ffde61f3d98659cb2586e29b9015621c]
+link BIOfidOntologyGenerator to ServiceFactory--><path codeline="149" d="M1803.5,81.04 C1803.5,81.04 1803.5,135.89 1803.5,135.89 " fill="none" id="BIOfidOntologyGenerator-to-ServiceFactory" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1803.5,140.89,1807.5,131.89,1803.5,135.89,1799.5,131.89,1803.5,140.89" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[9be632849cc7d388a0c25589ba056ffc]
+link BIOfidOntologyGenerator to Harvester--><path codeline="150" d="M1710.46,44 C1555.29,44 1260.5,44 1260.5,44 C1260.5,44 1260.5,142.33 1260.5,142.33 " fill="none" id="BIOfidOntologyGenerator-to-Harvester" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1260.5,147.33,1264.5,138.33,1260.5,142.33,1256.5,138.33,1260.5,147.33" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[312a2d64836574c3b3b3647c3b5c4569]
+link Configurator to OntologyConfiguration--><path codeline="152" d="M2225.5,253.01 C2225.5,253.01 2225.5,352.73 2225.5,352.73 " fill="none" id="Configurator-to-OntologyConfiguration" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="2225.5,357.73,2229.5,348.73,2225.5,352.73,2221.5,348.73,2225.5,357.73" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[9a1d0bd51ce037da9e525acfdf0f6698]
+link Harvester to OntologyGenerator--><path codeline="154" d="M1260.5,246.64 C1260.5,246.64 1260.5,307.83 1260.5,307.83 " fill="none" id="Harvester-to-OntologyGenerator" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1260.5,312.83,1264.5,303.83,1260.5,307.83,1256.5,303.83,1260.5,312.83" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[f3a411863e7ac60e5c075d051ed898df]
+link OntologyGenerator to DataService--><path codeline="156" d="M1260.5,489.06 C1260.5,489.06 1260.5,543.76 1260.5,543.76 " fill="none" id="OntologyGenerator-to-DataService" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1260.5,548.76,1264.5,539.76,1260.5,543.76,1256.5,539.76,1260.5,548.76" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[2e5a05797d681e1e9430099266296ffb]
+link OntologyGenerator to OntologyConnector--><path codeline="157" d="M1147.75,489.29 C1147.75,542.09 1147.75,599 1147.75,599 C1147.75,599 865.08,599 865.08,599 " fill="none" id="OntologyGenerator-to-OntologyConnector" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="860.08,599,869.08,603,865.08,599,869.08,595,860.08,599" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[028661f00bb2ec3cb2891a4be7fc8f85]
+link ServiceFactory to OntologyGenerator--><path codeline="159" d="M1522.17,253.14 C1522.17,291.71 1522.17,336 1522.17,336 C1522.17,336 1392.5,336 1392.5,336 " fill="none" id="ServiceFactory-to-OntologyGenerator" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="1387.5,336,1396.5,340,1392.5,336,1396.5,332,1387.5,336" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[8133ba6dbc32b608ea5256850001d31e]
+link ServiceFactory to DataService--><path codeline="160" d="M1544.33,253.32 C1544.33,363.96 1544.33,599 1544.33,599 C1544.33,599 1364.37,599 1364.37,599 " fill="none" id="ServiceFactory-to-DataService" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="1359.37,599,1368.37,603,1364.37,599,1368.37,595,1359.37,599" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[2ae7985b525274e91f8aa957bcc6d52f]
+link ServiceFactory to DataSource--><path codeline="161" d="M1934.5,253.23 C1934.5,442.4 1934.5,1044 1934.5,1044 C1934.5,1044 2414.74,1044 2414.74,1044 " fill="none" id="ServiceFactory-to-DataSource" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="2419.74,1044,2410.74,1040,2414.74,1044,2410.74,1048,2419.74,1044" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[1a14d6b6ed217abe517e27193022a234]
+link ServiceFactory to OntologyConfiguration--><path codeline="162" d="M2053.5,253.01 C2053.5,253.01 2053.5,352.73 2053.5,352.73 " fill="none" id="ServiceFactory-to-OntologyConfiguration" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="2053.5,357.73,2057.5,348.73,2053.5,352.73,2049.5,348.73,2053.5,357.73" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[cff5d265fb35ca4bf82224ada0e672b2]
+link ServiceFactory to DataServiceConfiguration--><path codeline="163" d="M2000,253.4 C2000,269.61 2000,283 2000,283 C2000,283 2407.67,283 2407.67,283 C2407.67,283 2407.67,352.73 2407.67,352.73 " fill="none" id="ServiceFactory-to-DataServiceConfiguration" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="2407.67,357.73,2411.67,348.73,2407.67,352.73,2403.67,348.73,2407.67,357.73" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[d4c3655841d6e9a05aa82079a6d80fa7]
+link Configurator to DataServiceConfiguration--><path codeline="164" d="M2471.33,253.01 C2471.33,253.01 2471.33,352.73 2471.33,352.73 " fill="none" id="Configurator-to-DataServiceConfiguration" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="2471.33,357.73,2475.33,348.73,2471.33,352.73,2467.33,348.73,2471.33,357.73" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[97c96b77f2e1d2651789604f71177df6]
+link DataGenerator to DataSource--><path codeline="166" d="M1803.83,979.3 C1803.83,1010.82 1803.83,1048 1803.83,1048 C1803.83,1048 2414.66,1048 2414.66,1048 " fill="none" id="DataGenerator-to-DataSource" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="2419.66,1048,2410.66,1044,2414.66,1048,2410.66,1052,2419.66,1048" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[69b6fc7f5bac3967324b502530a55aa6]
+link DataService to DataGenerator--><path codeline="168" d="M1282.5,648.18 C1282.5,738.65 1282.5,921 1282.5,921 C1282.5,921 1561.23,921 1561.23,921 " fill="none" id="DataService-to-DataGenerator" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1566.23,921,1557.23,917,1561.23,921,1557.23,925,1566.23,921" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[d260871394626dbd3a187e64cf54a68d]
+link DataService to DataProcessor--><path codeline="169" d="M1192.5,648.3 C1192.5,742.18 1192.5,936 1192.5,936 C1192.5,936 1077.56,936 1077.56,936 " fill="none" id="DataService-to-DataProcessor" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1072.56,936,1081.56,940,1077.56,936,1081.56,932,1072.56,936" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[6cad195f63fcb6bd7d4b9b9a9d0c8914]
+link DataService to Triple--><path codeline="170" d="M1170.5,648.25 C1170.5,648.25 1170.5,722.28 1170.5,722.28 " fill="none" id="DataService-to-Triple" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:1.0,3.0;"></path><polygon fill="#A80036" points="1170.5,727.28,1174.5,718.28,1170.5,722.28,1166.5,718.28,1170.5,727.28" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[5a7aa21a63eeaaa580610b2c11fe3947]
+link OntologyConnector to Serializer--><path codeline="172" d="M692.5,648.25 C692.5,648.25 692.5,734.78 692.5,734.78 " fill="none" id="OntologyConnector-to-Serializer" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="692.5,739.78,696.5,730.78,692.5,734.78,688.5,730.78,692.5,739.78" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[ee0a6e231c84bca23a2c9c885aed5dcf]
+link OntologyConnector to Triple--><path codeline="173" d="M844.25,648.19 C844.25,686.86 844.25,734 844.25,734 C844.25,734 1054.77,734 1054.77,734 " fill="none" id="OntologyConnector-to-Triple" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="1059.77,734,1050.77,730,1054.77,734,1050.77,738,1059.77,734" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[ed4549a0ad05e352ce1a9005c038d824]
+link OntologyConnector to Ontology--><path codeline="174" d="M598,648.14 C598,680.97 598,718 598,718 C598,718 547.01,718 547.01,718 " fill="none" id="OntologyConnector-to-Ontology" style="stroke:#A80036;stroke-width:1.0;"></path><polygon fill="#A80036" points="542.01,718,551.01,722,547.01,718,551.01,714,542.01,718" style="stroke:#A80036;stroke-width:1.0;"></polygon><!--MD5=[0ebdbfe899f33c773ce28fa7cb07d4bd]
+@startuml
+skinparam linetype ortho
+
+class BIOfidOntologyGenerator {
+  - Configurator configurator
+  + void run()
+}
+
+class Harvester {
+  + void {static} processOntology(OntologyGenerator generator)
+  + void {static} generateOntology(OntologyGenerator generator)
+  + void {static} serializeOntology(OntologyGenerator generator)
+  + void {static} addLastHarvestDateToOntology(OntologyGenerator generator)
+}
+
+class ServiceFactory {
+  + OntologyGenerator {static} createOntologyGenerator(OntologyConfiguration configuration)
+  + DataService {static} createDataService(DataServiceConfiguration configuration)
+  + DataSource {static} createDataSource(DataServiceConfiguration configuration)
+  + DataGenerator {static} createDataGenerator(DataServiceConfiguration configuration, DataSource dataSource)
+  + DataProcessor {static} createDataProcessor(DataServiceConfiguration configuration)
+}
+
+class DataService {
+  - DataGenerator dataGenerator
+  - DataProcessor processor
+  - Ontology ontology
+  + Iterable<Triple> getData()
+}
+
+interface DataGenerator {
+  + Triple next()
+  + void setDataSource(DataSource source)
+  + default void setOntology(Ontology ontology)
+}
+
+interface DataProcessor {
+  + List<Triple> postProcess(Triple triple)
+}
+
+interface DataSource {
+  + Object getTypeofElements()
+  + Object callDataForString(String dataCall)
+
+}
+
+class DataServiceConfiguration {
+  + String dataGeneratorClass
+  + String dataProcessorClass
+  + String DataSourceClass
+}
+
+class OntologyGenerator {
+  - String ontologyName
+  - List<DataService> dataServices
+  - OntologyConnector ontologyConnector
+  - Serializer serializer
+  + void generate()
+  + void serialize()
+  + String getOntologyName()
+  + void addTriples(Iterable<Triple> triples)
+  + void addTriple(Triple triple)
+  - void iterateDataServices()
+}
+
+class OntologyConfiguration {
+  + String ontologyName
+  + Serializer serializer
+  + List<DataServiceConfiguration> dataServiceConfigurations
+}
+
+class OntologyConnector {
+  - Ontology ontology
+  + void addTripleToOntology(Triple triple)
+  + void serializeOntology(Serializer serializer)
+  + Ontology getOntology()
+}
+
+interface Ontology {
+  + Iterator<Triple> iterateTriples()
+  + Iterator<String> iterateResourceUris()
+  + void addTriple(Triple triple)
+  + void removeTriple(Triple triple)
+  + void serialize(Serializer serializer)
+  + void inference(Reasoner reasoner)
+}
+
+class JenaOntology implements Ontology {
+  - OntModel model
+  - Statement createStatementFromTriple(Triple triple)
+  - void addStatementToModel(Statement statement)
+}
+
+class Triple {
+  + Object subject
+  + Object predicate
+  + Object object
+}
+
+class Configurator {
+  - Map<String, Object> configuration
+  + Map<String, Object> get(String key)
+  + void load(String filePath)
+  + Iterator<OntolgoyConfiguration> iterateOntoloyConfigurations()
+  + List<DataServiceConfiguration> createDataServiceConfigurationsForOntology(String ontologyName)
+}
+
+abstract Serializer {
+  + void serialize(Stream data)
+}
+
+class FileSerializer {
+  - Path outputPath
+  - void serializeToFile(Stream data)
+}
+
+class FileDataSource implements DataSource {
+  - Path inputPath
+  - InputStream deserializeFromFile()
+}
+
+class BIOfidUriGenerator
+
+class Http {
+  JsonObject {static} callJsonApi(String url)
+  JsonObject {static} callXmlApi(String uri)
+}
+
+class EolOccurenceDataGenerator implements DataGenerator
+class EolOccurenceDataProcessor implements DataProcessor
+
+class EolTraitsDataGenerator implements DataGenerator
+class EolTraitsDataProcessor implements DataProcessor
+
+class GbifSystematicsDataGenerator implements DataGenerator{}
+class GbifSystematicsDataProcessor implements DataProcessor
+
+class WikidataSameAsDataGenerator implements DataGenerator
+class WikidataSameAsDataProcessor implements DataProcessor
+
+class FileReaderDataGenerator implements DataGenerator
+class GeoYagoDataProcessor implements DataProcessor
+
+class GbifApi implements DataSource
+class EolApi implements DataSource
+
+Serializer <|- - FileSerializer
+
+BIOfidOntologyGenerator - -> Configurator
+BIOfidOntologyGenerator - -> ServiceFactory
+BIOfidOntologyGenerator - -> Harvester
+
+Configurator -[dotted]-> OntologyConfiguration
+
+Harvester - -> OntologyGenerator
+
+OntologyGenerator - -> DataService
+OntologyGenerator - -> OntologyConnector
+
+ServiceFactory -[dotted]-> OntologyGenerator
+ServiceFactory -[dotted]-> DataService
+ServiceFactory -[dotted]-> DataSource
+ServiceFactory - -> OntologyConfiguration
+ServiceFactory - -> DataServiceConfiguration
+Configurator -[dotted]-> DataServiceConfiguration
+
+DataGenerator - -> DataSource
+
+DataService - - -> DataGenerator
+DataService - - -> DataProcessor
+DataService -[dotted]> Triple
+
+OntologyConnector - -> Serializer
+OntologyConnector - -> Triple
+OntologyConnector - -> Ontology
+@enduml
+
+PlantUML version 1.2020.26(Mon Dec 21 18:45:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: de
+Country: DE
+--></g></svg></p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
