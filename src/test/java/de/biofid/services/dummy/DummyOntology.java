@@ -4,8 +4,7 @@ import de.biofid.services.data.Triple;
 import de.biofid.services.ontologies.Ontology;
 import de.biofid.services.serialization.Serializer;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,8 +39,12 @@ public class DummyOntology implements Ontology {
     @Override
     public void serialize(Serializer serializer) {
         String tripleString = triples.toString();
-        InputStream inputStream = new ByteArrayInputStream(tripleString.getBytes(StandardCharsets.UTF_8));
-        serializer.serialize(inputStream);
+        OutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            outputStream.write(tripleString.getBytes(StandardCharsets.UTF_8));
+            serializer.serialize(outputStream);
+        } catch (IOException ex) {}
     }
 
     public void setResourceUriIterator(Iterator<String> iterator) {

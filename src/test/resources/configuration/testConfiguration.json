@@ -1,30 +1,26 @@
 {
   "serializer": "de.biofid.services.serialization.FileSerializer",
-  "ontologies": [
-    {
-      "Occurrences": {
-        "serializer": "de.biofid.services.serialization.FileSerializer",
-        "outputPath": "/foo/bar/occurrences-ontology.owl",
-        "outputFormat": "owl",
-        "services": [
-          {
-            "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
-            "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
-            "dataProcessorClass":  "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
-          }
-        ]
-      }
+  "ontologies": {
+    "Occurrences": {
+      "serializer": "de.biofid.services.serialization.FileSerializer",
+      "outputPath": "/foo/bar/occurrences-ontology.owl",
+      "outputFormat": "owl",
+      "services": [
+        {
+          "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
+          "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
+          "dataProcessorClass": "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
+        }
+      ]
     },
-    {
-      "Systematics": {
-        "services": [
-          {
-            "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
-            "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
-            "dataProcessorClass":  "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
-          }
-        ]
-      }
+    "Systematics": {
+      "services": [
+        {
+          "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
+          "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
+          "dataProcessorClass": "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
+        }
+      ]
     }
-  ]
+  }
 }

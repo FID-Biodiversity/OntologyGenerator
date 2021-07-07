@@ -2,25 +2,18 @@ package de.biofid.services.dummy;
 
 import de.biofid.services.serialization.Serializer;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
+import java.io.OutputStream;
 
 public class DummySerializer extends Serializer {
 
-    private InputStream stream;
+    private OutputStream stream;
 
     @Override
-    public void serialize(InputStream stream) {
+    public void serialize(OutputStream stream) {
         this.stream = stream;
     }
 
     public String getSerializedString() {
-        return new BufferedReader(
-                new InputStreamReader(stream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
+        return stream.toString();
     }
 }

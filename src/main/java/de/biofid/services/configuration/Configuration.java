@@ -3,6 +3,8 @@ package de.biofid.services.configuration;
 import de.biofid.services.configuration.reader.ConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
+import de.biofid.services.factories.ConfigurationFactory;
+import org.apache.jena.atlas.iterator.Iter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -12,11 +14,11 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Configuration {
-
-    public static final String BIOFID_SERIALIZER_PACKAGE_STRING = "de.biofid.services.serializer";
 
     // Configuration keys should all be lower case
     public final static String KEY_ONTOLOGY_LISTS = "ontologies";
@@ -53,20 +55,32 @@ public class Configuration {
         }
     }
 
-    // TODO: Iterate OntologyConfiguration
+    public List<OntologyConfiguration> getOntologyConfigurations() {
+        List<OntologyConfiguration> configurations = new ArrayList<>();
+        try {
+            JSONObject ontologyConfigurations = getOntologyDataInConfiguration();
 
-    public JSONObject getConfigurationForOntologyName(String ontologyName) throws KeyException {
-        for (Object configObject : getOntologyDataInConfiguration()) {
-            JSONObject configuration = (JSONObject) configObject;
-            for (Iterator<String> it = configuration.keys(); it.hasNext(); ) {
-                String name = it.next();
-                if (name.equals(ontologyName)) {
-                    return configuration.getJSONObject(name);
-                }
+            Iterator<String> ontologyNameIterator = ontologyConfigurations.keys();
+            while (ontologyNameIterator.hasNext()) {
+                String ontologyName = ontologyNameIterator.next();
+                OntologyConfiguration ontologyConfiguration =
+                        ConfigurationFactory.createOntologyConfiguration(ontologyName, this);
+                configurations.add(ontologyConfiguration);
             }
+        } catch (ValueException | KeyException ex) {
+            logger.error("No ontology configurations are given. Use the key \"" + KEY_ONTOLOGY_LISTS + "\" to define them!" );
         }
 
-        throw new KeyException("The given ontology Name \"" + ontologyName + "\" is not given in the configuration!");
+        return configurations;
+    }
+
+    public JSONObject getConfigurationForOntologyName(String ontologyName) throws KeyException {
+        JSONObject ontologyConfigurations = getOntologyDataInConfiguration();
+        if (ontologyConfigurations.has(ontologyName)) {
+            return ontologyConfigurations.getJSONObject(ontologyName);
+        } else {
+            throw new KeyException("The given ontology Name \"" + ontologyName + "\" is not given in the configuration!");
+        }
     }
 
     public JSONArray getJsonArray(String key) throws ValueException {
@@ -91,8 +105,8 @@ public class Configuration {
         return this.configuration;
     }
 
-    private JSONArray getOntologyDataInConfiguration() {
-        return configuration.getJSONArray(Configuration.KEY_ONTOLOGY_LISTS);
+    private JSONObject getOntologyDataInConfiguration() {
+        return configuration.getJSONObject(Configuration.KEY_ONTOLOGY_LISTS);
     }
 
     private String stringPathToAbsolutePathString(String pathString) {

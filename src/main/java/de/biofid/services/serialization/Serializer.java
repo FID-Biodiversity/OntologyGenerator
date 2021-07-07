@@ -1,7 +1,7 @@
 package de.biofid.services.serialization;
 
-import java.io.InputStream;
+import java.io.OutputStream;
 
 public abstract class Serializer {
-    abstract public void serialize(InputStream stream);
+    abstract public void serialize(OutputStream stream);
 }
