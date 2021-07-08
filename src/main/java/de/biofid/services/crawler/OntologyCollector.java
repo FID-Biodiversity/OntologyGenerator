@@ -1,20 +1,29 @@
 package de.biofid.services.crawler;
 
 import de.biofid.services.configuration.Configuration;
+import de.biofid.services.configuration.OntologyConfiguration;
 import de.biofid.services.configuration.reader.JsonConfigurationReader;
+import de.biofid.services.factories.ServiceFactory;
+import de.biofid.services.ontologies.OntologyGenerator;
+
+import java.util.List;
 
 public class OntologyCollector {
 
-    private static final String HARVESTER_CONFIGURATION_FILE_PATH = "./configuration.json";
+    private static final String HARVESTER_CONFIGURATION_FILE_PATH = "./config/general.json";
 
     public static void main(String[] args) {
+        start();
+    }
+
+    public static void start() {
         Configuration configuration = new Configuration(new JsonConfigurationReader());
         configuration.loadFromFile(HARVESTER_CONFIGURATION_FILE_PATH);
 
-
-        // Use Configuration to read config file
-        // Create the OntologyGenerator with its DataServices with the ServiceFactory
-        // Parse the OntologyGenerator to the Harvester class to run the harvesting
-        // Serialize the OntologyGenerator (if not done automatically in the Harvester)
+        List<OntologyConfiguration> ontologyConfigurations = configuration.getOntologyConfigurations();
+        for (OntologyConfiguration config : ontologyConfigurations) {
+            OntologyGenerator generator = ServiceFactory.createOntologyGenerator(config);
+            Harvester.processOntology(generator);
+        }
     }
 }

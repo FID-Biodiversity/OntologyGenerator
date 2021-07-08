@@ -4,7 +4,6 @@ import de.biofid.services.configuration.reader.ConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
 import de.biofid.services.factories.ConfigurationFactory;
-import org.apache.jena.atlas.iterator.Iter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;

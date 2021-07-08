@@ -3,8 +3,7 @@
   "ontologies": {
     "Occurrences": {
       "serializer": "de.biofid.services.serialization.FileSerializer",
-      "outputPath": "/foo/bar/occurrences-ontology.owl",
-      "outputFormat": "owl",
+      "output": "/foo/bar/occurrences-ontology.owl",
       "services": [
         {
           "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",

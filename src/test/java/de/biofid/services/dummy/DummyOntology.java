@@ -39,11 +39,10 @@ public class DummyOntology implements Ontology {
     @Override
     public void serialize(Serializer serializer) {
         String tripleString = triples.toString();
-        OutputStream outputStream = new ByteArrayOutputStream();
+        OutputStream outputStream = serializer.getOutputStream();
 
         try {
             outputStream.write(tripleString.getBytes(StandardCharsets.UTF_8));
-            serializer.serialize(outputStream);
         } catch (IOException ex) {}
     }
 

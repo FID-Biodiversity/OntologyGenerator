@@ -14,12 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurationFactory {
+    private static final String KEY_OUTPUT_SINK = "output";
+
     public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
             throws KeyException, ValueException {
         String serializerClassName = getClassStringFromConfiguration(Configuration.KEY_SERIALIZER,
                 configuration.toJSONObject(), ontologyName);
 
         Serializer serializer = (Serializer) ClassLoader.createInstanceOfClassFromName(serializerClassName);
+
+        JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
+        if (ontologyConfiguration.has(KEY_OUTPUT_SINK)) {
+            serializer.addSink((String) ontologyConfiguration.get(KEY_OUTPUT_SINK));
+        }
 
         List<DataServiceConfiguration> dataServiceConfigurations =
                 createDataServiceConfigurationsForOntologyName(ontologyName, configuration);

@@ -8,7 +8,6 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -40,8 +39,7 @@ public class JenaOntology implements Ontology {
 
     @Override
     public void serialize(Serializer serializer) {
-        OutputStream byteOutput = new ByteArrayOutputStream();
+        OutputStream byteOutput = serializer.getOutputStream();
         model.write(byteOutput, "RDF/XML");
-        serializer.serialize(byteOutput);
     }
 }
