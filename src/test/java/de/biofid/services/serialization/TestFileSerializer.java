@@ -1,6 +1,5 @@
-package de.biofid.services.serializer;
+package de.biofid.services.serialization;
 
-import de.biofid.services.serialization.FileSerializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,6 @@ package de.biofid.services.dummy;
 
 import de.biofid.services.data.DataSource;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +14,7 @@ public class DummyDataSource implements DataSource {
     Iterator<Object> iterator = null;
 
     @Override
-    public Object getDataForString(String string) throws IOException {
+    public Object getDataForString(String string) {
         requestedStrings.add(string);
 
         if (iterator == null) {

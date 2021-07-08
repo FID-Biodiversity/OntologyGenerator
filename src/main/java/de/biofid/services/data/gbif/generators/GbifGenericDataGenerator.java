@@ -163,9 +163,15 @@ public class GbifGenericDataGenerator implements DataGenerator {
         try {
             logger.debug("Processing GBIF ID \"" + gbifId + "\" ...");
             String gbifUrl = createGbifApiUrlFromGbifId(gbifId);
-            String gbifResponse = (String) dataSource.getDataForString(gbifUrl);
+            Object gbifResponseObject = dataSource.getDataForString(gbifUrl);
+
             logger.debug("Received GBIF response!");
-            return new JSONObject(gbifResponse);
+
+            if (gbifResponseObject instanceof JSONObject) {
+                return (JSONObject) gbifResponseObject;
+            } else {
+                return new JSONObject(gbifResponseObject.toString());
+            }
         } catch (IOException ex) {
             return new JSONObject();
         }

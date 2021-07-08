@@ -1,0 +1,19 @@
+{
+  "ontologies": {
+    "Test": {
+      "serializer": "de.biofid.services.serialization.FileSerializer",
+      "output": "occurrences-ontology.owl",
+      "services": [
+        {
+          "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
+          "dataGeneratorClass": "de.biofid.services.data.gbif.generators.GbifGenericDataGenerator",
+          "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
+          "parameters": {
+            "dataGenerator": {"ids": ["2882316"]},
+            "dataProcessor": {"configurationFile": "config/gbif-predicate-mapping.json"}
+          }
+        }
+      ]
+    }
+  }
+}

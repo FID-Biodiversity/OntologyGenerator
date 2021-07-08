@@ -43,6 +43,7 @@ class TestDataService {
         String[] uris = {"gbif:2882316"};
         dummyOntology.setResourceUriIterator(Arrays.stream(uris).iterator());
         dataGenerator.setOntology(dummyOntology);
+        dataGenerator.setParameters(new JSONObject("{\"ids\": [1234]}"));
 
         JSONObject processorConfiguration = new JSONObject();
         processorConfiguration.put("gbif:kingdom", "http://rs.tdwg.org/dwc/terms/kingdom");

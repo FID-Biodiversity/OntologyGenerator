@@ -53,6 +53,7 @@ public class TestGbifRecursiveTaxonChildDataGenerator {
         dataSource.addData(quercusChildrenResponseData.toString());
 
         dataGenerator.setDataSource(dataSource);
+        dataGenerator.setParameters(new JSONObject("{\"ids\": [1234]}"));
 
         String[] uris = {"https://www.biofid.de/bio-ontologies/Tracheophyta/gbif/12345"};
         dummyOntology.setResourceUriIterator(Arrays.stream(uris).iterator());

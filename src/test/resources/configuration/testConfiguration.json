@@ -1,5 +1,4 @@
 {
-  "serializer": "de.biofid.services.serialization.FileSerializer",
   "ontologies": {
     "Occurrences": {
       "serializer": "de.biofid.services.serialization.FileSerializer",
@@ -13,6 +12,7 @@
       ]
     },
     "Systematics": {
+      "serializer": "de.biofid.services.serialization.FileSerializer",
       "services": [
         {
           "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",

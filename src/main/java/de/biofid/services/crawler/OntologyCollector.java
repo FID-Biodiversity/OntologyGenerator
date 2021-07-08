@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OntologyCollector {
 
-    private static final String HARVESTER_CONFIGURATION_FILE_PATH = "./config/general.json";
+    private static final String HARVESTER_CONFIGURATION_FILE_PATH = "config/general.json";
 
     public static void main(String[] args) {
         start();

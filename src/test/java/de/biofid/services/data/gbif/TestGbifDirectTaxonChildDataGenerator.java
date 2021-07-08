@@ -62,6 +62,7 @@ public class TestGbifDirectTaxonChildDataGenerator {
 
         directTaxonChildDataGenerator = new GbifDirectTaxonChildDataGenerator();
         directTaxonChildDataGenerator.setOntology(dummyOntology);
+        directTaxonChildDataGenerator.setParameters(new JSONObject("{\"ids\": [1234]}"));
 
         JSONObject fagusSylvaticaChildrenResponseData =
                 JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifFagusSylvaticaChildrenResponse.json");
@@ -80,6 +81,7 @@ public class TestGbifDirectTaxonChildDataGenerator {
     public void pagingSetup() throws FileNotFoundException {
         directTaxonChildDataGenerator = new GbifDirectTaxonChildDataGenerator();
         directTaxonChildDataGenerator.setOntology(dummyOntology);
+        directTaxonChildDataGenerator.setParameters(new JSONObject("{\"ids\": [1234]}"));
 
         JSONObject pageableApiResponse =
                 JsonDataReader.readJSONObjectFromFile("src/test/resources/data/gbif/gbifApiResponseWithPaging.json");

@@ -18,12 +18,13 @@ public class ConfigurationFactory {
 
     public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
             throws KeyException, ValueException {
+
+        JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
         String serializerClassName = getClassStringFromConfiguration(Configuration.KEY_SERIALIZER,
-                configuration.toJSONObject(), ontologyName);
+                ontologyConfiguration, ontologyName);
 
         Serializer serializer = (Serializer) ClassLoader.createInstanceOfClassFromName(serializerClassName);
 
-        JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
         if (ontologyConfiguration.has(KEY_OUTPUT_SINK)) {
             serializer.addSink((String) ontologyConfiguration.get(KEY_OUTPUT_SINK));
         }

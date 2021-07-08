@@ -47,6 +47,8 @@ public class Configuration {
     public void loadFromFile(String filePath) {
         String absoluteFilePath = stringPathToAbsolutePathString(filePath);
 
+        logger.info("Reading configuration \"" + absoluteFilePath + "\"...");
+
         try {
             configuration = reader.readConfigurationDataFrom(filePath);
         } catch (FileNotFoundException e) {
@@ -56,9 +58,9 @@ public class Configuration {
 
     public List<OntologyConfiguration> getOntologyConfigurations() {
         List<OntologyConfiguration> configurations = new ArrayList<>();
-        try {
-            JSONObject ontologyConfigurations = getOntologyDataInConfiguration();
+        JSONObject ontologyConfigurations = getOntologyDataInConfiguration();
 
+        try{
             Iterator<String> ontologyNameIterator = ontologyConfigurations.keys();
             while (ontologyNameIterator.hasNext()) {
                 String ontologyName = ontologyNameIterator.next();
@@ -67,7 +69,8 @@ public class Configuration {
                 configurations.add(ontologyConfiguration);
             }
         } catch (ValueException | KeyException ex) {
-            logger.error("No ontology configurations are given. Use the key \"" + KEY_ONTOLOGY_LISTS + "\" to define them!" );
+            logger.error(ex.getMessage());
+            System.exit(1);
         }
 
         return configurations;
@@ -105,7 +108,15 @@ public class Configuration {
     }
 
     private JSONObject getOntologyDataInConfiguration() {
-        return configuration.getJSONObject(Configuration.KEY_ONTOLOGY_LISTS);
+        JSONObject ontologyConfigurations = null;
+        try {
+            ontologyConfigurations = configuration.getJSONObject(Configuration.KEY_ONTOLOGY_LISTS);
+        } catch (JSONException ex) {
+            logger.error("No ontology configurations are given. Use the key \"" + KEY_ONTOLOGY_LISTS + "\" to define them!");
+            System.exit(1);
+        }
+
+        return ontologyConfigurations;
     }
 
     private String stringPathToAbsolutePathString(String pathString) {
