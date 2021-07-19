@@ -6,6 +6,9 @@ import de.biofid.services.serialization.Serializer;
 
 import java.util.List;
 
+/**
+ * The OntologyGenerator calls the DataServices and hands their output to the OntologyConnector.
+ */
 public class OntologyGenerator {
 
     private final String ontologyName;

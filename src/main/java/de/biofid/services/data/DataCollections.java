@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
+/** Some handy functions as static methods. */
 public class DataCollections {
 
     public static List<Triple> DataGeneratorToList(DataGenerator dataGenerator) {

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * A DataService orchestrates the calling of DataSource, DataGenerator, and DataProcessor, in this order.
+ */
 public class DataService {
 
     private static final Logger logger = LogManager.getLogger();
