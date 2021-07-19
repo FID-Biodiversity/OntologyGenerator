@@ -27,6 +27,9 @@ In the `config/general.json`, you find a test setting for the BIOfid Collector. 
 java -jar biofid-ontology-collector.jar
 ```
 
+### Namespaces
+If you want to define namespaces that are used in your ontology and should be abbreviated in the final output, you have to define them in a file `config/namespaces.json`. The file has to be exactly that. Currently, there is no need to make this customizable. Please open an issue, if you think otherwise. There is already an example namespace file given for you to modify.
+
 
 ## Concept
 This tool provides a highly configurable way to harvest a data source and generate an ontology from the data. For this purpose, the ontology processing is split into multiple steps, each processed by a DataService class. The user can define multiple of DataService classes, each adding more information from separate data sources or further processing the data already in the ontology.

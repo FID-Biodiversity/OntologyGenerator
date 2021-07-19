@@ -1,0 +1,7 @@
+{
+  "biofid": "https://www.biofid.de/bio-ontologies/",
+  "gbif-species": "https://www.gbif.org/species/",
+  "gbif-data": "https://www.gbif.org/dataset/",
+  "biofid-terms": "https://www.biofid.de/bio-ontologies/terms/",
+  "dwc": "http://rs.tdwg.org/dwc/terms/"
+}

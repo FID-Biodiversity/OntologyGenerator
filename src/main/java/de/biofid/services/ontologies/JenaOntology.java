@@ -9,6 +9,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class JenaOntology implements Ontology {
@@ -41,5 +42,16 @@ public class JenaOntology implements Ontology {
     public void serialize(Serializer serializer) {
         OutputStream byteOutput = serializer.getOutputStream();
         model.write(byteOutput, "RDF/XML");
+    }
+
+    @Override
+    public void setNamespaces(HashMap<String, String> namespaces) {
+        for (String namespace : namespaces.keySet()) {
+            setNamespace(namespace, namespaces.get(namespace));
+        }
+    }
+
+    public void setNamespace(String abbreviation, String url) {
+        model.setNsPrefix(abbreviation, url);
     }
 }

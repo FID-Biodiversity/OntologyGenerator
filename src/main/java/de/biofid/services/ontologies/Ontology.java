@@ -3,6 +3,7 @@ package de.biofid.services.ontologies;
 import de.biofid.services.data.Triple;
 import de.biofid.services.serialization.Serializer;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 public interface Ontology {
@@ -11,4 +12,5 @@ public interface Ontology {
     void addTriple(Triple triple);
     void removeTriple(Triple triple);
     void serialize(Serializer serializer);
+    void setNamespaces(HashMap<String, String> namespaces);
 }
