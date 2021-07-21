@@ -1,5 +1,7 @@
 package de.biofid.services.data;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 
@@ -10,4 +12,7 @@ import java.io.IOException;
 public interface DataSource {
     /** This method should return data that correspond to the given string. */
     Object getDataForString(String string) throws IOException;
+
+    /** This method will receive the user configuration for this DataProcessor as defined in the config file. */
+    default void setParameters(JSONObject parameters) {};
 }
