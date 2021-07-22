@@ -9,21 +9,21 @@ This is currently under development. The main framework is implemented.
 ### Compiling
 To compile the code simply run
 
-```
+```shell
 mvn package
 ```
 
 This will also call the test suite.
 To avoid running also the (fast) tests, you can call:
 
-```
+```shell
 mvn package -DskipTests
 ```
 
 ## Usage
 In the `config/general.json`, you find a test setting for the BIOfid Collector. The general configuration is expected to be at the mentioned path. Running the application is easy as:
 
-```
+```shell
 java -jar biofid-ontology-collector.jar
 ```
 
@@ -46,6 +46,31 @@ The DataGenerator uses the input from the DataSource to generate Triples from it
 #### DataProcessor
 The DataProcessor is responsible for any meaningful mappings of the Triple attributes (Subject, Predicate, Object). Also, other, more sophisticated, data processing should be in this class.
 
+##### Why not having lists of DataProcessors?
+Currently, you have to define multiple DataServices, even if you only use the DataProcessor in each (leaving DataSource and DataGenerator empty). This comes from me having currently no idea how to parameterize the DataProcessors in this list appropriately.
+
+So, when having this configuration:
+
+```json
+...
+"services": [
+  {
+    "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
+    "dataGeneratorClass": "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
+    "dataProcessorClass": [
+      "de.biofid.services.data.processors.FilterDataProcessor",
+      "de.biofid.services.data.processors.PredicateMappingDataProcessor"
+    ]
+    ...
+  }
+]
+```
+
+How can you set the configuration of e.g., DataProcessor #2 but not of DataProcessor #1 (perhaps it does not need configurations)? Also, it has to stay readable and maintainable. So, if you have a cool idea, please do not hesitate to open an issue!
+
+## Licence
+![AGPL-3.0 License](https://www.gnu.org/graphics/agplv3-88x31.png)
+
 ## Citation
 Please cite the Ontology Collector in your publication with:
 ```
@@ -54,7 +79,7 @@ Pachzelt A. (2021). BIOfid Ontology Collector [Source Code]. Available from http
 
 BibTeX:
 ```
-@misc{pachzelt_2021, title={BIOfid Ontology Collector [Source Code]}, url={https://dev.git.ub.uni-frankfurt.de/ublabs/OntologyCollector}, author={Pachzelt, Adrian}, year={2021}} 
+@misc{pachzelt2021, title={BIOfid Ontology Collector [Source Code]}, url={https://dev.git.ub.uni-frankfurt.de/ublabs/OntologyCollector}, author={Pachzelt, Adrian}, year={2021}} 
 ```
 
 ## TODO

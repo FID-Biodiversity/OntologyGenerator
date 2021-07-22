@@ -6,7 +6,7 @@
       "services": [
         {
           "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
-          "dataGeneratorClass": "de.biofid.services.data.gbif.generators.GbifGenericDataGenerator",
+          "dataGeneratorClass": "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
           "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
           "parameters": {
             "dataGenerator": {"ids": ["2882316"]},
