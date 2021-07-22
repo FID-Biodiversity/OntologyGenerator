@@ -1,0 +1,6 @@
+{
+  "unwantedPredicates": [
+    "gbif:foo",
+    "gbif:bar"
+  ]
+}

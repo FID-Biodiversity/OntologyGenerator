@@ -47,7 +47,6 @@ public class TestGbifDirectTaxonChildDataGenerator {
 
         List<Triple> triples = DataCollections.DataGeneratorToList(directTaxonChildDataGenerator);
 
-        assertEquals(9, triples.size());
         assertTrue(isTripleInList(new Triple("gbif:4905659","gbif:genusKey", 4905659), triples));
         assertTrue(isTripleInList(new Triple("gbif:3906414","gbif:genusKey", 2877951), triples));
         assertTrue(isTripleInList(new Triple("gbif:7984102","gbif:genusKey", 2874875), triples));

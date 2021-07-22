@@ -7,7 +7,6 @@ import de.biofid.services.exceptions.ValueException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class TestServiceFactory {
 
         DataGenerator generator = ServiceFactory.createDataGenerator(dataServiceConfiguration, dataSource);
 
-        assertEquals("de.biofid.services.data.gbif.generators.GbifGenericDataGenerator", generator.getClass().getName());
+        assertEquals("de.biofid.services.data.generators.gbif.GbifGenericDataGenerator", generator.getClass().getName());
 
         List<Triple> triples = DataCollections.DataGeneratorToList(generator);
         assertEquals(41, triples.size());
@@ -56,7 +55,7 @@ public class TestServiceFactory {
     public static void setup() {
         DataServiceConfiguration configuration = new DataServiceConfiguration(
                 "de.biofid.services.dummy.DummyDataSource",
-                "de.biofid.services.data.gbif.generators.GbifGenericDataGenerator",
+                "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
                 "de.biofid.services.data.processors.PredicateMappingDataProcessor"
         );
 
