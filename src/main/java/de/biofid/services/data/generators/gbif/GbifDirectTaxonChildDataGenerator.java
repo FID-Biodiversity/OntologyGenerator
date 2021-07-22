@@ -1,4 +1,4 @@
-package de.biofid.services.data.gbif.generators;
+package de.biofid.services.data.generators.gbif;
 
 import de.biofid.services.data.Triple;
 import de.biofid.services.data.gbif.GbifUriFactory;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Calls data from the GBIF API URL {BASE_API}/species/{SPECIES_ID}/children .
+ * Returns all (!) data received from the API as Triple objects.
  */
 public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator {
 

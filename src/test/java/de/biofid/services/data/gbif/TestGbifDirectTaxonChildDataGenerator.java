@@ -4,7 +4,7 @@ import de.biofid.services.data.DataCollections;
 import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.JsonDataReader;
 import de.biofid.services.data.Triple;
-import de.biofid.services.data.gbif.generators.GbifDirectTaxonChildDataGenerator;
+import de.biofid.services.data.generators.gbif.GbifDirectTaxonChildDataGenerator;
 import de.biofid.services.dummy.DummyDataSource;
 import de.biofid.services.dummy.DummyOntology;
 import org.json.JSONObject;
@@ -47,6 +47,7 @@ public class TestGbifDirectTaxonChildDataGenerator {
 
         List<Triple> triples = DataCollections.DataGeneratorToList(directTaxonChildDataGenerator);
 
+        assertEquals(9, triples.size());
         assertTrue(isTripleInList(new Triple("gbif:4905659","gbif:genusKey", 4905659), triples));
         assertTrue(isTripleInList(new Triple("gbif:3906414","gbif:genusKey", 2877951), triples));
         assertTrue(isTripleInList(new Triple("gbif:7984102","gbif:genusKey", 2874875), triples));

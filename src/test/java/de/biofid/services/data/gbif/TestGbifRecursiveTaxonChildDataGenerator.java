@@ -4,7 +4,7 @@ import de.biofid.services.data.DataCollections;
 import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.JsonDataReader;
 import de.biofid.services.data.Triple;
-import de.biofid.services.data.gbif.generators.GbifRecursiveTaxonChildDataGenerator;
+import de.biofid.services.data.generators.gbif.GbifRecursiveTaxonChildDataGenerator;
 import de.biofid.services.dummy.DummyDataSource;
 import de.biofid.services.dummy.DummyOntology;
 import org.json.JSONObject;

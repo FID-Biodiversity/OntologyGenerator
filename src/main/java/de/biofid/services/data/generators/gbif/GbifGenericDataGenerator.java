@@ -1,4 +1,4 @@
-package de.biofid.services.data.gbif.generators;
+package de.biofid.services.data.generators.gbif;
 
 import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.DataSource;
@@ -20,6 +20,9 @@ import java.util.stream.StreamSupport;
 /**
  * A highly generic data class to generate Triple objects from the GBIF API.
  * It can be easily used as base class for most GBIF API calls.
+ * The class handles paging of multi-page API responses.
+ *
+ * Returns all (!) data received from the API as Triple objects.
  */
 public class GbifGenericDataGenerator implements DataGenerator {
 
@@ -47,8 +50,8 @@ public class GbifGenericDataGenerator implements DataGenerator {
     protected Iterator<String> gbifIdIterator = null;
     protected int currentOffset = OFFSET_DEFAULT;
 
-    private String currentProcessedTaxonId;
-    private boolean isSetup = false;
+    protected String currentProcessedTaxonId;
+    protected boolean isSetup = false;
 
     /**
      * Iterates the data of the DataSource.
@@ -81,6 +84,10 @@ public class GbifGenericDataGenerator implements DataGenerator {
 
     public String getGbifApiBaseUrl() {
         return GBIF_API_BASE_URL;
+    }
+
+    public String createGbifApiUrlFromGbifId(String gbifId) {
+        return getGbifApiBaseUrl() + "/species/" + gbifId + getRequestParametersAsString();
     }
 
     protected void setup() {
@@ -193,13 +200,9 @@ public class GbifGenericDataGenerator implements DataGenerator {
                 .collect(Collectors.toList());
     }
 
-    protected String createGbifApiUrlFromGbifId(String gbifId) {
-        return getGbifApiBaseUrl() + "/species/" + gbifId + getRequestParametersAsString();
-    }
-
     protected String getRequestParametersAsString() {
         return "?" + LIMIT_PARAMETER_STRING + "=" + NUMBER_OF_DATASETS_PER_REQUEST +
-                "&" + OFFSET_PARAMETER_STRING + "=" + currentOffset;
+                "&" + OFFSET_PARAMETER_STRING + "=" + Math.max(currentOffset, 0);
     }
 
     protected Triple createTriple(String subject, String predicate, Object object) {

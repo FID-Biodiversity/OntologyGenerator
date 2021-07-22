@@ -1,6 +1,6 @@
 package de.biofid.services.data;
 
-import de.biofid.services.data.gbif.generators.GbifDirectTaxonChildDataGenerator;
+import de.biofid.services.data.generators.gbif.GbifDirectTaxonChildDataGenerator;
 import de.biofid.services.data.processors.PredicateMappingDataProcessor;
 import de.biofid.services.dummy.DummyDataSource;
 import de.biofid.services.dummy.DummyOntology;

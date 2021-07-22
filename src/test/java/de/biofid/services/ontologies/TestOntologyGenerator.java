@@ -4,7 +4,7 @@ import de.biofid.services.data.DataGenerator;
 import de.biofid.services.data.DataService;
 import de.biofid.services.data.JsonDataReader;
 import de.biofid.services.data.Triple;
-import de.biofid.services.data.gbif.generators.GbifGenericDataGenerator;
+import de.biofid.services.data.generators.gbif.GbifGenericDataGenerator;
 import de.biofid.services.data.processors.EmptyDataProcessor;
 import de.biofid.services.dummy.DummyDataSource;
 import de.biofid.services.dummy.DummyOntology;

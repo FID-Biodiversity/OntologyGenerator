@@ -1,0 +1,6 @@
+{
+  "properties": [
+    "gbif:phylumKey",
+    "gbif:kingdomKey"
+  ]
+}
