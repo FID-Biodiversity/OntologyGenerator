@@ -10,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Calls a web API and returns a JSONObject as response.
+ */
 public class JsonHttpApi extends Http {
     @Override
     public JSONObject getDataForString(String string) throws IOException {

@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 
+/**
+ * Calls any given URL and returns the response.
+ */
 public class Http implements DataSource {
 
     @Override

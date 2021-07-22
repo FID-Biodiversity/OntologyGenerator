@@ -13,6 +13,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
+/**
+ * Filter the Triple objects according to the given configuration.
+ * Hence, returns for the postProcessTriple(Triple) false, if the predicate is given in the "unwantedPredicates" list.
+ * True, otherwise, letting the Triple be stored in the ontology.
+ */
 public class FilterDataProcessor implements DataProcessor {
 
     protected static final Logger logger = LogManager.getLogger();
