@@ -4,14 +4,14 @@ import de.biofid.services.configuration.reader.ConfigurationReader;
 import de.biofid.services.configuration.reader.JsonConfigurationReader;
 import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
+import de.biofid.services.factories.ClassLoader;
 import de.biofid.services.factories.ConfigurationFactory;
 import de.biofid.services.serialization.FileSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestConfigurationFactory {
@@ -29,7 +29,8 @@ public class TestConfigurationFactory {
     public void testCreateOntologyConfiguration() throws ValueException, KeyException {
         Configuration configuration = setupConfiguration();
 
-        OntologyConfiguration ontologyConfiguration = ConfigurationFactory.createOntologyConfiguration("Occurrences", configuration);
+        OntologyConfiguration ontologyConfiguration = ConfigurationFactory.createOntologyConfiguration(
+                "Occurrences", configuration);
 
         assertEquals("Occurrences", ontologyConfiguration.ontologyName);
         assertTrue(ontologyConfiguration.serializer instanceof FileSerializer);
@@ -41,12 +42,22 @@ public class TestConfigurationFactory {
                 "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
                 "de.biofid.services.data.processors.FilterDataProcessor"
                 );
+    }
 
-        dataServiceConfiguration = ontologyConfiguration.dataServiceConfigurations.get(1);
+    @Test
+    public void testDefaultDataServiceClasses() throws ValueException, KeyException {
+        Configuration configuration = setupConfiguration();
+
+        OntologyConfiguration ontologyConfiguration = ConfigurationFactory.createOntologyConfiguration(
+                "Occurrences", configuration);
+
+        DataServiceConfiguration dataServiceConfiguration = ontologyConfiguration.dataServiceConfigurations.get(1);
         assertDataServiceClassNames(dataServiceConfiguration,
-                null,
-                null,
+                "de.biofid.services.data.sources.EmptyDataSource",
+                "de.biofid.services.data.generators.OntologyDataGenerator",
                 "de.biofid.services.data.processors.PredicateMappingDataProcessor");
+
+        assertDataServicesAreInstantiable(dataServiceConfiguration);
     }
 
     private void assertDataServiceClassNames(DataServiceConfiguration dataServiceConfiguration,
@@ -55,6 +66,12 @@ public class TestConfigurationFactory {
         assertEquals(dataSourceClassString, dataServiceConfiguration.dataSourceClassString);
         assertEquals(dataGeneratorClassString, dataServiceConfiguration.dataGeneratorClassString);
         assertEquals(dataProcessorClassString, dataServiceConfiguration.dataProcessorClassString);
+    }
+
+    private void assertDataServicesAreInstantiable(DataServiceConfiguration dataServiceConfiguration) throws ValueException {
+        assertNotNull(ClassLoader.createInstanceOfClassFromName(dataServiceConfiguration.dataSourceClassString));
+        assertNotNull(ClassLoader.createInstanceOfClassFromName(dataServiceConfiguration.dataGeneratorClassString));
+        assertNotNull(ClassLoader.createInstanceOfClassFromName(dataServiceConfiguration.dataProcessorClassString));
     }
 
     private Configuration setupConfiguration() {

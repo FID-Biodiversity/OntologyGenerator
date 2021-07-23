@@ -32,8 +32,8 @@ public class Configuration {
 
     protected static final Logger logger = LogManager.getLogger();
 
-    private final ConfigurationReader reader;
-    private JSONObject configuration ;
+    protected final ConfigurationReader reader;
+    protected JSONObject configuration ;
 
     public Configuration(ConfigurationReader configurationReader) {
         if (configurationReader == null) {

@@ -21,7 +21,7 @@ public class DummyOntology implements Ontology {
 
     @Override
     public Iterator<Triple> iterateTriples() {
-        return null;
+        return triples.iterator();
     }
 
     @Override

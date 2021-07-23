@@ -16,6 +16,10 @@ import java.util.List;
 public class ConfigurationFactory {
     private static final String KEY_OUTPUT_SINK = "output";
 
+    private static final String DATA_SOURCE_DEFAULT_CLASS = "de.biofid.services.data.sources.EmptyDataSource";
+    private static final String DATA_GENERATOR_DEFAULT_CLASS = "de.biofid.services.data.generators.OntologyDataGenerator";
+    private static final String DATA_PROCESSOR_DEFAULT_CLASS = "de.biofid.services.data.processor.EmptyDataProcessor";
+
     public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
             throws KeyException, ValueException {
 
@@ -50,13 +54,20 @@ public class ConfigurationFactory {
     }
 
     public static DataServiceConfiguration createDataServiceConfigurationObjectFromJSONObject(JSONObject dataServiceConfiguration) {
-        String dataSourceClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_SOURCE_CLASS_NAME, null);
-        String dataGeneratorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME, null);
-        String dataProcessorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME, null);
+        return createDataServiceConfigurationObjectFromJSONObject(dataServiceConfiguration,
+                DATA_SOURCE_DEFAULT_CLASS, DATA_GENERATOR_DEFAULT_CLASS, DATA_PROCESSOR_DEFAULT_CLASS);
+    }
+
+    public static DataServiceConfiguration createDataServiceConfigurationObjectFromJSONObject(
+            JSONObject dataServiceConfiguration, String dataSourceClassDefault, String dataGeneratorClassDefault,
+            String dataProcessorClassDefault) {
+        String dataSourceClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_SOURCE_CLASS_NAME, dataSourceClassDefault);
+        String dataGeneratorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME, dataGeneratorClassDefault);
+        String dataProcessorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME, dataProcessorClassDefault);
 
         JSONObject dataServiceParameters;
         if (dataServiceConfiguration.has(Configuration.KEY_DATA_SERVICE_PARAMETERS)) {
-             dataServiceParameters = dataServiceConfiguration.getJSONObject(Configuration.KEY_DATA_SERVICE_PARAMETERS);
+            dataServiceParameters = dataServiceConfiguration.getJSONObject(Configuration.KEY_DATA_SERVICE_PARAMETERS);
         } else {
             dataServiceParameters = new JSONObject();
         }
