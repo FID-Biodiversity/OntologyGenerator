@@ -1,14 +1,14 @@
 package de.biofid.services.configuration;
 
 import de.biofid.services.configuration.reader.JsonConfigurationReader;
+import de.biofid.services.exceptions.KeyException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestConfiguration {
 
@@ -32,7 +32,7 @@ public class TestConfiguration {
     }
 
     @Test
-    public void testGetOntologyConfigurations() {
+    public void testGetOntologyConfigurations() throws KeyException {
         Configuration configuration = new Configuration(new JsonConfigurationReader());
         configuration.loadFromFile(JSON_CONFIGURATION_FILE);
 
@@ -46,7 +46,14 @@ public class TestConfiguration {
         assertTrue(ontologyNames.contains("Occurrences"));
         assertTrue(ontologyNames.contains("Systematics"));
 
-        assertEquals(1, ontologyConfigurations.get(0).dataServiceConfigurations.size());
-        assertEquals(1, ontologyConfigurations.get(1).dataServiceConfigurations.size());
+        JSONObject occurrencesOntologyConfiguration = configuration.getConfigurationForOntologyName("Occurrences");
+        assertNumberOfDataServicesInConfiguration(occurrencesOntologyConfiguration, 2);
+
+        JSONObject systematicsOntologyConfiguration = configuration.getConfigurationForOntologyName("Systematics");
+        assertNumberOfDataServicesInConfiguration(systematicsOntologyConfiguration, 1);
+    }
+
+    private void assertNumberOfDataServicesInConfiguration(JSONObject configuration, int expectedNumberOfDataServices) {
+        assertEquals(expectedNumberOfDataServices, configuration.getJSONArray("services").length());
     }
 }

@@ -5,9 +5,19 @@
       "output": "/foo/bar/occurrences-ontology.owl",
       "services": [
         {
-          "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
-          "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
-          "dataProcessorClass": "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
+          "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
+          "dataGeneratorClass": "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
+          "dataProcessorClass": "de.biofid.services.data.processors.FilterDataProcessor",
+          "parameters": {
+            "dataGenerator": {"ids": ["2882316"]},
+            "dataProcessor": {"configurationFile": "config/generators/predicate-filter.json"}
+          }
+        },
+        {
+          "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
+          "parameters": {
+            "dataProcessor": {"configurationFile": "config/gbif-predicate-mapping.json"}
+          }
         }
       ]
     },
@@ -16,8 +26,8 @@
       "services": [
         {
           "dataSourceClass": "de.biofid.services.crawler.gbif.GbifIdDataSource",
-          "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurencesGenerator",
-          "dataProcessorClass": "de.biofid.services.crawler.gbif.GbifOccurencesProcessor"
+          "dataGeneratorClass": "de.biofid.services.crawler.gbif.GbifOccurrencesGenerator",
+          "dataProcessorClass": "de.biofid.services.crawler.gbif.GbifOccurrencesGenerator"
         }
       ]
     }

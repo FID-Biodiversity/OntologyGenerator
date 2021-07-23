@@ -20,7 +20,7 @@ public class TestConfigurationFactory {
         Configuration configuration = setupConfiguration();
 
         List<DataServiceConfiguration> dataServiceConfigurations =
-                ConfigurationFactory.createDataServiceConfigurationsForOntologyName("Occurrences", configuration);
+                ConfigurationFactory.createDataServiceConfigurationsForOntologyName("Systematics", configuration);
 
         assertEquals(1, dataServiceConfigurations.size());
     }
@@ -33,12 +33,28 @@ public class TestConfigurationFactory {
 
         assertEquals("Occurrences", ontologyConfiguration.ontologyName);
         assertTrue(ontologyConfiguration.serializer instanceof FileSerializer);
-        assertEquals(1, ontologyConfiguration.dataServiceConfigurations.size());
+        assertEquals(2, ontologyConfiguration.dataServiceConfigurations.size());
 
         DataServiceConfiguration dataServiceConfiguration = ontologyConfiguration.dataServiceConfigurations.get(0);
-        assertEquals("de.biofid.services.crawler.gbif.GbifIdDataSource", dataServiceConfiguration.dataSourceClassString);
-        assertEquals("de.biofid.services.crawler.gbif.GbifOccurencesGenerator", dataServiceConfiguration.dataGeneratorClassString);
-        assertEquals("de.biofid.services.crawler.gbif.GbifOccurencesProcessor", dataServiceConfiguration.dataProcessorClassString);
+        assertDataServiceClassNames(dataServiceConfiguration,
+                "de.biofid.services.data.sources.http.JsonHttpApi",
+                "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
+                "de.biofid.services.data.processors.FilterDataProcessor"
+                );
+
+        dataServiceConfiguration = ontologyConfiguration.dataServiceConfigurations.get(1);
+        assertDataServiceClassNames(dataServiceConfiguration,
+                null,
+                null,
+                "de.biofid.services.data.processors.PredicateMappingDataProcessor");
+    }
+
+    private void assertDataServiceClassNames(DataServiceConfiguration dataServiceConfiguration,
+                                             String dataSourceClassString, String dataGeneratorClassString,
+                                             String dataProcessorClassString) {
+        assertEquals(dataSourceClassString, dataServiceConfiguration.dataSourceClassString);
+        assertEquals(dataGeneratorClassString, dataServiceConfiguration.dataGeneratorClassString);
+        assertEquals(dataProcessorClassString, dataServiceConfiguration.dataProcessorClassString);
     }
 
     private Configuration setupConfiguration() {

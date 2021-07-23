@@ -50,9 +50,9 @@ public class ConfigurationFactory {
     }
 
     public static DataServiceConfiguration createDataServiceConfigurationObjectFromJSONObject(JSONObject dataServiceConfiguration) {
-        String dataSourceClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_SOURCE_CLASS_NAME);
-        String dataGeneratorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME);
-        String dataProcessorClassName = dataServiceConfiguration.getString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME);
+        String dataSourceClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_SOURCE_CLASS_NAME, null);
+        String dataGeneratorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_GENERATOR_CLASS_NAME, null);
+        String dataProcessorClassName = dataServiceConfiguration.optString(Configuration.KEY_DATA_PROCESSOR_CLASS_NAME, null);
 
         JSONObject dataServiceParameters;
         if (dataServiceConfiguration.has(Configuration.KEY_DATA_SERVICE_PARAMETERS)) {

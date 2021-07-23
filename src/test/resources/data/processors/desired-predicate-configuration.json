@@ -1,0 +1,6 @@
+{
+  "desiredPredicates": [
+    "gbif:foo",
+    "gbif:bar"
+  ]
+}

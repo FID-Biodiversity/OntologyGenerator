@@ -12,8 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFilterDataProcessor {
 
-    private static final String TEST_CONFIGURATION_FILE_PATH = "src/test/resources/data/processors/unwanted-predicate-configuration.json";
+    private static final String TEST_UNWANTED_PREDICATES_CONFIGURATION_FILE_PATH =
+            "src/test/resources/data/processors/unwanted-predicate-configuration.json";
+    private static final String TEST_DESIRED_PREDICATES_CONFIGURATION_FILE_PATH =
+            "src/test/resources/data/processors/desired-predicate-configuration.json";
 
+    private Set<String> desiredPredicates;
     private Set<String> unwantedPredicates;
     private FilterDataProcessor filterProcessor;
 
@@ -25,13 +29,13 @@ public class TestFilterDataProcessor {
 
     @Test
     public void testLoadConfigurationDataFromFile() {
-        filterProcessor.loadConfigurationDataFromFile(TEST_CONFIGURATION_FILE_PATH);
+        filterProcessor.loadConfigurationDataFromFile(TEST_UNWANTED_PREDICATES_CONFIGURATION_FILE_PATH);
         assertShallTripleSurviveWithTestTriples();
     }
 
     @Test
-    public void testPostProcessTriple() {
-        filterProcessor.loadConfigurationDataFromFile(TEST_CONFIGURATION_FILE_PATH);
+    public void testPostProcessTripleWithUnwantedPredicates() {
+        filterProcessor.loadConfigurationDataFromFile(TEST_UNWANTED_PREDICATES_CONFIGURATION_FILE_PATH);
 
         Triple triple = new Triple("gbif:1234", "gbif:taxonID", "gbif:1234");
         assertTrue(filterProcessor.postProcessTriple(triple));
@@ -43,6 +47,39 @@ public class TestFilterDataProcessor {
         assertFalse(filterProcessor.postProcessTriple(triple));
     }
 
+    @Test
+    public void testPostProcessTripleWithDesiredPredicates() {
+        filterProcessor.loadConfigurationDataFromFile(TEST_DESIRED_PREDICATES_CONFIGURATION_FILE_PATH);
+
+        Triple triple = new Triple("gbif:1234", "gbif:taxonID", "gbif:1234");
+        assertFalse(filterProcessor.postProcessTriple(triple));
+
+        triple = new Triple("gbif:1234", "gbif:foo", "gbif:1234");
+        assertTrue(filterProcessor.postProcessTriple(triple));
+
+        triple = new Triple("gbif:1234", "gbif:bar", "gbif:1234");
+        assertTrue(filterProcessor.postProcessTriple(triple));
+    }
+
+    @Test
+    public void testPostProcessTripleWithMultiplePredicateKeywords() {
+        filterProcessor.setUnwantedPredicates(unwantedPredicates);
+        filterProcessor.setDesiredPredicates(desiredPredicates);
+
+        Triple triple = new Triple("gbif:1234", "gbif:taxonID", "gbif:1234");
+        assertTrue(filterProcessor.postProcessTriple(triple));
+
+        triple = new Triple("gbif:1234", "gbif:foo", "gbif:1234");
+        assertTrue(filterProcessor.postProcessTriple(triple));
+
+        triple = new Triple("gbif:1234", "gbif:bar", "gbif:1234");
+        assertFalse(filterProcessor.postProcessTriple(triple));
+
+        triple = new Triple("gbif:1234", "gbif:notInLists", "gbif:1234");
+        assertFalse(filterProcessor.postProcessTriple(triple));
+    }
+
+
     @BeforeEach
     public void setup() {
         filterProcessor = new FilterDataProcessor();
@@ -50,6 +87,10 @@ public class TestFilterDataProcessor {
         unwantedPredicates = new HashSet<>();
         unwantedPredicates.add("gbif:foo");
         unwantedPredicates.add("gbif:bar");
+
+        desiredPredicates = new HashSet<>();
+        desiredPredicates.add("gbif:taxonID");
+        desiredPredicates.add("gbif:foo");
     }
 
     private void assertShallTripleSurviveWithTestTriples() {

@@ -27,11 +27,35 @@ In the `config/general.json`, you find a test setting for the BIOfid Collector. 
 java -jar biofid-ontology-collector.jar
 ```
 
+### Configuration
+There is a `config` folder, holding all necessary configuration files for the BIOfid Ontology Collector to run. The general setup happens in the `general.json` configuration file. There you define the name and the data services of the ontologies. Each data service configuration takes the (optional) kewords `dataSourceClass`, `dataGeneratorClass`, and `dataProcessorClass`. However, at least a valid `dataGeneratorClass` or `dataProcessorClass` has to be given! 
+
+Additionally, the data service configuration takes the (also optional) keyword `parameters`. The latter holds the configuration data that is handed directly to the respective processing unit.
+
+E.g., this configuration:
+
+```json
+...
+"dataProcessorClass": "de.biofid.services.data.processors.FilterDataProcessor",
+"parameters": {
+    "dataGenerator": {"ids": ["2882316"]},
+    "dataProcessor": {"configurationFile": "config/generators/predicate-filter.json"}
+}
+```
+
+will hand the data in the `parameters` -> `dataProcessor` section to the unit instantiated by the `dataProcessorClass` (in this case a `FilterDataProcessor`).
+
+Please refer the example configuration in the `config` folder for more details.
+
 ### Namespaces
 If you want to define namespaces that are used in your ontology and should be abbreviated in the final output, you have to define them in a file `config/namespaces.json`. The file has to be exactly that. Currently, there is no need to make this customizable. Please open an issue, if you think otherwise. There is already an example namespace file given for you to modify.
 
+### Filter triples
+When applying the `FilterDataProcessor`, you can filter out triples. You can either filter for desired Predicates (i.e., storing only these in the ontology), giving the key `desiredPredicates` in a configuration file that is passed to the DataProcessor, or filter out unwanted Predicates with the `unwantedPredicates` key. Each of the keywords should be followed by a list of predicate terms (see `config/predicate-filter.json` for an example).
 
-## Concept
+It is redundant to give both keys in the same configuration file. If you give a list with `desiredPredicates`, only these will be stored in the ontology. All others will be sorted out. If both keys are given, `desiredPredicates` has precedence!
+
+## Concepts
 This tool provides a highly configurable way to harvest a data source and generate an ontology from the data. For this purpose, the ontology processing is split into multiple steps, each processed by a DataService class. The user can define multiple of DataService classes, each adding more information from separate data sources or further processing the data already in the ontology.
 
 ### DataService
@@ -66,7 +90,7 @@ So, when having this configuration:
 ]
 ```
 
-How can you set the configuration of e.g., DataProcessor #2 but not of DataProcessor #1 (perhaps it does not need configurations)? Also, it has to stay readable and maintainable. So, if you have a cool idea, please do not hesitate to open an issue!
+How can you set the configuration of e.g., DataProcessor #2 but not of DataProcessor #1 (perhaps it does not need configurations)? Also, it has to stay readable and maintainable (both code and configuration file). So, if you have a cool idea, please do not hesitate to open an issue or make a Pull Request!
 
 ## Licence
 ![AGPL-3.0 License](https://www.gnu.org/graphics/agplv3-88x31.png)
