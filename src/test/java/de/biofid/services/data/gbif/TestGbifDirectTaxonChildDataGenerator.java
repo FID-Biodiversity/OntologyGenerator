@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.biofid.services.data.DataCollections.isTripleInList;
+import static de.biofid.services.data.DataCollections.isTripleInCollection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,11 +30,11 @@ public class TestGbifDirectTaxonChildDataGenerator {
 
         List<Triple> triples = DataCollections.DataGeneratorToList(directTaxonChildDataGenerator);
 
-        assertTrue(isTripleInList(new Triple("gbif:7984102","gbif:taxonID", "gbif:7984102"), triples));
-        assertTrue(isTripleInList(new Triple("gbif:4928315","gbif:taxonID", "gbif:4928315"), triples));
-        assertTrue(isTripleInList(new Triple("gbif:3906420","gbif:taxonID", "gbif:3906420"), triples));
-        assertTrue(isTripleInList(new Triple("gbif:3906414","gbif:taxonID", "gbif:3906414"), triples));
-        assertTrue(isTripleInList(new Triple("gbif:3906351","gbif:taxonID", "gbif:3906351"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:7984102","gbif:taxonID", "gbif:7984102"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4928315","gbif:taxonID", "gbif:4928315"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:3906420","gbif:taxonID", "gbif:3906420"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:3906414","gbif:taxonID", "gbif:3906414"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:3906351","gbif:taxonID", "gbif:3906351"), triples));
 
         assertEquals(2, dummyDataSource.requestedStrings.size());
         assertEquals("https://api.gbif.org/v1/species/12345/children?limit=20&offset=0", dummyDataSource.requestedStrings.get(0));
@@ -47,10 +47,10 @@ public class TestGbifDirectTaxonChildDataGenerator {
 
         List<Triple> triples = DataCollections.DataGeneratorToList(directTaxonChildDataGenerator);
 
-        assertTrue(isTripleInList(new Triple("gbif:4905659","gbif:genusKey", 4905659), triples));
-        assertTrue(isTripleInList(new Triple("gbif:3906414","gbif:genusKey", 2877951), triples));
-        assertTrue(isTripleInList(new Triple("gbif:7984102","gbif:genusKey", 2874875), triples));
-        assertTrue(isTripleInList(new Triple("gbif:4928315","gbif:genusKey", 2874875), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4905659","gbif:genusKey", 4905659), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:3906414","gbif:genusKey", 2877951), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:7984102","gbif:genusKey", 2874875), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4928315","gbif:genusKey", 2874875), triples));
 
         assertEquals(3, dummyDataSource.requestedStrings.size());
         assertEquals("https://api.gbif.org/v1/species/12345/children?limit=20&offset=0", dummyDataSource.requestedStrings.get(0));

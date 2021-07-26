@@ -18,6 +18,7 @@ public interface Ontology {
 
     void addTriple(Triple triple);
     void removeTriple(Triple triple);
+    boolean hasTriple(Triple triple);
 
     /** Write the ontology to the given serializer. */
     void serialize(Serializer serializer);

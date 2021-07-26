@@ -89,7 +89,7 @@ public class GbifDirectTaxonChildDataGenerator extends GbifGenericDataGenerator 
 
     @Override
     protected boolean areAllExpectedParametersSet() {
-        return ontology != null && super.areAllExpectedParametersSet();
+        return ontology != null || super.areAllExpectedParametersSet();
     }
 
     protected String getGbifIdFromDataset(JSONObject taxonData) {

@@ -1,6 +1,7 @@
 package de.biofid.services.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,7 +20,7 @@ public class DataCollections {
         return triples;
     }
 
-    public static boolean isTripleInList(Triple triple, List<Triple> triples) {
+    public static boolean isTripleInCollection(Triple triple, Collection<Triple> triples) {
         return triples.stream()
                 .filter(obj -> obj.subject.equals(triple.subject)
                         && obj.predicate.equals(triple.predicate)

@@ -41,6 +41,10 @@ public class OntologyConnector {
         ontology.addTriple(triple);
     }
 
+    public void removeTripleFromOntology(Triple triple) {
+        ontology.removeTriple(triple);
+    }
+
     public void serializeOntology(Serializer serializer) {
         ontology.serialize(serializer);
     }

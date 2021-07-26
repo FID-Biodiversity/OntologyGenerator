@@ -3,14 +3,17 @@ package de.biofid.services.ontologies;
 import de.biofid.services.data.Triple;
 import de.biofid.services.deserialization.JsonFileReader;
 import de.biofid.services.dummy.DummySerializer;
+import org.apache.jena.atlas.iterator.Iter;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJenaOntology {
 
@@ -30,6 +33,23 @@ public class TestJenaOntology {
         assertTrue(serializedString.contains("gbif-species=\"https://www.gbif.org/species/\""));
         assertTrue(serializedString.contains("biofid-terms:gbifUrl"));
         assertTrue(serializedString.contains("https://www.biofid.de/bio-ontologies/Tracheophyta/gbif/123456"));
+    }
+
+    @Test
+    public void testIterateResourceUris() {
+        Iterator<String> uriIterator = ontology.iterateResourceUris();
+        assertEquals("https://www.biofid.de/bio-ontologies/Tracheophyta/gbif/123456", uriIterator.next());
+        assertThrows(NoSuchElementException.class, uriIterator::next);
+    }
+
+    @Test
+    public void testSerialize() {
+        DummySerializer serializer = new DummySerializer();
+        ontology.serialize(serializer);
+
+        String serializedString = serializer.getSerializedString();
+        assertTrue(serializedString.contains("https://www.biofid.de/bio-ontologies/Tracheophyta/gbif/123456"));
+        assertTrue(serializedString.contains("https://www.gbif.org/species/123456"));
     }
 
     @BeforeEach

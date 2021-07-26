@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.biofid.services.data.DataCollections.isTripleInList;
+import static de.biofid.services.data.DataCollections.isTripleInCollection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,8 +28,8 @@ public class TestGbifRecursiveTaxonChildDataGenerator {
 
         List<Triple> triples = DataCollections.DataGeneratorToList(generator);
 
-        assertTrue(isTripleInList(new Triple("gbif:4928315","gbif:genusKey", 2874875), triples));
-        assertTrue(isTripleInList(new Triple("gbif:4980947","gbif:genusKey", 4901450), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4928315","gbif:genusKey", 2874875), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4980947","gbif:genusKey", 4901450), triples));
 
         assertEquals(3, dataSource.requestedStrings.size());
         assertEquals("https://api.gbif.org/v1/species/12345/children?limit=20&offset=0", dataSource.requestedStrings.get(0));

@@ -18,7 +18,7 @@ public class ConfigurationFactory {
 
     private static final String DATA_SOURCE_DEFAULT_CLASS = "de.biofid.services.data.sources.EmptyDataSource";
     private static final String DATA_GENERATOR_DEFAULT_CLASS = "de.biofid.services.data.generators.OntologyDataGenerator";
-    private static final String DATA_PROCESSOR_DEFAULT_CLASS = "de.biofid.services.data.processor.EmptyDataProcessor";
+    private static final String DATA_PROCESSOR_DEFAULT_CLASS = "de.biofid.services.data.processors.EmptyDataProcessor";
 
     public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
             throws KeyException, ValueException {

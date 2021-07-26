@@ -4,8 +4,9 @@ import de.biofid.services.data.DataService;
 import de.biofid.services.data.Triple;
 import de.biofid.services.serialization.Serializer;
 
-import javax.xml.crypto.Data;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The OntologyGenerator calls the DataServices and hands their output to the OntologyConnector.
@@ -29,14 +30,24 @@ public class OntologyGenerator {
         return ontologyName;
     }
 
-    public void addTriples(List<Triple> triples) {
+    public void addTriplesToOntology(Collection<Triple> triples) {
         for (Triple triple : triples) {
             addTriple(triple);
         }
     }
 
+    public void removeTriplesFromOntology(Collection<Triple> triplesToRemove) {
+        for (Triple triple : triplesToRemove) {
+            removeTriple(triple);
+        }
+    }
+
     public void addTriple(Triple triple) {
         ontologyConnector.addTripleToOntology(triple);
+    }
+
+    public void removeTriple(Triple triple) {
+        ontologyConnector.removeTripleFromOntology(triple);
     }
 
     public void serialize() {
@@ -45,8 +56,12 @@ public class OntologyGenerator {
 
     public void generate() {
         for (DataService service : dataServices) {
-            List<Triple> triples = service.getTriples();
-            addTriples(triples);
+            updateOntology(service.getTriplesToAdd(), service.getTriplesToRemove());
         }
+    }
+
+    private void updateOntology(Collection<Triple> triplesToAdd, Collection<Triple> triplesToRemove) {
+        addTriplesToOntology(triplesToAdd);
+        removeTriplesFromOntology(triplesToRemove);
     }
 }

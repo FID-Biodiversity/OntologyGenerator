@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
-import static de.biofid.services.data.DataCollections.isTripleInList;
+import static de.biofid.services.data.DataCollections.isTripleInCollection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,11 +27,11 @@ class TestDataService {
 
         DataService service = new DataService(dataSource, dataGenerator, dataProcessor);
 
-        List<Triple> triples = service.getTriples();
+        Set<Triple> triples = service.getTriplesToAdd();
 
         assertEquals(75, triples.size());
-        assertTrue(isTripleInList(new Triple("gbif:7984102", "http://rs.tdwg.org/dwc/terms/kingdom", "Plantae"), triples));
-        assertTrue(isTripleInList(new Triple("gbif:4928315", "http://rs.tdwg.org/dwc/terms/kingdom", "Plantae"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:7984102", "http://rs.tdwg.org/dwc/terms/kingdom", "Plantae"), triples));
+        assertTrue(isTripleInCollection(new Triple("gbif:4928315", "http://rs.tdwg.org/dwc/terms/kingdom", "Plantae"), triples));
     }
 
     private void defaultSetup() {

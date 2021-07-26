@@ -8,6 +8,7 @@ import de.biofid.services.data.DataService;
 import de.biofid.services.data.DataSource;
 import de.biofid.services.exceptions.ValueException;
 import de.biofid.services.ontologies.JenaOntology;
+import de.biofid.services.ontologies.Ontology;
 import de.biofid.services.ontologies.OntologyConnector;
 import de.biofid.services.ontologies.OntologyGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -27,23 +28,25 @@ public class ServiceFactory {
     public static OntologyGenerator createOntologyGenerator(OntologyConfiguration configuration) {
         // Has to provide the DataGenerator with the appropriate Ontology
         OntologyConnector ontologyConnector = new OntologyConnector(new JenaOntology());
-        List<DataService> dataServices = createDataServices(configuration.dataServiceConfigurations);
+        List<DataService> dataServices = createDataServices(configuration.dataServiceConfigurations,
+                ontologyConnector.getOntology());
 
         return new OntologyGenerator(
                 configuration.ontologyName, ontologyConnector, dataServices, configuration.serializer
         );
     }
 
-    public static List<DataService> createDataServices(List<DataServiceConfiguration> configurations) {
+    public static List<DataService> createDataServices(List<DataServiceConfiguration> configurations,
+                                                       Ontology ontology) {
         return configurations.stream()
-                .map(ServiceFactory::createDataService)
+                .map(configuration -> createDataService(configuration, ontology))
                 .collect(Collectors.toList());
     }
 
-    public static DataService createDataService(DataServiceConfiguration configuration) {
+    public static DataService createDataService(DataServiceConfiguration configuration, Ontology ontology) {
         try {
             DataSource dataSource = createDataSource(configuration);
-            DataGenerator generator = createDataGenerator(configuration, dataSource);
+            DataGenerator generator = createDataGenerator(configuration, dataSource, ontology);
             DataProcessor processor = createDataProcessor(configuration);
 
             return new DataService(dataSource, generator, processor);
@@ -58,10 +61,12 @@ public class ServiceFactory {
         return (DataSource) instantiateObjectFromClassNameString(configuration.dataSourceClassString);
     }
 
-    public static DataGenerator createDataGenerator(DataServiceConfiguration configuration, DataSource dataSource)
+    public static DataGenerator createDataGenerator(DataServiceConfiguration configuration, DataSource dataSource,
+                                                    Ontology ontology)
             throws ValueException {
         DataGenerator generator = (DataGenerator) instantiateObjectFromClassNameString(configuration.dataGeneratorClassString);
         generator.setDataSource(dataSource);
+        generator.setOntology(ontology);
 
         JSONObject generatorConfiguration = accessKeyOrEmptyJSON(configuration.parameters, DATA_GENERATOR_STRING);
         generator.setParameters(generatorConfiguration);

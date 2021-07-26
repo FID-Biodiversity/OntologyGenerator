@@ -3,9 +3,7 @@ package de.biofid.services.data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A DataService orchestrates the calling of DataSource, DataGenerator, and DataProcessor, in this order.
@@ -14,9 +12,14 @@ public class DataService {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private DataSource dataSource;
-    private DataGenerator dataGenerator;
-    private DataProcessor dataProcessor;
+    private final DataSource dataSource;
+    private final DataGenerator dataGenerator;
+    private final DataProcessor dataProcessor;
+
+    private final Set<Triple> triplesToRemove = new HashSet<>();
+    private final Set<Triple> triplesToAdd = new HashSet<>();
+
+    private boolean isComplete = false;
 
     public DataService(DataSource dataSource, DataGenerator dataGenerator, DataProcessor dataProcessor) {
         this.dataSource = dataSource;
@@ -26,20 +29,33 @@ public class DataService {
         setup();
     }
 
-    public List<Triple> getTriples() {
-        List<Triple> triples = new ArrayList<>();
+    public Set<Triple> getTriplesToAdd() {
+        if (!isComplete) {
+            updateTriples();
+        }
+
+        return triplesToAdd;
+    }
+
+    public Set<Triple> getTriplesToRemove() {
+        if (!isComplete) {
+            updateTriples();
+        }
+
+        return triplesToRemove;
+    }
+
+    private void updateTriples() {
         Triple triple;
         do {
             triple = getNextTriple();
             if (triple != null) {
                 boolean keepTriple = dataProcessor.postProcessTriple(triple);
-                if (keepTriple) {
-                    triples.add(triple);
-                }
+                updateTriples(triple, keepTriple);
             }
         } while (triple != null);
 
-        return triples;
+        isComplete = false;
     }
 
     private Triple getNextTriple() {
@@ -53,6 +69,14 @@ public class DataService {
         }
 
         return triple;
+    }
+
+    private void updateTriples(Triple triple, boolean keepTriple) {
+        if (keepTriple) {
+            triplesToAdd.add(triple);
+        } else {
+            triplesToRemove.add(triple);
+        }
     }
 
     protected void setup() {

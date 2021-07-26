@@ -16,9 +16,15 @@ import java.util.NoSuchElementException;
 public class OntologyDataGenerator implements DataGenerator {
 
     private Iterator<Triple> tripleIterator = Collections.emptyIterator();
+    private Ontology ontology;
+    private boolean isSetup = false;
 
     @Override
     public Triple next() throws NoSuchElementException {
+        if (!isSetup) {
+            setup();
+        }
+
         return tripleIterator.next();
     }
 
@@ -30,6 +36,11 @@ public class OntologyDataGenerator implements DataGenerator {
 
     @Override
     public void setOntology(Ontology ontology) {
-        tripleIterator = ontology.iterateTriples();
+        this.ontology = ontology;
+    }
+
+    private void setup() {
+        tripleIterator = ontology != null ? ontology.iterateTriples() : Collections.emptyIterator();
+        isSetup = true;
     }
 }

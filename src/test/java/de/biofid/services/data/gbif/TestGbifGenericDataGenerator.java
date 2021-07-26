@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import static de.biofid.services.data.DataCollections.isTripleInList;
+import static de.biofid.services.data.DataCollections.isTripleInCollection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,13 +34,13 @@ public class TestGbifGenericDataGenerator {
 
         assertEquals(82, result.size());
 
-        assertTrue(isTripleInList(new Triple("gbif:1234","gbif:taxonID", "gbif:5231190"), result));
-        assertTrue(isTripleInList(new Triple("gbif:1234", "gbif:species", "Passer domesticus"), result));
-        assertTrue(isTripleInList(new Triple("gbif:1234","gbif:synonym", false), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:1234","gbif:taxonID", "gbif:5231190"), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:1234", "gbif:species", "Passer domesticus"), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:1234","gbif:synonym", false), result));
 
-        assertTrue(isTripleInList(new Triple("gbif:5678","gbif:genusKey", 2492321), result));
-        assertTrue(isTripleInList(new Triple("gbif:5678", "gbif:species", "Passer domesticus"), result));
-        assertTrue(isTripleInList(new Triple("gbif:5678","gbif:synonym", false), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:5678","gbif:genusKey", 2492321), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:5678", "gbif:species", "Passer domesticus"), result));
+        assertTrue(isTripleInCollection(new Triple("gbif:5678","gbif:synonym", false), result));
 
         assertEquals(2, dataSource.requestedStrings.size());
         assertEquals("https://api.gbif.org/v1/species/1234?limit=20&offset=0", dataSource.requestedStrings.get(0));

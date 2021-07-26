@@ -42,6 +42,11 @@ public class DummyOntology implements Ontology {
     }
 
     @Override
+    public boolean hasTriple(Triple triple) {
+        return false;
+    }
+
+    @Override
     public void serialize(Serializer serializer) {
         String tripleString = triples.toString();
         OutputStream outputStream = serializer.getOutputStream();

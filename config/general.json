@@ -7,16 +7,16 @@
         {
           "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
           "dataGeneratorClass": "de.biofid.services.data.generators.gbif.GbifGenericDataGenerator",
-          "dataProcessorClass": "de.biofid.services.data.processors.FilterDataProcessor",
-          "parameters": {
-            "dataGenerator": {"ids": ["2882316"]},
-            "dataProcessor": {"configurationFile": "config/processors/predicate-filter.json"}
-          }
+          "parameters": {"dataGenerator": {"ids": ["2882316"]}}
         },
         {
-          "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
+          "dataSourceClass": "de.biofid.services.data.sources.http.JsonHttpApi",
+          "dataGeneratorClass": "de.biofid.services.data.generators.gbif.GbifDirectTaxonChildDataGenerator"
+        },
+        {
+          "dataProcessorClass": "de.biofid.services.data.processors.FilterDataProcessor",
           "parameters": {
-            "dataProcessor": {"configurationFile": "config/processors/gbif-predicate-mapping.json"}
+            "dataProcessor": {"configurationFile": "config/processors/predicate-filter.json"}
           }
         }
       ]

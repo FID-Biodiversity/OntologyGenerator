@@ -3,6 +3,7 @@ package de.biofid.services.factories;
 import de.biofid.services.configuration.DataServiceConfiguration;
 import de.biofid.services.data.*;
 import de.biofid.services.dummy.DummyDataSource;
+import de.biofid.services.dummy.DummyOntology;
 import de.biofid.services.exceptions.ValueException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +31,8 @@ public class TestServiceFactory {
     public void testCreateDataGenerator() throws FileNotFoundException, ValueException {
         DummyDataSource dataSource = getDataSource();
 
-        DataGenerator generator = ServiceFactory.createDataGenerator(dataServiceConfiguration, dataSource);
+        DataGenerator generator = ServiceFactory.createDataGenerator(dataServiceConfiguration, dataSource,
+                new DummyOntology());
 
         assertEquals("de.biofid.services.data.generators.gbif.GbifGenericDataGenerator", generator.getClass().getName());
 
