@@ -23,7 +23,7 @@ public class ConfigurationFactory {
     public static OntologyConfiguration createOntologyConfiguration(String ontologyName, Configuration configuration)
             throws KeyException, ValueException {
 
-        JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
+        JSONObject ontologyConfiguration = configuration.getJSONConfigurationForOntologyName(ontologyName);
         String serializerClassName = getClassStringFromConfiguration(Configuration.KEY_SERIALIZER,
                 ontologyConfiguration, ontologyName);
 
@@ -41,7 +41,7 @@ public class ConfigurationFactory {
 
     public static List<DataServiceConfiguration> createDataServiceConfigurationsForOntologyName(
             String ontologyName, Configuration configuration) throws KeyException {
-        JSONObject ontologyConfiguration = configuration.getConfigurationForOntologyName(ontologyName);
+        JSONObject ontologyConfiguration = configuration.getJSONConfigurationForOntologyName(ontologyName);
         JSONArray dataServiceConfigurationsAsJson = ontologyConfiguration.getJSONArray(Configuration.KEY_DATA_SERVICE_CONFIGURATIONS);
 
         List<DataServiceConfiguration> dataServiceConfigurations = new ArrayList<>(dataServiceConfigurationsAsJson.length());

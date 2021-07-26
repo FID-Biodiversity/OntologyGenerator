@@ -4,6 +4,7 @@ import de.biofid.services.data.DataService;
 import de.biofid.services.data.Triple;
 import de.biofid.services.serialization.Serializer;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**

@@ -63,7 +63,7 @@ public class ServiceFactory {
         DataGenerator generator = (DataGenerator) instantiateObjectFromClassNameString(configuration.dataGeneratorClassString);
         generator.setDataSource(dataSource);
 
-        JSONObject generatorConfiguration = configuration.parameters.getJSONObject(DATA_GENERATOR_STRING);
+        JSONObject generatorConfiguration = accessKeyOrEmptyJSON(configuration.parameters, DATA_GENERATOR_STRING);
         generator.setParameters(generatorConfiguration);
 
         return generator;
@@ -72,7 +72,7 @@ public class ServiceFactory {
     public static DataProcessor createDataProcessor(DataServiceConfiguration configuration) throws ValueException {
         DataProcessor processor = (DataProcessor) instantiateObjectFromClassNameString(configuration.dataProcessorClassString);
 
-        JSONObject processorConfiguration = configuration.parameters.getJSONObject(DATA_PROCESSOR_STRING);
+        JSONObject processorConfiguration = accessKeyOrEmptyJSON(configuration.parameters, DATA_PROCESSOR_STRING);
         processor.setParameters(processorConfiguration);
 
         return processor;
@@ -80,5 +80,9 @@ public class ServiceFactory {
 
     private static Object instantiateObjectFromClassNameString(String className) throws ValueException {
         return ClassLoader.createInstanceOfClassFromName(className);
+    }
+
+    private static JSONObject accessKeyOrEmptyJSON(JSONObject jsonObject, String key) {
+        return jsonObject.has(key) ? jsonObject.getJSONObject(key) : new JSONObject();
     }
 }

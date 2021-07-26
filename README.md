@@ -2,6 +2,14 @@
 
 This is currently under development. The main framework is implemented.
 
+The BIOfid Ontology Collector reads the specifications for one or more ontologies from `config/general.json`. In this configuration file, multiple steps for building the respective ontology are given.
+
+Subsequently, the BIOfid Ontology Collector will read the e.g., a specified web API or a file on the hard drive. The data will be transformed into data triples (having a subject, predicate, and object) and can be manipulated further.
+
+Currently, the BIOfid Ontology Collector is capable of calling GBIF for specific taxon IDs and processing the systematic data for this data provider. It can filter for specific desired predicates and maps the GBIF API terms to [Darwin Core Terms](https://dwc.tdwg.org/terms/).
+
+Finally, all the processed data (which does not have to come from only one source), will be written to a determined output, e.g., a file.
+
 ### Requirements
 - Java 11+
 - Maven 3.6+
@@ -28,7 +36,12 @@ java -jar biofid-ontology-collector.jar
 ```
 
 ### Configuration
-There is a `config` folder, holding all necessary configuration files for the BIOfid Ontology Collector to run. The general setup happens in the `general.json` configuration file. There you define the name and the data services of the ontologies. Each data service configuration takes the (optional) kewords `dataSourceClass`, `dataGeneratorClass`, and `dataProcessorClass`. However, at least a valid `dataGeneratorClass` or `dataProcessorClass` has to be given! 
+There is a `config` folder, holding all necessary configuration files for the BIOfid Ontology Collector to run. The general setup happens in the `general.json` configuration file. There you define the name and the data services of the ontologies. 
+
+Currently, all needed classes have to be provided with their full class path for loading them. So, instead of only `FilterDataProcessor`, you have to give `de.biofid.services.data.processors.FilterDataProcessor`. The package path, you can simply read from the top of your respective Java class file. **For readability, the package path is omitted in this documentation, if unambitious, and only the Java class names are mentioned!**
+
+
+All data service configuration take the (optional) keywords `dataSourceClass`, `dataGeneratorClass`, and `dataProcessorClass`. However, at least a valid `dataGeneratorClass` or `dataProcessorClass` has to be given! 
 
 Additionally, the data service configuration takes the (also optional) keyword `parameters`. The latter holds the configuration data that is handed directly to the respective processing unit.
 
@@ -47,8 +60,20 @@ will hand the data in the `parameters` -> `dataProcessor` section to the unit in
 
 Please refer the example configuration in the `config` folder for more details.
 
+**Please, be aware that the ontologies are not necessarily processed in the order given in the configuration file!**
+
+### Data Services
+In contrast to the ontologies, the defined data services (defined in a list under the keyword `services`) are processed IN ORDER! Hence, manipulation order DOES MATTER!
+
+Hence, when you process your data first with `PredicateMappingDataProcessor` and subsequently the `FilterDataProcessor`, which still expects the unmapped terms, the filter will not work as intended (and also will not tell you!). You would need to filter first and then map the predicates or adapt the filter configuration file.
+
+### Serialization
+To configure, where the final ontology should be written, you need to provide a class that knows how to write to the specific output. The class that should be used, has to be provided per ontology with the keyword `serializer`.
+
+Currently, there is only a Serializer class for writing files (i.e., `FileSerializer`). Suggestions for further serializers are welcome!
+
 ### Namespaces
-If you want to define namespaces that are used in your ontology and should be abbreviated in the final output, you have to define them in a file `config/namespaces.json`. The file has to be exactly that. Currently, there is no need to make this customizable. Please open an issue, if you think otherwise. There is already an example namespace file given for you to modify.
+If you want to define namespaces that are used in your ontology and should be abbreviated in the final output, you have to define them in a file `config/namespaces.json`. The file has to be exactly that. Currently, there is no need to make this customizable.
 
 ### Filter triples
 When applying the `FilterDataProcessor`, you can filter out triples. You can either filter for desired Predicates (i.e., storing only these in the ontology), giving the key `desiredPredicates` in a configuration file that is passed to the DataProcessor, or filter out unwanted Predicates with the `unwantedPredicates` key. Each of the keywords should be followed by a list of predicate terms (see `config/predicate-filter.json` for an example).
@@ -62,7 +87,7 @@ This tool provides a highly configurable way to harvest a data source and genera
 A DataService contains (in this order of processing) a DataSource, DataGenerator, and a DataProcessor. Finally, it returns a list of Triple objects that are serialized in the ontology.
 
 #### DataSource
-A DataSource is simply the source for the data. It can read a file or call data from a web API. The DataSource hands the received data directly to the DataGenerator.
+A DataSource is simply the source for the data. It can read a file or call data from a web API. The DataSource hands the received data directly to the DataGenerator. No data manipulation should happen here!
 
 #### DataGenerator
 The DataGenerator uses the input from the DataSource to generate Triples from it. This should be as naive as possible. The generated Triple objects are then handed to the DataProcessor.
@@ -105,7 +130,3 @@ BibTeX:
 ```
 @misc{pachzelt2021, title={BIOfid Ontology Collector [Source Code]}, url={https://dev.git.ub.uni-frankfurt.de/ublabs/OntologyCollector}, author={Pachzelt, Adrian}, year={2021}} 
 ```
-
-## TODO
-* All processes are still only separate and have to me intertwined in the main().
-* Currently, there is no default for any of these classes. Hence, when no DataSource is given, it would be nice, if the DataSource hands over either the whole ontology or iterates the triples in the ontology.

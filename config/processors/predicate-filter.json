@@ -1,0 +1,22 @@
+{
+  "__comment__": "These are terms that are returned by the GBIF API, added with 'gbif:' to have a namespace. Example: https://api.gbif.org/v1/species/5231190 . Just add those terms, you do NOT want in your ontology!",
+
+  "desiredPredicates": [
+    "gbif:kingdomKey",
+    "gbif:phylumKey",
+    "gbif:classKey",
+    "gbif:orderKey",
+    "gbif:familyKey",
+    "gbif:genusKey",
+    "gbif:parentKey",
+    "gbif:taxonomicStatus",
+    "gbif:scientificName",
+    "gbif:vernacularName",
+    "gbif:authorship",
+    "gbif:canonicalName",
+    "gbif:rank",
+    "gbif:basionymKey",
+    "gbif:acceptedKey",
+    "gbif:taxonID"
+  ]
+}

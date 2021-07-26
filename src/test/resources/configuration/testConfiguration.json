@@ -10,13 +10,13 @@
           "dataProcessorClass": "de.biofid.services.data.processors.FilterDataProcessor",
           "parameters": {
             "dataGenerator": {"ids": ["2882316"]},
-            "dataProcessor": {"configurationFile": "config/generators/predicate-filter.json"}
+            "dataProcessor": {"configurationFile": "src/test/resources/data/processors/desired-predicate-configuration.json"}
           }
         },
         {
           "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
           "parameters": {
-            "dataProcessor": {"configurationFile": "config/gbif-predicate-mapping.json"}
+            "dataProcessor": {"configurationFile": "src/test/resources/data/processors/genericTermMappingTestConfiguration.json"}
           }
         }
       ]

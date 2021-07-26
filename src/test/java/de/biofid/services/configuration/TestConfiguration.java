@@ -46,10 +46,10 @@ public class TestConfiguration {
         assertTrue(ontologyNames.contains("Occurrences"));
         assertTrue(ontologyNames.contains("Systematics"));
 
-        JSONObject occurrencesOntologyConfiguration = configuration.getConfigurationForOntologyName("Occurrences");
+        JSONObject occurrencesOntologyConfiguration = configuration.getJSONConfigurationForOntologyName("Occurrences");
         assertNumberOfDataServicesInConfiguration(occurrencesOntologyConfiguration, 2);
 
-        JSONObject systematicsOntologyConfiguration = configuration.getConfigurationForOntologyName("Systematics");
+        JSONObject systematicsOntologyConfiguration = configuration.getJSONConfigurationForOntologyName("Systematics");
         assertNumberOfDataServicesInConfiguration(systematicsOntologyConfiguration, 1);
     }
 

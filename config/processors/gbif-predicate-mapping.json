@@ -1,0 +1,18 @@
+{
+  "gbif:kingdomKey": "http://rs.tdwg.org/dwc/terms/#kingdom",
+  "gbif:phylumKey": "http://rs.tdwg.org/dwc/terms/#phylum",
+  "gbif:classKey": "http://rs.tdwg.org/dwc/terms/#class",
+  "gbif:orderKey": "http://rs.tdwg.org/dwc/terms/#order",
+  "gbif:familyKey": "http://rs.tdwg.org/dwc/terms/#family",
+  "gbif:genusKey": "http://rs.tdwg.org/dwc/terms/#genus",
+  "gbif:parentKey": "http://rs.tdwg.org/dwc/terms/#parentNameUsageID",
+  "gbif:taxonomicStatus": "http://rs.tdwg.org/dwc/terms/#taxonomicStatus",
+  "gbif:scientificName": "http://rs.tdwg.org/dwc/terms/#scientificName",
+  "gbif:vernacularName": "http://rs.tdwg.org/dwc/terms/#vernacularName",
+  "gbif:authorship": "http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship",
+  "gbif:canonicalName": "http://www.w3.org/2000/01/rdf-schema#label",
+  "gbif:rank": "http://rs.tdwg.org/dwc/terms/#taxonRank",
+  "gbif:basionymKey": "http://rs.tdwg.org/dwc/terms/#originalNameUsageID",
+  "gbif:acceptedKey": "http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID",
+  "gbif:taxonID": "http://rs.tdwg.org/dwc/terms/taxonID"
+}

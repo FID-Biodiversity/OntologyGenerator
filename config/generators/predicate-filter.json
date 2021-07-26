@@ -1,8 +1,0 @@
-{
-  "__comment__": "These are terms that are returned by the GBIF API, added with 'gbif:' to have a namespace. Example: https://api.gbif.org/v1/species/5231190 . Just add those terms, you do NOT want in your ontology!",
-
-  "unwantedPredicates": [
-    "gbif:kingdom",
-    "gbif:origin"
-  ]
-}

@@ -1,4 +1,6 @@
 {
   "gbif-species": "https://www.gbif.org/species/",
-  "gbif-data": "https://www.gbif.org/dataset/"
+  "gbif-data": "https://www.gbif.org/dataset/",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "dwc": "http://rs.tdwg.org/dwc/terms/#"
 }

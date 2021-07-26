@@ -6,6 +6,7 @@ import de.biofid.services.exceptions.KeyException;
 import de.biofid.services.exceptions.ValueException;
 import de.biofid.services.factories.ClassLoader;
 import de.biofid.services.factories.ConfigurationFactory;
+import de.biofid.services.factories.ServiceFactory;
 import de.biofid.services.serialization.FileSerializer;
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +59,13 @@ public class TestConfigurationFactory {
                 "de.biofid.services.data.processors.PredicateMappingDataProcessor");
 
         assertDataServicesAreInstantiable(dataServiceConfiguration);
+    }
+
+    @Test
+    public void testDefaultInstantiation() throws KeyException {
+        Configuration configuration = setupConfiguration();
+        OntologyConfiguration ontologyConfiguration = configuration.getOntologyConfigurationForOntologyName("Occurrences");
+        assertDoesNotThrow(() -> ServiceFactory.createOntologyGenerator(ontologyConfiguration));
     }
 
     private void assertDataServiceClassNames(DataServiceConfiguration dataServiceConfiguration,

@@ -76,11 +76,19 @@ public class Configuration {
         return configurations;
     }
 
-    public JSONObject getConfigurationForOntologyName(String ontologyName) throws KeyException {
+    public JSONObject getJSONConfigurationForOntologyName(String ontologyName) throws KeyException {
         JSONObject ontologyConfigurations = getOntologyDataInConfiguration();
         if (ontologyConfigurations.has(ontologyName)) {
             return ontologyConfigurations.getJSONObject(ontologyName);
         } else {
+            throw new KeyException("The given ontology Name \"" + ontologyName + "\" is not given in the configuration!");
+        }
+    }
+
+    public OntologyConfiguration getOntologyConfigurationForOntologyName(String ontologyName) throws KeyException {
+        try {
+            return ConfigurationFactory.createOntologyConfiguration(ontologyName, this);
+        } catch (ValueException | KeyException e) {
             throw new KeyException("The given ontology Name \"" + ontologyName + "\" is not given in the configuration!");
         }
     }
