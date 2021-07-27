@@ -14,5 +14,5 @@
   "gbif:rank": "http://rs.tdwg.org/dwc/terms/#taxonRank",
   "gbif:basionymKey": "http://rs.tdwg.org/dwc/terms/#originalNameUsageID",
   "gbif:acceptedKey": "http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID",
-  "gbif:taxonID": "http://rs.tdwg.org/dwc/terms/taxonID"
+  "gbif:taxonID": "http://rs.tdwg.org/dwc/terms/#taxonID"
 }

@@ -18,6 +18,15 @@
           "parameters": {
             "dataProcessor": {"configurationFile": "config/processors/predicate-filter.json"}
           }
+        },
+        {
+          "dataProcessorClass": "de.biofid.services.data.processors.PredicateMappingDataProcessor",
+          "parameters": {
+            "dataProcessor": {"configurationFile": "config/processors/gbif-predicate-mapping.json"}
+          }
+        },
+        {
+          "dataProcessorClass": "de.biofid.services.data.processors.NamespaceExpansionDataProcessor"
         }
       ]
     }
