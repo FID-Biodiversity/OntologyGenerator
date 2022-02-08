@@ -71,7 +71,6 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
         <junit-version-number>5.8.0-M1</junit-version-number>
-        <log4j-version-number>2.14.1</log4j-version-number>
+        <log4j-version-number>2.17.1</log4j-version-number>
     </properties>
-    
 </project>
