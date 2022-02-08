@@ -1,12 +1,12 @@
-# BIOfid Ontology Collector
+# BIOfid Ontology Generator
 
 This is currently under development. The main framework is implemented.
 
-The BIOfid Ontology Collector reads the specifications for one or more ontologies from `config/general.json`. In this configuration file, multiple steps for building the respective ontology are given.
+The BIOfid Ontology Generator reads the specifications for one or more ontologies from `config/general.json`. In this configuration file, multiple steps for building the respective ontology are given.
 
-Subsequently, the BIOfid Ontology Collector will read the e.g., a specified web API or a file on the hard drive. The data will be transformed into data triples (having a subject, predicate, and object) and can be manipulated further.
+Subsequently, the BIOfid Ontology Generator will read the e.g., a specified web API or a file on the hard drive. The data will be transformed into data triples (having a subject, predicate, and object) and can be manipulated further.
 
-Currently, the BIOfid Ontology Collector is capable of calling GBIF for specific taxon IDs and processing the systematic data for this data provider. It can filter for specific desired predicates and maps the GBIF API terms to [Darwin Core Terms](https://dwc.tdwg.org/terms/).
+Currently, the BIOfid Ontology Generator is capable of calling GBIF for specific taxon IDs and processing the systematic data for this data provider. It can filter for specific desired predicates and maps the GBIF API terms to [Darwin Core Terms](https://dwc.tdwg.org/terms/).
 
 Finally, all the processed data (which does not have to come from only one source), will be written to a determined output, e.g., a file.
 
@@ -121,12 +121,12 @@ How can you set the configuration of e.g., DataProcessor #2 but not of DataProce
 ![AGPL-3.0 License](https://www.gnu.org/graphics/agplv3-88x31.png)
 
 ## Citation
-Please cite the Ontology Collector in your publication with:
+Please cite the Ontology Generator in your publication with:
 ```
-Pachzelt A. (2021). BIOfid Ontology Collector [Source Code]. Available from https://dev.git.ub.uni-frankfurt.de/ublabs/OntologyCollector.
+Pachzelt A. (2021). BIOfid Ontology Generator [Source Code]. Available from https://github.com/FID-Biodiversity/OntologyGenerator.
 ```
 
 BibTeX:
 ```
-@misc{pachzelt2021, title={BIOfid Ontology Collector [Source Code]}, url={https://dev.git.ub.uni-frankfurt.de/ublabs/OntologyCollector}, author={Pachzelt, Adrian}, year={2021}} 
+@misc{pachzelt2021, title={BIOfid Ontology Generator [Source Code]}, url={https://github.com/FID-Biodiversity/OntologyGenerator}, author={Pachzelt, Adrian}, year={2021}} 
 ```
